@@ -4,6 +4,7 @@ import { BehaviorSubject, map, Observable, throwError } from 'rxjs';
 import { AuthBaseResponse, UserModel } from '@shared/models';
 import { ConfigService } from '@shared/ultils/config.service';
 import Swal from 'sweetalert2';
+import { AppConstants } from '@shared/AppConstants';
 
 const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -18,7 +19,7 @@ export class AuthenticationService {
     private readonly configService: ConfigService
   ) {
     this.currentUserSubject = new BehaviorSubject<UserModel>(
-      JSON.parse(localStorage.getItem('currentUser'))
+      JSON.parse(localStorage.getItem(AppConstants.AUTHENTICATION_STORE_KEY))
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -27,7 +28,7 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string, remember_me: boolean) {
     return this._http
       .post<AuthBaseResponse<UserModel>>(
         `${this.configService.keycloakUrl}/v1.0/login`,
@@ -42,7 +43,11 @@ export class AuthenticationService {
           // login successful if there's a jwt token in the response
           if (response.statusCode == 200 && response.data.access_token) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(response.data));
+            response.data.remember_me = remember_me;
+            localStorage.setItem(
+              AppConstants.AUTHENTICATION_STORE_KEY,
+              JSON.stringify(response.data)
+            );
             // notify
             this.currentUserSubject.next(response.data);
           } else if (response.statusCode == 401) {
@@ -60,7 +65,7 @@ export class AuthenticationService {
 
   refreshtoken() {
     const currentUser = this.currentUserValue;
-    if (currentUser && currentUser.refresh_token) {
+    if (currentUser && currentUser.refresh_token && currentUser.remember_me) {
       return this._http
         .post<AuthBaseResponse<UserModel>>(
           `${this.configService.keycloakUrl}/v1.0/refresh-token`,
@@ -74,8 +79,9 @@ export class AuthenticationService {
             // login successful if there's a jwt token in the response
             if (response.statusCode == 200 && response.data.access_token) {
               // store user details and jwt token in local storage to keep user logged in between page refreshes
+              response.data.remember_me = true;
               localStorage.setItem(
-                'currentUser',
+                AppConstants.AUTHENTICATION_STORE_KEY,
                 JSON.stringify(response.data)
               );
               // notify
@@ -91,7 +97,7 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem(AppConstants.AUTHENTICATION_STORE_KEY);
     // notify
     this.currentUserSubject.next(null);
   }
