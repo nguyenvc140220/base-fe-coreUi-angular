@@ -2,11 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { AppConfigModel } from '@shared/models/config/app-config.model';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigService {
   private appConfig: AppConfigModel;
+
   constructor(private http: HttpClient) {}
 
   loadAppConfig() {
@@ -26,5 +28,9 @@ export class ConfigService {
 
   get socketEndpoint() {
     return this.appConfig.socketEndpoint;
+  }
+
+  get socketIOConfig() {
+    return this.appConfig.socketIOConfig;
   }
 }

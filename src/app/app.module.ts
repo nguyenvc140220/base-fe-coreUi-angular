@@ -49,6 +49,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ErrorInterceptor, JwtInterceptor } from '@shared/interceptors';
 import { ConfigService } from '@shared/ultils/config.service';
 import { PagesModule } from './views/pages/pages.module';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -60,10 +61,13 @@ const APP_CONTAINERS = [
   DefaultLayoutComponent,
 ];
 
+const config: SocketIoConfig = { url: '/ws', options: { autoConnect: false } };
+
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS],
   imports: [
     HttpClientModule,
+    SocketIoModule.forRoot(config),
     PagesModule,
     BrowserModule,
     BrowserAnimationsModule,

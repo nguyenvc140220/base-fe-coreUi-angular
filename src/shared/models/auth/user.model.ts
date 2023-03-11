@@ -4,4 +4,5 @@ export class UserModel {
   access_token?: string;
   refresh_token?: string;
   status: string;
+  remember_me: boolean;
 }

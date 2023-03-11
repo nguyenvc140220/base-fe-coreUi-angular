@@ -1,5 +1,16 @@
 {
   "baseUrl": "http://localhost:4200",
   "keycloakBaseUrl": "http://172.16.88.247/keycloak",
-  "socketEndpoint": "ws://172.16.88.249:3001"
+  "socketEndpoint": "http://172.16.88.249:3001",
+  "socketIOConfig": {
+    "url": "http://172.16.88.247",
+    "options": {
+      "path": "/ws",
+      "autoConnect": false,
+      "reconnection": false,
+      "transports": [
+        "websocket"
+      ]
+    }
+  }
 }

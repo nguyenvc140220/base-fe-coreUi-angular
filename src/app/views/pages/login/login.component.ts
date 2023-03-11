@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   username: string;
   password: string;
-  submitting = false;
+  remember_me = false;
 
   constructor(
     private readonly authenticationService: AuthenticationService,
@@ -27,17 +27,19 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authenticationService.login(this.username, this.password).subscribe({
-      next: () => {
-        this.router.navigate([this.returnUrl]);
-      },
-      error: () => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Lỗi...',
-          text: `Đã có lỗi xảy ra, vui lòng liên hệ quản trị viên!`,
-        }).then();
-      },
-    });
+    this.authenticationService
+      .login(this.username, this.password, this.remember_me)
+      .subscribe({
+        next: () => {
+          this.router.navigate([this.returnUrl]);
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: `Đã có lỗi xảy ra, vui lòng liên hệ quản trị viên!`,
+          }).then();
+        },
+      });
   }
 }
