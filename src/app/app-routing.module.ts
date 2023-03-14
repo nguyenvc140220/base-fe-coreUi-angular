@@ -34,9 +34,14 @@ const routes: Routes = [
           import('./views/tenants/tenants.module').then((m) => m.TenantsModule),
       },
       {
-        path: 'users',
+        path: 'contacts',
         loadChildren: () =>
-          import('./views/users/users.module').then((m) => m.UsersModule),
+          import('./views/contacts/contacts.module').then((m) => m.ContactsModule),
+      },
+      {
+        path: 'admin',
+        loadChildren: () =>
+          import('./views/admin/admin.module').then((m) => m.AdminModule),
       },
     ],
   },
@@ -68,7 +73,7 @@ const routes: Routes = [
       title: 'Register Page',
     },
   },
-  { path: '**', redirectTo: 'dashboard' },
+  {path: '**', redirectTo: 'dashboard'},
 ];
 
 @NgModule({

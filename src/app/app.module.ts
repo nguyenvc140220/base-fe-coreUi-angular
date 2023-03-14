@@ -51,6 +51,7 @@ import { ConfigService } from '@shared/ultils/config.service';
 import { PagesModule } from './views/pages/pages.module';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
