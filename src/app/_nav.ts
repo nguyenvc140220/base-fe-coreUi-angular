@@ -4,17 +4,17 @@ export const navItems: INavData[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    iconComponent: {name: 'cil-speedometer'},
+    iconComponent: { name: 'cil-speedometer' },
   },
-  {
-    name: 'Tenants',
-    url: '/tenants',
-    iconComponent: {name: 'cil-layers'},
-  },
+  // {
+  //   name: 'Tenants',
+  //   url: '/tenants',
+  //   iconComponent: {name: 'cil-layers'},
+  // },
   {
     name: 'Contacts',
     url: '/contacts',
-    icon: "pi pi-users",
+    icon: 'pi pi-users',
   },
   // {
   //   name: 'Admin',
@@ -24,14 +24,14 @@ export const navItems: INavData[] = [
   {
     name: 'Admin',
     url: '/admin',
-    icon: "pi pi-cog",
+    icon: 'pi pi-cog',
     children: [
       {
         name: 'Quản lí người dùng',
         url: '/admin/users',
-        icon: "pi pi-user",
-        class: "m-l-1"
+        icon: 'pi pi-user',
+        class: 'm-l-1',
       },
-    ]
+    ],
   },
 ];

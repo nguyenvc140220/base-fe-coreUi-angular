@@ -13,7 +13,8 @@
       ></svg>
     </button>
     <c-header-nav class="d-none d-lg-flex me-auto">
-      <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>
+      <!--      <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>-->
+      <p-breadcrumb [model]="store.items" [home]="store.home"></p-breadcrumb>
     </c-header-nav>
 
     <c-header-nav class="d-none d-lg-flex">
@@ -136,10 +137,10 @@
         <hr cDropdownDivider/>
       </li>
       <li>
-        <a routerLink="./login" cDropdownItem>
+        <p cDropdownItem (click)="logout()">
           <svg cIcon class="me-2" name="cilLockLocked"></svg>
           Logout
-        </a>
+        </p>
       </li>
       <li></li>
     </ul>

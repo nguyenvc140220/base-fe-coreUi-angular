@@ -28,7 +28,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authenticationService
-      .login(this.username, this.password, this.remember_me)
+      .login(
+        this.username.toLowerCase().trim(),
+        this.password,
+        this.remember_me
+      )
       .subscribe({
         next: () => {
           this.router.navigate([this.returnUrl]);
