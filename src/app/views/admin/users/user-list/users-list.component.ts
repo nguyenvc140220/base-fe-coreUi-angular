@@ -1,17 +1,16 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ComponentBase } from '@shared/ultils/component-base.component';
 import { Paginator } from 'primeng/paginator';
-import { Router } from '@angular/router';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
+import { UserCreateModalComponent } from '../user-create-modal/user-create-modal.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ContactCreateModalComponent } from '../contact-create-modal/contact-create-modal.component';
 
 @Component({
-  selector: 'app-contacts-table',
-  templateUrl: './contacts-table.component.html',
-  styleUrls: ['./contacts-table.component.scss'],
+  selector: 'app-user-list',
+  templateUrl: './users-list.component.html',
+  styleUrls: ['./users-list.component.scss'],
 })
-export class ContactsTableComponent
+export class UserListComponent
   extends ComponentBase<any>
   implements OnInit, OnDestroy
 {
@@ -20,12 +19,11 @@ export class ContactsTableComponent
 
   constructor(
     injector: Injector,
-    private dialogService: DialogService,
-    private router: Router,
-    private breadcrumbStore: BreadcrumbStore
+    private breadcrumbStore: BreadcrumbStore,
+    private dialogService: DialogService
   ) {
     super(injector);
-    this.breadcrumbStore.items = [{ label: 'Danh sách liên hệ' }];
+    breadcrumbStore.items = [{ label: 'Danh sách người dùng' }];
   }
 
   ngOnInit(): void {
@@ -34,19 +32,16 @@ export class ContactsTableComponent
 
   ngOnDestroy(): void {}
 
-  routeContactImport() {
-    this.router.navigate(['contacts/importing']);
-  }
-
   private initDataTable() {
     {
       this.cols = [
-        { field: 'id', header: 'ID' },
-        { field: 'action', header: 'Thao tác' },
-        { field: 'fullName', header: 'Số điện thoại' },
-        { field: 'email', header: 'email' },
+        { field: 'userName', header: 'Tên đăng nhập' },
         { field: 'fullName', header: 'Họ và tên' },
+        { field: 'email', header: 'email' },
         { field: 'status', header: 'Trạng thái' },
+        { field: 'role', header: 'Quyền' },
+        { field: 'lastModify', header: 'Ngày hoạt động gần nhất' },
+        { field: 'action', header: 'Thao tác' },
       ];
     }
     this.loadData(null);
@@ -58,24 +53,24 @@ export class ContactsTableComponent
     this.primengTableHelper.isLoading = false;
     this.primengTableHelper.records = [
       {
-        name: 'nguyenvc',
+        userName: 'nguyenvc',
+        fullName: 'nguyen',
         email: 'metech@gmail.com',
         status: '',
-        id: '1',
         action: '',
       },
       {
-        name: 'tiendc',
+        userName: 'tiendc',
+        fullName: 'tien',
         email: 'metech@gmail.com',
         status: '',
-        id: '2',
         action: '',
       },
       {
-        name: 'luongld',
+        userName: 'luongld',
+        fullName: 'luong',
         email: 'metech@gmail.com',
         status: '',
-        id: '3',
         action: '',
       },
     ];
@@ -84,9 +79,9 @@ export class ContactsTableComponent
 
   paginate(event?: Paginator) {}
 
-  createContact() {
-    const dialog = this.dialogService.open(ContactCreateModalComponent, {
-      header: 'Thêm mới liên hệ',
+  createUser() {
+    const dialog = this.dialogService.open(UserCreateModalComponent, {
+      header: 'Thêm mới người dùng',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
     });

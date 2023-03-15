@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
+import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 
 interface IUser {
   name: string;
@@ -19,10 +20,14 @@ interface IUser {
 
 @Component({
   templateUrl: 'dashboard.component.html',
-  styleUrls: ['dashboard.component.scss']
+  styleUrls: ['dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  constructor(private chartsData: DashboardChartsData) {
+  constructor(
+    private chartsData: DashboardChartsData,
+    private breadcrumbStore: BreadcrumbStore
+  ) {
+    breadcrumbStore.items = [{ label: 'Dashboard' }];
   }
 
   public users: IUser[] = [
@@ -37,7 +42,7 @@ export class DashboardComponent implements OnInit {
       activity: '10 sec ago',
       avatar: './assets/img/avatars/1.jpg',
       status: 'success',
-      color: 'success'
+      color: 'success',
     },
     {
       name: 'Avram Tarasios',
@@ -50,7 +55,7 @@ export class DashboardComponent implements OnInit {
       activity: '5 minutes ago',
       avatar: './assets/img/avatars/2.jpg',
       status: 'danger',
-      color: 'info'
+      color: 'info',
     },
     {
       name: 'Quintin Ed',
@@ -63,7 +68,7 @@ export class DashboardComponent implements OnInit {
       activity: '1 hour ago',
       avatar: './assets/img/avatars/3.jpg',
       status: 'warning',
-      color: 'warning'
+      color: 'warning',
     },
     {
       name: 'Enéas Kwadwo',
@@ -76,7 +81,7 @@ export class DashboardComponent implements OnInit {
       activity: 'Last month',
       avatar: './assets/img/avatars/4.jpg',
       status: 'secondary',
-      color: 'danger'
+      color: 'danger',
     },
     {
       name: 'Agapetus Tadeáš',
@@ -89,7 +94,7 @@ export class DashboardComponent implements OnInit {
       activity: 'Last week',
       avatar: './assets/img/avatars/5.jpg',
       status: 'success',
-      color: 'primary'
+      color: 'primary',
     },
     {
       name: 'Friderik Dávid',
@@ -102,13 +107,13 @@ export class DashboardComponent implements OnInit {
       activity: 'Yesterday',
       avatar: './assets/img/avatars/6.jpg',
       status: 'info',
-      color: 'dark'
-    }
+      color: 'dark',
+    },
   ];
   public mainChart: IChartProps = {};
   public chart: Array<IChartProps> = [];
   public trafficRadioGroup = new UntypedFormGroup({
-    trafficRadio: new UntypedFormControl('Month')
+    trafficRadio: new UntypedFormControl('Month'),
   });
 
   ngOnInit(): void {

@@ -1,0 +1,27 @@
+<div class="flex justify-end">
+  <button
+    pButton
+    icon="pi pi-times"
+    type="button"
+    label="Huỷ"
+    [disabled]="buttonStatus.LOADING === status"
+    (click)="onClick(buttonEnum.CANCEL_BUTTON)"
+    class="p-button-outlined p-button-danger mx-2"></button>
+  <button
+    *ngIf="showDraft === buttonStatus.ENABLE"
+    pButton
+    icon="pi pi-check"
+    type="button"
+    label="Lưu nháp"
+    (click)="onClick(buttonEnum.DRAFT_BUTTON)"
+    [disabled]="buttonStatus.DISABLED === status || buttonStatus.LOADING === status"
+    [loading]="buttonStatus.LOADING === status && buttonEnum.DRAFT_BUTTON === buttonClicked"
+    class="p-button-outlined p-button-info mx-2"></button>
+  <p-button
+    class="mx-2"
+    label="{{ saveLabel }}"
+    icon="{{ saveIcon }}"
+    (onClick)="onClick(buttonEnum.SAVE_BUTTON)"
+    [disabled]="buttonStatus.DISABLED === status || buttonStatus.LOADING === status"
+    [loading]="buttonStatus.LOADING === status && buttonEnum.SAVE_BUTTON === buttonClicked"></p-button>
+</div>

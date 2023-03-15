@@ -27,19 +27,15 @@ import { DestroyService } from '@shared/services';
 import { CardModule } from 'primeng/card';
 import { IconModule } from '@coreui/icons-angular';
 import { ContactsTableComponent } from './contacts-table/contacts-table.component';
-import { ContactsRoutingModule } from "./contacts-routing.module";
+import { ContactsRoutingModule } from './contacts-routing.module';
 import { ContactsImportComponent } from './contacts-import/contacts-import.component';
-import { StepsModule } from "primeng/steps";
-import {
-  ContactsAddFileImportComponent
-} from './contacts-import/contacts-add-file-import/contacts-add-file-import.component';
-import {
-  ContactsMappingFileImportComponent
-} from './contacts-import/contacts-mapping-file-import/contacts-mapping-file-import.component';
-import {
-  ContactsResultFileImportComponent
-} from './contacts-import/contacts-result-file-import/contacts-result-file-import.component';
-import { FileUploadModule } from "primeng/fileupload";
+import { StepsModule } from 'primeng/steps';
+import { ContactsAddFileImportComponent } from './contacts-import/contacts-add-file-import/contacts-add-file-import.component';
+import { ContactsMappingFileImportComponent } from './contacts-import/contacts-mapping-file-import/contacts-mapping-file-import.component';
+import { ContactsResultFileImportComponent } from './contacts-import/contacts-result-file-import/contacts-result-file-import.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ContactCreateModalComponent } from './contact-create-modal/contact-create-modal.component';
+import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
 
 const PRIMENG = [
   TableModule,
@@ -64,7 +60,8 @@ const PRIMENG = [
     ContactsImportComponent,
     ContactsAddFileImportComponent,
     ContactsMappingFileImportComponent,
-    ContactsResultFileImportComponent
+    ContactsResultFileImportComponent,
+    ContactCreateModalComponent,
   ],
   imports: [
     FormsModule,
@@ -81,7 +78,8 @@ const PRIMENG = [
     CardModule,
     ContactsRoutingModule,
     StepsModule,
-    FileUploadModule
+    FileUploadModule,
+    DialogButtonModule,
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService],
 })
