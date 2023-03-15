@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-12 card"
+       style="padding-top: 25px;">
+    <p-steps [model]="steps"
+             [(activeIndex)]="activeIndex"></p-steps>
+  </div>
+  <div class="col-md-12 card">
+    <ng-template [ngIf]="activeIndex === 0">
+      <app-contacts-add-file-import [(activeIndex)]="activeIndex"></app-contacts-add-file-import>
+    </ng-template>
+    <ng-template [ngIf]="activeIndex === 1">
+      <app-contacts-mapping-file-import [(activeIndex)]="activeIndex"></app-contacts-mapping-file-import>
+    </ng-template>
+
+    <ng-template [ngIf]="activeIndex === 2">
+      <app-contacts-result-file-import [(activeIndex)]="activeIndex"></app-contacts-result-file-import>
+    </ng-template>
+  </div>
+</div>
