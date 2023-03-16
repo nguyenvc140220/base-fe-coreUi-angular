@@ -20,6 +20,7 @@ import { ChipModule } from 'primeng/chip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserCreateModalComponent } from './user-create-modal/user-create-modal.component';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
+import { ContactsModule } from '../../contacts/contacts.module';
 
 const PRIMENG = [
   TableModule,
@@ -47,6 +48,7 @@ const PRIMENG = [
     UsersRoutingModule,
     ...PRIMENG,
     DialogButtonModule,
+    ContactsModule,
   ],
 })
 export class UsersModule {}

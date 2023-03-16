@@ -1,4 +1,4 @@
-export class UserModel {
+export class AuthModel {
   roles: string[];
   request_action: string[];
   access_token?: string;

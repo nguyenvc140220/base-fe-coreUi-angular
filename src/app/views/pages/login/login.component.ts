@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit {
         this.remember_me
       )
       .subscribe({
-        next: () => {
-          this.router.navigate([this.returnUrl]);
+        next: (user) => {
+          if (user.access_token) this.router.navigate([this.returnUrl]);
         },
         error: () => {
           Swal.fire({

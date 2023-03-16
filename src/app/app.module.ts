@@ -49,7 +49,6 @@ import { ErrorInterceptor, JwtInterceptor } from '@shared/interceptors';
 import { ConfigService } from '@shared/ultils/config.service';
 import { PagesModule } from './views/pages/pages.module';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
-import { GetButtonStatusPipe } from '@shared/pipes/get-button-status.pipe';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -60,7 +59,6 @@ const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
   DefaultLayoutComponent,
-  GetButtonStatusPipe,
 ];
 
 const config: SocketIoConfig = { url: '/ws', options: { autoConnect: false } };
@@ -124,5 +122,6 @@ const config: SocketIoConfig = { url: '/ws', options: { autoConnect: false } };
     Title,
   ],
   bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {}
