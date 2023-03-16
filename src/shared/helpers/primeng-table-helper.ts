@@ -9,9 +9,6 @@ export class PrimengTableHelper<T> {
   isResponsive = true;
 
   totalRecordsCount = 0;
-  // totalPendingCount = 0;
-  // totalCallingCount = 0;
-  // totalCalledCount = 0;
 
   records: T[];
 

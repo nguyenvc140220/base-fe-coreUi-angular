@@ -1,9 +1,17 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ComponentBase } from '@shared/ultils/component-base.component';
 import { Paginator } from 'primeng/paginator';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 import { UserCreateModalComponent } from '../user-create-modal/user-create-modal.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { UserModel } from '@shared/models/users/user.model';
+import { UsersService } from '@shared/services/users/users.service';
 
 @Component({
   selector: 'app-user-list',
@@ -11,16 +19,18 @@ import { DialogService } from 'primeng/dynamicdialog';
   styleUrls: ['./users-list.component.scss'],
 })
 export class UserListComponent
-  extends ComponentBase<any>
+  extends ComponentBase<UserModel>
   implements OnInit, OnDestroy
 {
   cols: any[];
   searchKey: string = '';
+  @ViewChild('paginator') paginator: Paginator;
 
   constructor(
     injector: Injector,
     private breadcrumbStore: BreadcrumbStore,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private usersService: UsersService
   ) {
     super(injector);
     breadcrumbStore.items = [{ label: 'Danh sách người dùng' }];
@@ -35,12 +45,13 @@ export class UserListComponent
   private initDataTable() {
     {
       this.cols = [
-        { field: 'userName', header: 'Tên đăng nhập' },
+        { field: 'username', header: 'Tên đăng nhập' },
         { field: 'fullName', header: 'Họ và tên' },
         { field: 'email', header: 'email' },
-        { field: 'status', header: 'Trạng thái' },
-        { field: 'role', header: 'Quyền' },
-        { field: 'lastModify', header: 'Ngày hoạt động gần nhất' },
+        { field: 'enable', header: 'Trạng thái' },
+        { field: 'roles', header: 'Quyền' },
+        { field: 'groups', header: 'Nhóm' },
+        { field: 'createdAt', header: 'Ngày tạo' },
         { field: 'action', header: 'Thao tác' },
       ];
     }
@@ -49,35 +60,22 @@ export class UserListComponent
 
   loadData(event) {
     this.primengTableHelper.isLoading = true;
-
-    this.primengTableHelper.isLoading = false;
-    this.primengTableHelper.records = [
-      {
-        userName: 'nguyenvc',
-        fullName: 'nguyen',
-        email: 'metech@gmail.com',
-        status: '',
-        action: '',
-      },
-      {
-        userName: 'tiendc',
-        fullName: 'tien',
-        email: 'metech@gmail.com',
-        status: '',
-        action: '',
-      },
-      {
-        userName: 'luongld',
-        fullName: 'luong',
-        email: 'metech@gmail.com',
-        status: '',
-        action: '',
-      },
-    ];
-    this.primengTableHelper.totalRecordsCount = 3;
+    this.usersService
+      .getUsers(
+        true,
+        this.paginator?.currentPage() ?? 1,
+        this.primengTableHelper.defaultRecordsCountPerPage
+      )
+      .subscribe((res) => {
+        this.primengTableHelper.isLoading = false;
+        this.primengTableHelper.records = res.data;
+        this.primengTableHelper.totalRecordsCount = res.data?.length ?? 0;
+      });
   }
 
-  paginate(event?: Paginator) {}
+  paginate(event?: Paginator) {
+    this.loadData(event);
+  }
 
   createUser() {
     const dialog = this.dialogService.open(UserCreateModalComponent, {

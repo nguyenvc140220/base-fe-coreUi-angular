@@ -46,8 +46,9 @@
                 <td *ngSwitchCase="'action'">
                   <i class="pi pi-ellipsis-v pr-5"></i>
                 </td>
-                <td *ngSwitchCase="'status'">
-                  <p-chip label="Đang hoạt động" [style]="{'background-color': '#D9ECD9', 'color': '#328F1A'}">
+                <td *ngSwitchCase="'enable'">
+                  <p-chip [label]="user[col.field] ? 'Đang hoạt động' : 'Ngừng hoạt động'"
+                          [style]="user[col.field] ? {'background-color': '#D9ECD9', 'color': '#328F1A'} : {'background-color': '#FFE6E9', 'color': '#D9001B'}">
                   </p-chip>
                 </td>
                 <td *ngSwitchDefault>

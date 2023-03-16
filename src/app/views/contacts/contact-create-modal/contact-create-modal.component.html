@@ -58,6 +58,7 @@
 
 <div class="row mt-4">
   <app-dialog-button
+    [status]="form.invalid | getButtonStatus"
     (event)="onDialogEvent($event)"
     class="w-100"
   ></app-dialog-button>

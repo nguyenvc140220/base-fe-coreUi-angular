@@ -36,6 +36,7 @@ import { ContactsResultFileImportComponent } from './contacts-import/contacts-re
 import { FileUploadModule } from 'primeng/fileupload';
 import { ContactCreateModalComponent } from './contact-create-modal/contact-create-modal.component';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
+import { GetButtonStatusPipe } from '@shared/pipes/get-button-status.pipe';
 
 const PRIMENG = [
   TableModule,
@@ -62,6 +63,7 @@ const PRIMENG = [
     ContactsMappingFileImportComponent,
     ContactsResultFileImportComponent,
     ContactCreateModalComponent,
+    GetButtonStatusPipe,
   ],
   imports: [
     FormsModule,
@@ -82,5 +84,6 @@ const PRIMENG = [
     DialogButtonModule,
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService],
+  exports: [GetButtonStatusPipe],
 })
 export class ContactsModule {}

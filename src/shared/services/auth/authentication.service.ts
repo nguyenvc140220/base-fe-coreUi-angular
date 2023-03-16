@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, throwError } from 'rxjs';
-import { AuthBaseResponse, UserModel } from '@shared/models';
+import { AuthBaseResponse, AuthModel } from '@shared/models';
 import { ConfigService } from '@shared/ultils/config.service';
 import Swal from 'sweetalert2';
 import { AppConstants } from '@shared/AppConstants';
@@ -10,27 +10,27 @@ const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  public currentUser: Observable<UserModel>;
+  public currentUser: Observable<AuthModel>;
 
-  private currentUserSubject: BehaviorSubject<UserModel>;
+  private currentUserSubject: BehaviorSubject<AuthModel>;
 
   constructor(
     private _http: HttpClient,
     private readonly configService: ConfigService
   ) {
-    this.currentUserSubject = new BehaviorSubject<UserModel>(
+    this.currentUserSubject = new BehaviorSubject<AuthModel>(
       JSON.parse(localStorage.getItem(AppConstants.AUTHENTICATION_STORE_KEY))
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): UserModel {
+  public get currentUserValue(): AuthModel {
     return this.currentUserSubject.value;
   }
 
   login(username: string, password: string, remember_me: boolean) {
     return this._http
-      .post<AuthBaseResponse<UserModel>>(
+      .post<AuthBaseResponse<AuthModel>>(
         `${this.configService.keycloakUrl}/v1.0/login`,
         JSON.stringify({
           username: username,
@@ -51,6 +51,7 @@ export class AuthenticationService {
             // notify
             this.currentUserSubject.next(response.data);
           } else if (response.statusCode == 401) {
+            this.currentUserSubject.next(null);
             Swal.fire({
               icon: 'error',
               title: 'Lỗi...',
@@ -67,7 +68,7 @@ export class AuthenticationService {
     const currentUser = this.currentUserValue;
     if (currentUser && currentUser.refresh_token && currentUser.remember_me) {
       return this._http
-        .post<AuthBaseResponse<UserModel>>(
+        .post<AuthBaseResponse<AuthModel>>(
           `${this.configService.keycloakUrl}/v1.0/refresh-token`,
           JSON.stringify({
             refresh_token: currentUser.refresh_token,

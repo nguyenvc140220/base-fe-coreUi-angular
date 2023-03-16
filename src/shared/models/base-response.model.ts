@@ -1,5 +1,5 @@
 export class BaseResponse<T> {
-  success: boolean;
+  statusCode: number;
   message: string;
-  data?: T | undefined | null;
+  data?: T[] | undefined | null;
 }

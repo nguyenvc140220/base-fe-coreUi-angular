@@ -114,6 +114,7 @@
 
 <div class="row">
   <app-dialog-button
+    [status]="form.invalid | getButtonStatus"
     (event)="onDialogEvent($event)"
     class="w-100"
   ></app-dialog-button>
