@@ -7,13 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormModule } from '@coreui/angular';
 import { CardModule } from 'primeng/card';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
-
-
+import { ContactsModule } from '../contacts/contacts.module';
 
 @NgModule({
-  declarations: [
-    ChangePasswordComponent
-  ],
+  declarations: [ChangePasswordComponent],
   imports: [
     CommonModule,
     ProfileRoutingModule,
@@ -21,7 +18,8 @@ import { DialogButtonModule } from '@shared/components/dialog-button/dialog-butt
     FormModule,
     ReactiveFormsModule,
     CardModule,
-    DialogButtonModule
-  ]
+    DialogButtonModule,
+    ContactsModule,
+  ],
 })
-export class ProfileModule { }
+export class ProfileModule {}

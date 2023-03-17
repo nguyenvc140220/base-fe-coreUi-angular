@@ -1,8 +1,9 @@
-<div class="relative flex min-h-screen flex-col justify-center bg-gray-800">
-  <div class="max-h-screen-lg mx-auto">
+<div
+  class="relative flex min-h-screen flex-col justify-center bg-gray-800 bg-[url('../assets/img/login-bg.jpg')] bg-hero bg-no-repeat bg-cover bg-center bg-fixed">
+  <div class="max-h-screen-lg mx-auto" *ngIf="!showResetPaswordForm">
     <div class="flex flex-row rounded-xl bg-white">
       <div class="flex basis-1/2 rounded-l-xl bg-sky-50">
-        <form class="space-y-4 self-center p-10" novalidate autocomplete="off" #loginForm="ngForm" (ngSubmit)="login()">
+        <form class="space-y-4 self-center p-10" [formGroup]="loginForm">
           <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <h2 class="mt-6 text-center font-sans text-3xl font-extrabold text-blue-900">Chào mừng bạn đến với Marketing
               Platform</h2>
@@ -12,29 +13,101 @@
           <div>
             <label for="username" class="block text-sm font-medium text-gray-900"> Username </label>
             <div class="mt-1">
-              <input id="username" name="username" type="text" required [(ngModel)]="username"
+              <input id="username" name="username" type="text" required formControlName="username"
                      class="required block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"/>
             </div>
           </div>
           <div>
             <label for="password" class="block text-sm font-medium text-gray-900"> Password </label>
-            <div class="mt-1">
-              <input id="password" name="password" type="password" required [(ngModel)]="password"
+            <div class="relative mt-1">
+              <input id="password" name="password" [type]="showPassword ? 'text' : 'password'" required
+                     formControlName="password"
                      (keydown.enter)="login()"
                      class="required block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"/>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+
+                <i (click)="showPassword = !showPassword" [class]="showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
+
+              </div>
             </div>
           </div>
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <input id="remember_me" name="remember_me" type="checkbox" [(ngModel)]="remember_me"
+              <input id="remember_me" name="remember_me" type="checkbox" formControlName="remember_me"
                      class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"/>
               <label for="remember_me" class="ml-2 block text-sm text-gray-900"> Remember me </label>
             </div>
           </div>
           <div>
-            <button type="submit" [disabled]="!loginForm.form.valid"
+            <button type="submit" [disabled]="loginForm.invalid" (click)="login()"
                     class="flex w-full justify-center rounded-md border border-transparent bg-blue-500 py-2 px-4 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-blue-50 disabled:text-gray-400">
               Sign in
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="basis-1/2 self-center" style="margin: 5%;">
+        <img src="assets/img/mp_platform_banner_1x.png"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-h-screen-lg mx-auto" *ngIf="showResetPaswordForm">
+    <div class="flex flex-row rounded-xl bg-white">
+      <div class="flex basis-1/2 rounded-l-xl bg-sky-50">
+        <form class="space-y-4 self-center p-10" [formGroup]="resetPasswordForm">
+          <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 class="mt-6 text-center font-sans text-3xl font-extrabold text-blue-900">Đổi mật khẩu lần đầu</h2>
+            <p class="mt-2 text-center text-sm text-black">Vì lý do bảo mật, bạn sẽ bắt buộc phải đổi mật khẩu lần
+              đầu</p>
+          </div>
+          <br/>
+          <div>
+            <label for="newPassword" class="block text-sm font-medium text-gray-900">New Password </label>
+            <div class="relative mt-1">
+              <input id="newPassword" name="newPassword" [type]="showPassword ? 'text' : 'password'" required
+                     formControlName="new_password"
+                     maxlength="32"
+                     class="required block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"/>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+
+                <i (click)="showPassword = !showPassword"
+                   [class]="showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
+
+              </div>
+            </div>
+            <small class="text-danger"
+                   *ngIf="resetPasswordForm.errors && resetPasswordForm.errors.password_length_error">Mật khẩu phải có
+              độ dài từ 6 đến 32 ký tự</small>
+            <small class="text-danger"
+                   *ngIf="resetPasswordForm.errors && resetPasswordForm.errors.password_error">Mật khẩu bao gồm tối
+              thiểu 1 chữ hoa, 1 chữ số hoặc 1 ký tự đặc biệt</small>
+          </div>
+          <div>
+            <label for="repeatPassword" class="block text-sm font-medium text-gray-900"> Repeat Password </label>
+            <div class="relative mt-1">
+              <input id="repeatPassword" name="repeatPassword" [type]="showRepeatPassword ? 'text' : 'password'"
+                     required
+                     maxlength="32"
+                     formControlName="confirm_password"
+                     (keydown.enter)="changePassword()"
+                     class="required block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"/>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+
+                <i (click)="showRepeatPassword = !showRepeatPassword"
+                   [class]="showRepeatPassword ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
+
+              </div>
+            </div>
+            <small class="text-danger"
+                   *ngIf="resetPasswordForm.errors && resetPasswordForm.errors.match_error">confirm password not
+              match!</small>
+          </div>
+          <br/>
+          <div>
+            <button type="submit" [disabled]="resetPasswordForm.invalid" (click)="changePassword()"
+                    class="flex w-full justify-center rounded-md border border-transparent bg-blue-500 py-2 px-4 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-blue-50 disabled:text-gray-400">
+              Change password
             </button>
           </div>
         </form>

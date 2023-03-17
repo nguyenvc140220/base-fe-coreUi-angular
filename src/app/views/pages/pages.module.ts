@@ -13,7 +13,7 @@ import {
   GridModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,6 +31,7 @@ import { FormsModule } from '@angular/forms';
     IconModule,
     FormModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class PagesModule {}
