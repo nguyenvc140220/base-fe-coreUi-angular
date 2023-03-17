@@ -44,6 +44,7 @@ export class AuthenticationService {
           if (response.statusCode == 200 && response.data.access_token) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             response.data.remember_me = remember_me;
+            response.data.username = username;
             localStorage.setItem(
               AppConstants.AUTHENTICATION_STORE_KEY,
               JSON.stringify(response.data)
