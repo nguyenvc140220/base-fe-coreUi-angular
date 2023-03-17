@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@shared/ultils/config.service';
 import { BaseResponse } from '@shared/models';
 import { UserModel } from '@shared/models/users/user.model';
+import { CreateUserRequestModel } from "@shared/models/users/create-user-request-model";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class UsersService extends BaseService {
   constructor(
     protected http: HttpClient,
@@ -22,6 +23,13 @@ export class UsersService extends BaseService {
         pageSize: pageSize,
         enabled: enabled,
       }
+    );
+  }
+
+  createUser(request: CreateUserRequestModel) {
+    return this.defaultPost<BaseResponse<any>>(
+      `${this.configService.keycloakUrl}/v1.0/account/admin-create-user`,
+      request
     );
   }
 }
