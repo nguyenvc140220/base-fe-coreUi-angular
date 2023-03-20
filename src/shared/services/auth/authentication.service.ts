@@ -12,7 +12,7 @@ import { AppConstants } from '@shared/AppConstants';
 import { BaseService } from '@shared/services/base.service';
 import { ConfigService } from '@shared/ultils/config.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthenticationService extends BaseService {
   public currentUser: Observable<AuthModel>;
 
@@ -53,12 +53,12 @@ export class AuthenticationService extends BaseService {
           );
           // notify
           this.currentUserSubject.next(response.data);
-        } else if (response.statusCode == 401) {
+        } else if (response.statusCode != 200) {
           if (!response.data.request_action)
             Swal.fire({
               icon: 'error',
               title: 'Lỗi...',
-              text: `Tên tài khoản hoặc mật khẩu không chính xác!`,
+              text: `${response.message ? response.message : 'Đăng nhập thất bại!'}`,
             }).then();
           this.currentUserSubject.next(null);
         }
