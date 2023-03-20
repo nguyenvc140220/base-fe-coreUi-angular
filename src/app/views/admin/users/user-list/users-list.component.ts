@@ -20,7 +20,8 @@ import { UsersService } from '@shared/services/users/users.service';
 })
 export class UserListComponent
   extends ComponentBase<UserModel>
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   cols: any[];
   searchKey: string = '';
   @ViewChild('paginator') paginator: Paginator;
@@ -32,7 +33,7 @@ export class UserListComponent
     private usersService: UsersService
   ) {
     super(injector);
-    breadcrumbStore.items = [{label: 'Danh sách người dùng'}];
+    breadcrumbStore.items = [{ label: 'Danh sách người dùng' }];
   }
 
   ngOnInit(): void {
@@ -44,14 +45,14 @@ export class UserListComponent
   private initDataTable() {
     {
       this.cols = [
-        {field: 'username', header: 'Tên đăng nhập'},
-        {field: 'fullName', header: 'Họ và tên'},
-        {field: 'email', header: 'email'},
-        {field: 'enable', header: 'Trạng thái'},
-        {field: 'roles', header: 'Quyền'},
-        {field: 'groups', header: 'Nhóm'},
-        {field: 'createdAt', header: 'Ngày tạo'},
-        {field: 'action', header: 'Thao tác'},
+        { field: 'username', header: 'Tên đăng nhập' },
+        { field: 'fullName', header: 'Họ và tên' },
+        { field: 'email', header: 'email' },
+        { field: 'enable', header: 'Trạng thái' },
+        { field: 'roles', header: 'Quyền' },
+        { field: 'groups', header: 'Nhóm' },
+        { field: 'createdAt', header: 'Ngày tạo' },
+        { field: 'action', header: 'Thao tác' },
       ];
     }
     this.loadData(null);
@@ -68,7 +69,7 @@ export class UserListComponent
       .subscribe((res) => {
         this.primengTableHelper.isLoading = false;
         this.primengTableHelper.records = res.data;
-        this.primengTableHelper.totalRecordsCount = res.data?.length ?? 0;
+        this.primengTableHelper.totalRecordsCount = res.total ?? 0;
       });
   }
 
@@ -80,7 +81,7 @@ export class UserListComponent
     const dialog = this.dialogService.open(UserCreateModalComponent, {
       header: 'Thêm mới người dùng',
       width: '60%',
-      contentStyle: {'max-height': '80vh', overflow: 'auto'},
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
