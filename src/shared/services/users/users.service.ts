@@ -6,6 +6,7 @@ import { BaseResponse } from '@shared/models';
 import { UserModel } from '@shared/models/users/user.model';
 import { CreateUserRequestModel } from "@shared/models/users/create-user-request-model";
 import { UserValidatorRequestModel } from "@shared/models/users/user-validator-request-model";
+import { UserValidatorResponseModel } from "@shared/models/users/user-validator-response-model";
 
 @Injectable({providedIn: 'root'})
 export class UsersService extends BaseService {

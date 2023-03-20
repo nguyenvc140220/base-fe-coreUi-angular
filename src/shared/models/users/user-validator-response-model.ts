@@ -1,4 +1,4 @@
-class UserValidatorResponseModel {
+export class UserValidatorResponseModel {
   "statusCode": number;
   "total": null;
   "message": string | null;
