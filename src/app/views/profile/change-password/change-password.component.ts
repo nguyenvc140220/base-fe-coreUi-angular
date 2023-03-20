@@ -142,7 +142,9 @@ export class ChangePasswordComponent implements OnInit {
     if (button == ButtonEnum.CANCEL_BUTTON) {
       this.router.navigate(['/']);
     } else if (button == ButtonEnum.SAVE_BUTTON) {
-      this.authenticationService.changePassword(this.form.value).subscribe({
+      let requestData = this.form.value;
+      requestData.username = this.authenticationService.currentUserValue.username;
+      this.authenticationService.changePassword(requestData).subscribe({
         next: (response) => {
           if (response.statusCode == 200) {
             Swal.fire({
