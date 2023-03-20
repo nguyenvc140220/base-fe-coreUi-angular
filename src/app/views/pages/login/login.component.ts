@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   showPassword = false;
   showRepeatPassword = false;
-
+  toggleMask = false;
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly router: Router,
