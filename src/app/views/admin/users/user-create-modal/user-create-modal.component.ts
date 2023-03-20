@@ -56,20 +56,19 @@ export class UserCreateModalComponent implements OnInit {
       createUserRequest.username = this.form.controls['username']?.value?.trim();
       createUserRequest.roles = [this.form.controls['roles']?.value?.trim()]
 
-      console.log(createUserRequest)
-      // this.usersService.createUser(createUserRequest).subscribe({
-      //   next: () => {
-      //     this.ref.close('done');
-      //     Swal.fire({
-      //       icon: 'success',
-      //       title: 'Thành công',
-      //       text: `Lưu thành công!`,
-      //     }).then();
-      //   },
-      //   error: (err) => {
-      //     console.log(err)
-      //   }
-      // });
+      this.usersService.createUser(createUserRequest).subscribe({
+        next: () => {
+          this.ref.close('done');
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: `Lưu thành công!`,
+          }).then();
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      });
     }
   }
 
