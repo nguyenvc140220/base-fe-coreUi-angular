@@ -5,6 +5,8 @@ import { ConfigService } from '@shared/ultils/config.service';
 import { BaseResponse } from '@shared/models';
 import { UserModel } from '@shared/models/users/user.model';
 import { CreateUserRequestModel } from "@shared/models/users/create-user-request-model";
+import { UserValidatorRequestModel } from "@shared/models/users/user-validator-request-model";
+import { UserValidatorResponseModel } from "@shared/models/users/user-validator-response-model";
 
 @Injectable({providedIn: 'root'})
 export class UsersService extends BaseService {
@@ -30,6 +32,13 @@ export class UsersService extends BaseService {
     return this.defaultPost<BaseResponse<any>>(
       `${this.configService.keycloakUrl}/v1.0/account/admin-create-user`,
       request
+    );
+  }
+
+  userValidators(requestModel: UserValidatorRequestModel) {
+    return this.defaultGet<UserValidatorResponseModel>(
+      `${this.configService.keycloakUrl}/v1.0/account/check-user-existed`,
+      requestModel
     );
   }
 }

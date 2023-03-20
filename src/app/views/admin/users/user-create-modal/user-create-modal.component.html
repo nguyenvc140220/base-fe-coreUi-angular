@@ -16,6 +16,7 @@
     <input
       class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
       formControlName="username"
+      (change)="validatorUserNameExist($event)"
       id="username"
       maxlength="32"
       type="text"
@@ -34,6 +35,10 @@
       "
       class="red-text sm:text-xs text-rose-700"
     >Không được nhập ký tự đặc biệt.</small>
+    <small
+      *ngIf="userNameErr"
+      class="red-text sm:text-xs text-rose-700"
+    >{{userNameErr}}.</small>
   </div>
 
   <!--Email-->
@@ -56,6 +61,7 @@
       formControlName="email"
       maxlength="50"
       type="email"
+      (change)="validatorEmailExist($event)"
     />
     <small
       *ngIf="
@@ -71,6 +77,10 @@
       "
       class="red-text sm:text-xs text-rose-700"
     >Không đúng định dạng.</small>
+    <small
+      *ngIf="emailErr"
+      class="red-text sm:text-xs text-rose-700"
+    >{{emailErr}}.</small>
   </div>
 
   <!--Họ và tên-->
