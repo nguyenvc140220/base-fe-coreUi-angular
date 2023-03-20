@@ -31,11 +31,13 @@ export class ChangePasswordComponent implements OnInit {
   ) {
     this.breadcrumbStore.items = [
       {
-        label: 'Đổi mật khẩu',
+        label: 'Thay đổi mật khẩu',
       },
     ];
   }
-
+  showPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
   ngOnInit() {
     this.authenticationService.currentUserValue;
     this.initForm();
@@ -44,8 +46,11 @@ export class ChangePasswordComponent implements OnInit {
   private initForm(): void {
     this.form = new FormGroup(
       {
-        username: new FormControl(
-          this.authenticationService.currentUserValue.username,
+        username: new FormControl({
+          value:
+            this.authenticationService.currentUserValue.username,
+          disabled: true,
+        },
           [Validators.required]
         ),
         password: new FormControl(null, [Validators.required]),
@@ -57,6 +62,10 @@ export class ChangePasswordComponent implements OnInit {
           ChangePasswordComponent.matchPassword(
             'new_password',
             'confirm_password'
+          ),
+          ChangePasswordComponent.matchOldPassword(
+            'new_password',
+            'password'
           ),
           ChangePasswordComponent.passwordValidator('new_password'),
         ],
@@ -77,11 +86,30 @@ export class ChangePasswordComponent implements OnInit {
       return null;
     };
   }
+  static matchOldPassword(
+    controlName: string,
+    matchControlName: string
+  ): ValidatorFn {
+    return (controls: AbstractControl) => {
+      const control = controls.get(controlName);
+      const matchControl = controls.get(matchControlName);
+      if (!matchControl?.errors && control?.value == matchControl?.value) {
+        return { matchOldPassword: true };
+      }
+      return null;
+    };
+  }
 
   get passwordMatchError() {
     return (
       this.form.getError('mismatch') &&
       this.form.get('confirm_password')?.touched
+    );
+  }
+  get oldPasswordMatchError() {
+    return (
+      this.form.get('new_password')?.touched &&
+      this.form.getError('matchOldPassword')
     );
   }
 
@@ -98,11 +126,9 @@ export class ChangePasswordComponent implements OnInit {
 
       if (control.value) {
         let valid =
-          /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/.test(
+          /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{6,32}/.test(
             control.value
           );
-        valid =
-          valid && control.value.length >= 6 && control.value.length <= 32;
         if (!valid)
           return {
             passwordRequirement: true,
