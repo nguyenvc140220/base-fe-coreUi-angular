@@ -53,12 +53,19 @@ export class AuthenticationService extends BaseService {
           );
           // notify
           this.currentUserSubject.next(response.data);
-        } else if (response.statusCode != 200) {
-          if (!response.data.request_action)
+        } else if (response.statusCode == 401) {
+          if (response.msg == "invalid_client") {
             Swal.fire({
               icon: 'error',
               title: 'Lỗi...',
-              text: `${response.message ? response.message : 'Đăng nhập thất bại!'}`,
+              text: `Hệ thống CMS-${window.location.host.split(".")[0]} đã bị ngừng hoạt động!`,
+            }).then();
+          }
+          if (!response.data.request_action && response.msg != "invalid_client")
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi...',
+              text: `Tên tài khoản hoặc mật khẩu không chính xác!`,
             }).then();
           this.currentUserSubject.next(null);
         }
