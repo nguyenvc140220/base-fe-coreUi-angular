@@ -21,7 +21,10 @@ export class LoginComponent implements OnInit {
   showResetPaswordForm = false;
 
   showPassword = false;
+  showNewPassword = false;
   showRepeatPassword = false;
+
+  loading = false;
 
   constructor(
     private readonly authenticationService: AuthenticationService,
@@ -29,7 +32,7 @@ export class LoginComponent implements OnInit {
     private readonly route: ActivatedRoute
   ) {
     this.authenticationService.logout();
-    this.returnUrl = route.snapshot.queryParams['url'] || '/';
+    this.returnUrl = route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   ngOnInit() {
@@ -37,6 +40,10 @@ export class LoginComponent implements OnInit {
   }
 
   private initForm(): void {
+    this.loading = false;
+    this.showPassword = false;
+    this.showNewPassword = false;
+    this.showRepeatPassword = false;
     this.showResetPaswordForm = false;
     this.loginForm = new FormGroup({
       username: new FormControl(null, [Validators.required]),
@@ -64,13 +71,13 @@ export class LoginComponent implements OnInit {
     return (group: FormGroup): { [key: string]: any } => {
       const password = group.controls[new_password]?.value;
       if (password) {
-        if (password.length < 6) return {password_length_error: true};
+        if (password.length < 6) return { password_length_error: true };
 
         const valid =
           /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/.test(
             password
           );
-        if (!valid) return {password_error: true};
+        if (!valid) return { password_error: true };
       }
 
       return null;
@@ -99,6 +106,7 @@ export class LoginComponent implements OnInit {
 
   changePassword() {
     if (this.resetPasswordForm.valid) {
+      this.loading = true;
       this.resetPasswordForm.patchValue({
         username: this.loginForm.value['username'],
         password: this.loginForm.value['password'],
@@ -107,6 +115,7 @@ export class LoginComponent implements OnInit {
         .changePassword(this.resetPasswordForm.value)
         .subscribe({
           next: (response) => {
+            this.loading = false;
             if (response.statusCode == 200) {
               Swal.fire({
                 icon: 'success',
@@ -122,6 +131,7 @@ export class LoginComponent implements OnInit {
             }
           },
           error: () => {
+            this.loading = false;
             Swal.fire({
               icon: 'error',
               title: 'Lỗi...',
@@ -133,8 +143,10 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.loading = true;
     this.authenticationService.login(this.loginForm.value).subscribe({
       next: (user) => {
+        this.loading = false;
         if (user.access_token) this.router.navigate([this.returnUrl]);
         if (
           user.request_action &&
@@ -145,11 +157,14 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (err) => {
+        this.loading = false;
         if (err && err.error && err.error.msg) {
           return Swal.fire({
             icon: 'error',
             title: 'Lỗi...',
-            text: `Hệ thống MKT-${window.location.host.split(".")[0]} đã bị ngừng hoạt động!!`,
+            text: `Hệ thống MKT-${
+              window.location.host.split('.')[0]
+            } đã bị ngừng hoạt động!!`,
           }).then();
         }
         return Swal.fire({

@@ -1,6 +1,6 @@
 {
   "baseUrl": "http://localhost:4200",
-  "keycloakBaseUrl": "http://tenant2.metechvn.com/keycloak",
+  "keycloakBaseUrl": "http://metech-cms.metechvn.com/keycloak",
   "socketEndpoint": "http://172.16.88.249:3001",
   "socketIOConfig": {
     "url": "http://172.16.88.247",
