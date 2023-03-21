@@ -126,7 +126,7 @@ export class ChangePasswordComponent implements OnInit {
 
       if (control.value) {
         let valid =
-          /^.(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{6,32}$/.test(
+          /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-])(^.{6,32}$)/.test(
             control.value
           );
         if (!valid)
