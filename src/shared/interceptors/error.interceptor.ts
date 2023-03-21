@@ -46,8 +46,9 @@ export class ErrorInterceptor implements HttpInterceptor {
           });
         }
         // throwError
-        const error = err.error.message || err.statusText;
-        return throwError(error);
+        // const error = err?.message || err?.error?.message || err;
+        console.log(err)
+        return throwError(err);
       })
     );
   }

@@ -54,13 +54,6 @@ export class AuthenticationService extends BaseService {
           // notify
           this.currentUserSubject.next(response.data);
         } else if (response.statusCode == 401) {
-          if (response.msg == "invalid_client") {
-            Swal.fire({
-              icon: 'error',
-              title: 'Lỗi...',
-              text: `Hệ thống CMS-${window.location.host.split(".")[0]} đã bị ngừng hoạt động!`,
-            }).then();
-          }
           if (!response.data.request_action && response.msg != "invalid_client")
             Swal.fire({
               icon: 'error',

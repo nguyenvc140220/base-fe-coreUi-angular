@@ -64,13 +64,13 @@ export class LoginComponent implements OnInit {
     return (group: FormGroup): { [key: string]: any } => {
       const password = group.controls[new_password]?.value;
       if (password) {
-        if (password.length < 6) return { password_length_error: true };
+        if (password.length < 6) return {password_length_error: true};
 
         const valid =
           /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/.test(
             password
           );
-        if (!valid) return { password_error: true };
+        if (!valid) return {password_error: true};
       }
 
       return null;
@@ -144,8 +144,15 @@ export class LoginComponent implements OnInit {
           this.showResetPaswordForm = true;
         }
       },
-      error: () => {
-        Swal.fire({
+      error: (err) => {
+        if (err && err.error && err.error.msg) {
+          return Swal.fire({
+            icon: 'error',
+            title: 'Lỗi...',
+            text: `Hệ thống MKT-${window.location.host.split(".")[0]} đã bị ngừng hoạt động!!`,
+          }).then();
+        }
+        return Swal.fire({
           icon: 'error',
           title: 'Lỗi...',
           text: `Đã có lỗi xảy ra, vui lòng liên hệ quản trị viên!`,

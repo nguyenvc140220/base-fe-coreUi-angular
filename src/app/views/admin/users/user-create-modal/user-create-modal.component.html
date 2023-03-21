@@ -16,7 +16,6 @@
     <input
       class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
       formControlName="username"
-      (change)="validatorUserNameExist($event)"
       id="username"
       maxlength="32"
       type="text"
@@ -27,7 +26,7 @@
         form.controls['username']?.errors?.required
       "
       class="red-text sm:text-xs text-rose-700"
-    >Đây là trường bắt buộc.</small>
+    >Không được bỏ trống.</small>
     <small
       *ngIf="
         form.controls['username']?.touched &&
@@ -36,9 +35,12 @@
       class="red-text sm:text-xs text-rose-700"
     >Không được nhập ký tự đặc biệt.</small>
     <small
-      *ngIf="userNameErr"
+      *ngIf="
+        form.controls['username']?.touched &&
+        form.controls['username']?.errors?.userNameExist
+      "
       class="red-text sm:text-xs text-rose-700"
-    >{{userNameErr}}.</small>
+    >Dữ liệu đã tồn tại.</small>
   </div>
 
   <!--Email-->
@@ -61,7 +63,6 @@
       formControlName="email"
       maxlength="50"
       type="email"
-      (change)="validatorEmailExist($event)"
     />
     <small
       *ngIf="
@@ -69,7 +70,7 @@
         form.controls['email']?.errors?.required
       "
       class="red-text sm:text-xs text-rose-700"
-    >Đây là trường bắt buộc.</small>
+    >Không được bỏ trống.</small>
     <small
       *ngIf="
         form.controls['email']?.touched &&
@@ -78,9 +79,12 @@
       class="red-text sm:text-xs text-rose-700"
     >Không đúng định dạng.</small>
     <small
-      *ngIf="emailErr"
+      *ngIf="
+        form.controls['email']?.touched &&
+        form.controls['email']?.errors?.emailExist
+      "
       class="red-text sm:text-xs text-rose-700"
-    >{{emailErr}}.</small>
+    >Email đã bị trùng.</small>
   </div>
 
   <!--Họ và tên-->
@@ -111,7 +115,7 @@
         form.controls['fullName']?.errors?.required
       "
       class="red-text sm:text-xs text-rose-700"
-    >Đây là trường bắt buộc.</small>
+    >Không được bỏ trống.</small>
     <small
       *ngIf="
         form.controls['fullName']?.touched &&
@@ -131,6 +135,14 @@
   <div class="mt-4">
     <div class="flex justify-between">
       <label cLabel class="sm:text-sm" for="phone">Số điện thoại</label>
+      <span
+        [ngClass]="{
+          'text-rose-600': form.get('phone')?.value?.maxlength >= 12
+        }"
+        class="sm:text-xs"
+      >
+        {{ 12 - form.value?.phone?.length }} / 12
+      </span>
     </div>
     <input
       class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
@@ -140,7 +152,6 @@
       minlength="10"
       maxlength="12"
     />
-
   </div>
 
   <div class="mt-4">
@@ -159,7 +170,6 @@
     </p-dropdown>
   </div>
 
-
   <div class="mt-4 flex">
     <label cLabel class="sm:text-sm mr-2" for="enable">Trạng thái
     </label>
@@ -169,7 +179,6 @@
     </p-inputSwitch>
   </div>
 </form>
-
 
 <div class="row">
   <app-dialog-button
