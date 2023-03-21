@@ -1,6 +1,6 @@
 export class AuthBaseResponse<T> {
-    statusCode: number;
-    message: string;
-    data?: T | undefined | null;
-  }
-  
+  statusCode: number;
+  message: string;
+  data?: T | undefined | null;
+  msg?: string;
+}
