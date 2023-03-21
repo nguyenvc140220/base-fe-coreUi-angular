@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ButtonEnum } from '@shared/enums/button-status.enum';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import {
   specialAlphabetCharactersValidator,
   specialNonAlphabetCharactersValidator
@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { UsersService } from "@shared/services/users/users.service";
 import { CreateUserRequestModel } from "@shared/models/users/create-user-request-model";
 import { UserValidatorRequestModel } from "@shared/models/users/user-validator-request-model";
+import { map, Observable, Subject, switchMap, takeUntil, timer } from "rxjs";
 
 @Component({
   selector: 'app-user-create-modal',
@@ -18,12 +19,12 @@ import { UserValidatorRequestModel } from "@shared/models/users/user-validator-r
 })
 export class UserCreateModalComponent implements OnInit {
   form: FormGroup;
-  userNameErr: string;
   emailErr: string;
   userPermissions = [
     {label: 'Admin', value: 'ADMIN'},
     {label: 'Member', value: 'MEMBER'},
   ];
+  private unsubscribe = new Subject();
 
   constructor(
     public ref: DynamicDialogRef,
@@ -36,9 +37,9 @@ export class UserCreateModalComponent implements OnInit {
 
   private initForm(): void {
     this.form = new FormGroup({
-      username: new FormControl(null, [Validators.required, specialAlphabetCharactersValidator]),
+      username: new FormControl(null, [Validators.required, specialAlphabetCharactersValidator, this.validatorUserNameExist.bind(this)]),
       fullName: new FormControl(null, [Validators.required, specialNonAlphabetCharactersValidator]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      email: new FormControl(null, [Validators.required, Validators.email, this.validatorEmailExist.bind(this)]),
       phone: new FormControl(null),
       roles: new FormControl(null, [Validators.required]),
       enable: new FormControl(true),
@@ -72,27 +73,37 @@ export class UserCreateModalComponent implements OnInit {
     }
   }
 
-  validatorUserNameExist(event) {
-    const userValidatorRequest = new UserValidatorRequestModel()
-    userValidatorRequest.username = event.target?.value;
-    return this.usersService.userValidators(userValidatorRequest).subscribe({
-      next: (res) => {
-        if (res && res.data) return this.userNameErr = "Dữ liệu đã tồn tại";
-        this.userNameErr = null;
-        return;
-      }
-    });
+
+  private validatorUserNameExist({value}: AbstractControl): Observable<ValidationErrors> {
+    return timer(1000).pipe(
+      switchMap(() => {
+        const userValidatorRequest = new UserValidatorRequestModel
+        userValidatorRequest.username = value;
+        return this.usersService.userValidators(userValidatorRequest).pipe(
+          takeUntil(this.unsubscribe),
+          map((response) => {
+            if (!response.data) return {'userNameExist': true};
+            return null;
+          })
+        )
+      })
+    );
   }
 
-  validatorEmailExist(event) {
-    const userValidatorRequest = new UserValidatorRequestModel()
-    userValidatorRequest.email = event.target?.value;
-    return this.usersService.userValidators(userValidatorRequest).subscribe({
-      next: (res) => {
-        if (res && res.data) return this.emailErr = "Email đã bị trùng";
-        this.emailErr = null;
-        return;
-      }
-    });
+  private validatorEmailExist({value}: AbstractControl): Observable<ValidationErrors> {
+    return timer(1000).pipe(
+      switchMap(() => {
+        const userValidatorRequest = new UserValidatorRequestModel
+        userValidatorRequest.email = value;
+        return this.usersService.userValidators(userValidatorRequest).pipe(
+          takeUntil(this.unsubscribe),
+          map((response) => {
+            if (!response.data) return {'emailExist': true};
+            return null;
+          })
+        )
+      })
+    );
   }
+
 }
