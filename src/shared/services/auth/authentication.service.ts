@@ -119,7 +119,7 @@ export class AuthenticationService extends BaseService {
         {
           refresh_token: currentUser.refresh_token,
         }
-      ).subscribe((res) => {});
+      ).subscribe(() => {});
     }
     // notify
     this.currentUserSubject.next(null);
