@@ -142,6 +142,7 @@ export class AuthenticationService extends BaseService {
   private refreshTokenTimeout;
 
   private startRefreshTokenTimer() {
+    this.stopRefreshTokenTimer();
     if (this.currentUserValue && this.currentUserValue.expires_in)
       this.refreshTokenTimeout = setTimeout(
         () => this.refreshtoken().subscribe(),
