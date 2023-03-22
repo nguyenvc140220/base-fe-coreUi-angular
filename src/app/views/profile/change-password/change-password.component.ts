@@ -119,12 +119,27 @@ export class ChangePasswordComponent implements OnInit {
       this.form.getError('passwordRequirement')
     );
   }
+  get passwordSpacesError() {
+    return (
+      this.form.get('new_password')?.touched &&
+      this.form.getError('passwordHaveSpacesAtBE')
+    );
+  }
 
   static passwordValidator(controlName: string): ValidatorFn {
     return (controls: AbstractControl) => {
       const control = controls.get(controlName);
 
       if (control.value) {
+        let checkBeginingOrEndSpaces = /^\S.*\S$/.test(
+          control.value
+        );
+        if (!checkBeginingOrEndSpaces) {
+          return {
+            passwordHaveSpacesAtBE: true,
+          };
+        }
+
         let valid =
           /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-])(^.{6,32}$)/.test(
             control.value
