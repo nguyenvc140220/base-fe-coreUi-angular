@@ -12,7 +12,7 @@ import { AppConstants } from '@shared/AppConstants';
 import { BaseService } from '@shared/services/base.service';
 import { ConfigService } from '@shared/ultils/config.service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthenticationService extends BaseService {
   public currentUser: Observable<AuthModel>;
 
@@ -53,8 +53,18 @@ export class AuthenticationService extends BaseService {
           );
           // notify
           this.currentUserSubject.next(response.data);
+          this.startRefreshTokenTimer();
         } else if (response.statusCode == 401) {
-          if (!response.data.request_action && response.msg != "invalid_client")
+          if (response.msg == 'invalid_client') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi...',
+              text: `Hệ thống CMS-${
+                window.location.host.split('.')[0]
+              } đã bị ngừng hoạt động!`,
+            }).then();
+          }
+          if (!response.data.request_action && response.msg != 'invalid_client')
             Swal.fire({
               icon: 'error',
               title: 'Lỗi...',
@@ -88,6 +98,7 @@ export class AuthenticationService extends BaseService {
             );
             // notify
             this.currentUserSubject.next(response.data);
+            this.startRefreshTokenTimer();
           }
 
           return response.data;
@@ -98,6 +109,7 @@ export class AuthenticationService extends BaseService {
   }
 
   logout() {
+    this.stopRefreshTokenTimer();
     const currentUser = this.currentUserValue;
     // remove user from local storage to log user out
     localStorage.removeItem(AppConstants.AUTHENTICATION_STORE_KEY);
@@ -107,7 +119,7 @@ export class AuthenticationService extends BaseService {
         {
           refresh_token: currentUser.refresh_token,
         }
-      ).subscribe((res) => {});
+      ).subscribe(() => {});
     }
     // notify
     this.currentUserSubject.next(null);
@@ -123,5 +135,21 @@ export class AuthenticationService extends BaseService {
         confirm_password: request.confirm_password,
       }
     );
+  }
+
+  // helper methods
+
+  private refreshTokenTimeout;
+
+  private startRefreshTokenTimer() {
+    if (this.currentUserValue && this.currentUserValue.expires_in)
+      this.refreshTokenTimeout = setTimeout(
+        () => this.refreshtoken().subscribe(),
+        this.currentUserValue.expires_in * 1000
+      );
+  }
+
+  private stopRefreshTokenTimer() {
+    if (this.refreshTokenTimeout) clearTimeout(this.refreshTokenTimeout);
   }
 }
