@@ -9,4 +9,5 @@ export class UserModel {
   groups: string[];
   enable: boolean;
   createdAt: Date;
+  phone: string | null
 }
