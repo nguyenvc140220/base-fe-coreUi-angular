@@ -44,7 +44,25 @@
             <tr>
               <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
                 <td *ngSwitchCase="'action'">
-                  <i class="pi pi-ellipsis-v pr-5"></i>
+                  <!--                  <i class="pi pi-ellipsis-v pr-5"></i>-->
+                  <!--                  <p-speedDial [model]="items" direction="down" [transitionDelay]="80" showIcon="pi pi-ellipsis-v"-->
+                  <!--                               hideIcon="pi pi-ellipsis-v" buttonClassName="p-button-outlined"></p-speedDial>-->
+                  <p-overlayPanel class="border-0 p-0 border-gray-600" #op>
+
+                    <button (click)="editUser(user['id'])" class="border-b-2 p-3 border-gray-900 min-w-full">
+                      Sửa
+                    </button>
+                    <br>
+                    <button class="border-b-2 p-3 border-gray-900 min-w-full">Reset mật khẩu</button>
+                    <br>
+                    <button class="p-3 min-w-full">Xem hoạt động</button>
+                  </p-overlayPanel>
+
+                  <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4"
+                          (click)="op.toggle($event)">
+                    <i class="pi pi-ellipsis-v pr-5"></i>
+                  </button>
+                  <div #actualTarget></div>
                 </td>
                 <td *ngSwitchCase="'enable'">
                   <p-chip [label]="user[col.field] ? 'Đang hoạt động' : 'Ngừng hoạt động'"

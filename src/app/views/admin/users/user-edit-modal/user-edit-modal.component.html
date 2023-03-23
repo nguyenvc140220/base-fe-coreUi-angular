@@ -20,27 +20,6 @@
       maxlength="32"
       type="text"
     />
-    <small
-      *ngIf="
-        form.controls['username']?.touched &&
-        form.controls['username']?.errors?.required
-      "
-      class="red-text sm:text-xs text-rose-700"
-    >Không được bỏ trống.</small>
-    <small
-      *ngIf="
-        form.controls['username']?.touched &&
-        form.controls['username']?.errors?.pattern
-      "
-      class="red-text sm:text-xs text-rose-700"
-    >Không được nhập ký tự đặc biệt.</small>
-    <small
-      *ngIf="
-        form.controls['username']?.touched &&
-        form.controls['username']?.errors?.userNameExist
-      "
-      class="red-text sm:text-xs text-rose-700"
-    >Dữ liệu đã tồn tại.</small>
   </div>
 
   <!--Email-->
@@ -64,27 +43,6 @@
       maxlength="50"
       type="email"
     />
-    <small
-      *ngIf="
-        form.controls['email']?.touched &&
-        form.controls['email']?.errors?.required
-      "
-      class="red-text sm:text-xs text-rose-700"
-    >Không được bỏ trống.</small>
-    <small
-      *ngIf="
-        form.controls['email']?.touched &&
-        form.controls['email']?.errors?.email
-      "
-      class="red-text sm:text-xs text-rose-700"
-    >Không đúng định dạng.</small>
-    <small
-      *ngIf="
-        form.controls['email']?.touched &&
-        form.controls['email']?.errors?.emailExist
-      "
-      class="red-text sm:text-xs text-rose-700"
-    >Email đã bị trùng.</small>
   </div>
 
   <!--Họ và tên-->

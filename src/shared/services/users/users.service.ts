@@ -7,6 +7,7 @@ import { UserModel } from '@shared/models/users/user.model';
 import { CreateUserRequestModel } from "@shared/models/users/create-user-request-model";
 import { UserValidatorRequestModel } from "@shared/models/users/user-validator-request-model";
 import { UserValidatorResponseModel } from "@shared/models/users/user-validator-response-model";
+import { DetailUserResponseModel } from "@shared/models/users/detail-user-response-model";
 
 @Injectable({providedIn: 'root'})
 export class UsersService extends BaseService {
@@ -39,6 +40,20 @@ export class UsersService extends BaseService {
     return this.defaultGet<UserValidatorResponseModel>(
       `${this.configService.keycloakUrl}/v1.0/account/check-user-existed`,
       requestModel
+    );
+  }
+
+  getUserById(UserId: string) {
+    return this.defaultGet <DetailUserResponseModel>(
+      `${this.configService.keycloakUrl}/v1.0/account/find-by-id`,
+      {id: UserId}
+    );
+  }
+
+  updateUserById(request: CreateUserRequestModel) {
+    return this.defaultPost <DetailUserResponseModel>(
+      `${this.configService.keycloakUrl}/v1.0/account/update`,
+      {request}
     );
   }
 }
