@@ -19,6 +19,7 @@
                    pInputText
                    [(ngModel)]="searchKey"
                    placeholder="Tìm kiếm"
+                   (keydown.enter)="loadData(null)"
                    type="text">
           </span>
         </div>

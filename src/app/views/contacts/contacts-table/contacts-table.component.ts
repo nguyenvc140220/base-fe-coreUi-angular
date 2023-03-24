@@ -13,8 +13,7 @@ import { ContactCreateModalComponent } from '../contact-create-modal/contact-cre
 })
 export class ContactsTableComponent
   extends ComponentBase<any>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   cols: any[];
   searchKey: string = '';
 
@@ -25,7 +24,7 @@ export class ContactsTableComponent
     private breadcrumbStore: BreadcrumbStore
   ) {
     super(injector);
-    this.breadcrumbStore.items = [{ label: 'Danh sách liên hệ' }];
+    this.breadcrumbStore.items = [{label: 'Danh sách liên hệ'}];
   }
 
   ngOnInit(): void {
@@ -41,12 +40,12 @@ export class ContactsTableComponent
   private initDataTable() {
     {
       this.cols = [
-        { field: 'id', header: 'ID' },
-        { field: 'action', header: 'Thao tác' },
-        { field: 'fullName', header: 'Số điện thoại' },
-        { field: 'email', header: 'email' },
-        { field: 'fullName', header: 'Họ và tên' },
-        { field: 'status', header: 'Trạng thái' },
+        {field: 'id', header: 'ID'},
+        {field: 'action', header: 'Thao tác'},
+        {field: 'phone', header: 'Số điện thoại'},
+        {field: 'email', header: 'email'},
+        {field: 'fullName', header: 'Họ và tên'},
+        {field: 'status', header: 'Trạng thái'},
       ];
     }
     this.loadData(null);
@@ -88,7 +87,7 @@ export class ContactsTableComponent
     const dialog = this.dialogService.open(ContactCreateModalComponent, {
       header: 'Thêm mới liên hệ',
       width: '60%',
-      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      contentStyle: {'max-height': '80vh', overflow: 'auto'},
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
