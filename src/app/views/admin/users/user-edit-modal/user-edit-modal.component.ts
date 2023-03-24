@@ -7,6 +7,7 @@ import { UsersService } from "@shared/services/users/users.service";
 import { ButtonEnum } from "@shared/enums/button-status.enum";
 import { CreateUserRequestModel } from "@shared/models/users/create-user-request-model";
 import Swal from "sweetalert2";
+import { EditUserRequestModel } from "@shared/models/users/edit-user-request-model";
 
 @Component({
   selector: 'app-user-edit-modal',
@@ -50,11 +51,15 @@ export class UserEditModalComponent implements OnInit {
     if (button == ButtonEnum.CANCEL_BUTTON) {
       this.ref.close();
     } else if (button == ButtonEnum.SAVE_BUTTON) {
-      const createUserRequest = new CreateUserRequestModel();
-      createUserRequest.enable = this.form.controls['enable']?.value;
-      createUserRequest.fullName = this.form.controls['fullName']?.value?.trim();
-      createUserRequest.roles = [this.form.controls['roles']?.value?.trim()]
-      this.usersService.updateUserById(createUserRequest).subscribe({
+      const editUserRequest = new EditUserRequestModel();
+      editUserRequest.id = this.dynamicDialogConfig.data.userId;
+      editUserRequest.enable = this.form.controls['enable']?.value;
+      editUserRequest.fullName = this.form.controls['fullName']?.value?.trim();
+      editUserRequest.roles = [this.form.controls['roles']?.value?.trim()];
+      editUserRequest.username = null;
+      editUserRequest.email = null;
+      editUserRequest.code = null;
+      this.usersService.updateUserById(editUserRequest).subscribe({
         next: () => {
           this.ref.close('done');
           Swal.fire({

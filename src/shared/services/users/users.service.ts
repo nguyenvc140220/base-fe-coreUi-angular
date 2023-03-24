@@ -8,6 +8,7 @@ import { CreateUserRequestModel } from "@shared/models/users/create-user-request
 import { UserValidatorRequestModel } from "@shared/models/users/user-validator-request-model";
 import { UserValidatorResponseModel } from "@shared/models/users/user-validator-response-model";
 import { DetailUserResponseModel } from "@shared/models/users/detail-user-response-model";
+import { EditUserRequestModel } from "@shared/models/users/edit-user-request-model";
 
 @Injectable({providedIn: 'root'})
 export class UsersService extends BaseService {
@@ -18,13 +19,13 @@ export class UsersService extends BaseService {
     super(http, configService);
   }
 
-  getUsers(enabled: boolean, page: number, pageSize) {
+  getUsers(searchKey: string, page: number, pageSize: number | null) {
     return this.defaultGet<BaseResponse<UserModel>>(
       `${this.configService.keycloakUrl}/v1.0/account/list`,
       {
         page: page,
         pageSize: pageSize,
-        enabled: enabled,
+        searchKey: searchKey
       }
     );
   }
@@ -44,14 +45,14 @@ export class UsersService extends BaseService {
   }
 
   getUserById(UserId: string) {
-    return this.defaultGet <DetailUserResponseModel>(
+    return this.defaultGet<DetailUserResponseModel>(
       `${this.configService.keycloakUrl}/v1.0/account/find-by-id`,
       {id: UserId}
     );
   }
 
-  updateUserById(request: CreateUserRequestModel) {
-    return this.defaultPost <DetailUserResponseModel>(
+  updateUserById(request: EditUserRequestModel) {
+    return this.defaultPost<BaseResponse<UserModel>>(
       `${this.configService.keycloakUrl}/v1.0/account/update`,
       {request}
     );

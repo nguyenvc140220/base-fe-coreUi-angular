@@ -60,11 +60,11 @@ export class UserListComponent
     this.loadData(null);
   }
 
-  loadData() {
+  loadData(event) {
     this.primengTableHelper.isLoading = true;
     this.usersService
       .getUsers(
-        true,
+        this.searchKey ?? "",
         this.paginator?.currentPage() ?? 1,
         this.primengTableHelper.defaultRecordsCountPerPage
       )
