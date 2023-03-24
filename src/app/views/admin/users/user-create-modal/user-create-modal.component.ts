@@ -61,6 +61,9 @@ export class UserCreateModalComponent implements OnInit {
       createUserRequest.fullName = this.form.controls['fullName']?.value?.trim();
       createUserRequest.username = this.form.controls['username']?.value?.trim();
       createUserRequest.roles = [this.form.controls['roles']?.value?.trim()]
+      createUserRequest.groups = [];
+      createUserRequest.createdAt = "";
+      createUserRequest.code = "";
 
       this.usersService.createUser(createUserRequest).subscribe({
         next: () => {
