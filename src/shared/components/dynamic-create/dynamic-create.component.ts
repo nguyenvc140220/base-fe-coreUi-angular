@@ -3,28 +3,33 @@ import { ButtonEnum } from '@shared/enums/button-status.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { removeNullValue } from '@shared/utils/object.utils';
+import { DestroyService } from '@shared/services';
 
 @Component({
   selector: 'app-dynamic-create',
   templateUrl: './dynamic-create.component.html',
   styleUrls: ['./dynamic-create.component.scss'],
 })
-export class DynamicCreateComponent implements OnInit, OnDestroy {
+export class DynamicCreateComponent
+  extends DestroyService
+  implements OnInit, OnDestroy
+{
   public form: FormGroup = this.fb.group({});
   entities = [];
   dynamicType: DynamicEntityTypeEnum;
   dynamicDataType: DynamicDataTypeEnum;
   isLoading = false;
-  private unsubscribe = new Subject();
   constructor(
     private fb: FormBuilder,
     private dynamicFieldService: DynamicFieldService,
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef
   ) {
+    super();
     this.dynamicType = config.data['type'];
   }
 
@@ -36,7 +41,7 @@ export class DynamicCreateComponent implements OnInit, OnDestroy {
         type: this.dynamicType,
         size: 100,
       })
-      .pipe(takeUntil(this.unsubscribe))
+      .pipe(takeUntil(this))
       .subscribe({
         next: (res) => {
           this.isLoading = false;
@@ -58,14 +63,28 @@ export class DynamicCreateComponent implements OnInit, OnDestroy {
         },
       });
   }
-  ngOnDestroy(): void {
-    this.unsubscribe.next(null);
-    this.unsubscribe.complete();
-  }
   onDialogEvent(button: ButtonEnum) {
     switch (button) {
       case ButtonEnum.SAVE_BUTTON:
-        this.ref.close();
+        if (this.form.valid) {
+          this.isLoading = true;
+          this.dynamicFieldService
+            .createDynamicEntity({
+              code: this.dynamicType,
+              properties: removeNullValue(this.form.value),
+            })
+            .subscribe({
+              next: (res) => {
+                this.isLoading = false;
+                if (res.statusCode == 200) {
+                  this.ref.close(res.data);
+                }
+              },
+              error: () => {
+                this.isLoading = false;
+              },
+            });
+        }
         break;
       default:
         this.ref.close();

@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ComponentBase } from '@shared/ultils/component-base.component';
+import { ComponentBase } from '@shared/utils/component-base.component';
 import { Paginator } from 'primeng/paginator';
 import { Router } from '@angular/router';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
@@ -18,6 +18,7 @@ import { DynamicFilterComponent } from '@shared/components/dynamic-filter/dynami
 import { DynamicCreateComponent } from '@shared/components/dynamic-create/dynamic-create.component';
 import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-contacts-table',
@@ -41,7 +42,9 @@ export class ContactsTableComponent
     private dialogService: DialogService,
     private router: Router,
     private breadcrumbStore: BreadcrumbStore,
-    private contactService: ContactService
+    private contactService: ContactService,
+
+    private messageService: MessageService
   ) {
     super(injector);
     this.breadcrumbStore.items = [{ label: 'Danh sách liên hệ' }];
@@ -124,6 +127,12 @@ export class ContactsTableComponent
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Tạo ${DynamicEntityTypeEnum.CONTACT} thành công`,
+        });
+        // this.router.navigate(['contacts/detail', res]);
       }
     });
   }

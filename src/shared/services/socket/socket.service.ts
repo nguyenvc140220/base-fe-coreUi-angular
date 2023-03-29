@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { ConfigService } from '@shared/ultils/config.service';
+import { ConfigService } from '@shared/utils/config.service';
 
 @Injectable({
   providedIn: 'root',

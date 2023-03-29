@@ -1,7 +1,7 @@
 import { BaseService } from '@shared/services/base.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '@shared/ultils/config.service';
+import { ConfigService } from '@shared/utils/config.service';
 import { DynamicQueryModel } from '@shared/models/dynamic-field/dynamic-query.model';
 import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
 import { DynamicPropertyRequestModel } from '@shared/models/dynamic-field/dynamic-property-request.model';

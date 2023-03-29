@@ -1,6 +1,6 @@
 import { Injector } from '@angular/core';
 import { PrimengTableHelper } from '@shared/helpers/primeng-table-helper';
-import { ConfigService } from '@shared/ultils/config.service';
+import { ConfigService } from '@shared/utils/config.service';
 
 export abstract class ComponentBase<T> {
   primengTableHelper: PrimengTableHelper<T>;

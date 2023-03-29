@@ -36,11 +36,12 @@ import { ContactsResultFileImportComponent } from './contacts-import/contacts-re
 import { FileUploadModule } from 'primeng/fileupload';
 import { ContactCreateModalComponent } from './contact-create-modal/contact-create-modal.component';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
-import { GetButtonStatusPipe } from '@shared/pipes/get-button-status.pipe';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
 import { CustomTableModule } from '@shared/components/custom-table/custom-table.module';
 import { DynamicFilterModule } from '@shared/components/dynamic-filter/dynamic-filter.module';
 import { DynamicCreateModule } from '@shared/components/dynamic-create/dynamic-create.module';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 const PRIMENG = [
   TableModule,
@@ -67,7 +68,6 @@ const PRIMENG = [
     ContactsMappingFileImportComponent,
     ContactsResultFileImportComponent,
     ContactCreateModalComponent,
-    GetButtonStatusPipe,
     ContactDetailComponent,
   ],
   imports: [
@@ -90,8 +90,9 @@ const PRIMENG = [
     CustomTableModule,
     DynamicFilterModule,
     DynamicCreateModule,
+    ToastModule,
   ],
-  providers: [DialogService, DynamicDialogRef, DestroyService],
-  exports: [GetButtonStatusPipe],
+  providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
+  exports: [],
 })
 export class ContactsModule {}

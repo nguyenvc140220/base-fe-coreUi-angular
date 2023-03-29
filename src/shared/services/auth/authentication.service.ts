@@ -10,7 +10,7 @@ import {
 import Swal from 'sweetalert2';
 import { AppConstants } from '@shared/AppConstants';
 import { BaseService } from '@shared/services/base.service';
-import { ConfigService } from '@shared/ultils/config.service';
+import { ConfigService } from '@shared/utils/config.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService extends BaseService {
