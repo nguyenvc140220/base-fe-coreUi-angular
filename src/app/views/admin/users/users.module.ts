@@ -21,6 +21,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserCreateModalComponent } from './user-create-modal/user-create-modal.component';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
 import { ContactsModule } from '../../contacts/contacts.module';
+import { SplitButtonModule } from "primeng/splitbutton";
+import { SpeedDialModule } from "primeng/speeddial";
+import { OverlayPanelModule } from "primeng/overlaypanel";
+import { MenuModule } from "primeng/menu";
+import { UserEditModalComponent } from './user-edit-modal/user-edit-modal.component';
 
 const PRIMENG = [
   TableModule,
@@ -40,7 +45,7 @@ const PRIMENG = [
 ];
 
 @NgModule({
-  declarations: [UserListComponent, UserCreateModalComponent],
+  declarations: [UserListComponent, UserCreateModalComponent, UserEditModalComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -49,6 +54,10 @@ const PRIMENG = [
     ...PRIMENG,
     DialogButtonModule,
     ContactsModule,
+    SplitButtonModule,
+    SpeedDialModule,
+    OverlayPanelModule,
+    MenuModule,
   ],
 })
 export class UsersModule {}
