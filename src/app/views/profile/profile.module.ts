@@ -21,6 +21,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TabViewModule } from 'primeng/tabview';
 import { PasswordModule } from 'primeng/password';
+import { CoreModule } from '@shared/root.module';
 
 const PRIMENG = [
   TableModule,
@@ -37,7 +38,7 @@ const PRIMENG = [
   SplitButtonModule,
   ChipModule,
   TabViewModule,
-  PasswordModule
+  PasswordModule,
 ];
 @NgModule({
   declarations: [ChangePasswordComponent],
@@ -51,6 +52,7 @@ const PRIMENG = [
     DialogButtonModule,
     ContactsModule,
     ...PRIMENG,
+    CoreModule,
   ],
 })
 export class ProfileModule {}

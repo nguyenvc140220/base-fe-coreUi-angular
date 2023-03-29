@@ -8,10 +8,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DynamicCreateComponent } from '@shared/components/dynamic-create/dynamic-create.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { GetButtonStatusPipe } from '@shared/pipes/get-button-status.pipe';
+import { CoreModule } from '@shared/root.module';
 
 @NgModule({
-  declarations: [DynamicCreateComponent, GetButtonStatusPipe],
+  declarations: [DynamicCreateComponent],
   imports: [
     CommonModule,
     DialogButtonModule,
@@ -21,6 +21,7 @@ import { GetButtonStatusPipe } from '@shared/pipes/get-button-status.pipe';
     CalendarModule,
     CheckboxModule,
     RadioButtonModule,
+    CoreModule,
   ],
 })
 export class DynamicCreateModule {}

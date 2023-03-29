@@ -42,6 +42,7 @@ import { DynamicFilterModule } from '@shared/components/dynamic-filter/dynamic-f
 import { DynamicCreateModule } from '@shared/components/dynamic-create/dynamic-create.module';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { CoreModule } from '@shared/root.module';
 
 const PRIMENG = [
   TableModule,
@@ -91,6 +92,7 @@ const PRIMENG = [
     DynamicFilterModule,
     DynamicCreateModule,
     ToastModule,
+    CoreModule,
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],
