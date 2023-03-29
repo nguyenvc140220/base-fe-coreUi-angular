@@ -37,6 +37,10 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ContactCreateModalComponent } from './contact-create-modal/contact-create-modal.component';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
 import { GetButtonStatusPipe } from '@shared/pipes/get-button-status.pipe';
+import { ContactDetailComponent } from './contact-detail/contact-detail.component';
+import { CustomTableModule } from '@shared/components/custom-table/custom-table.module';
+import { DynamicFilterModule } from '@shared/components/dynamic-filter/dynamic-filter.module';
+import { DynamicCreateModule } from '@shared/components/dynamic-create/dynamic-create.module';
 
 const PRIMENG = [
   TableModule,
@@ -64,6 +68,7 @@ const PRIMENG = [
     ContactsResultFileImportComponent,
     ContactCreateModalComponent,
     GetButtonStatusPipe,
+    ContactDetailComponent,
   ],
   imports: [
     FormsModule,
@@ -82,6 +87,9 @@ const PRIMENG = [
     StepsModule,
     FileUploadModule,
     DialogButtonModule,
+    CustomTableModule,
+    DynamicFilterModule,
+    DynamicCreateModule,
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService],
   exports: [GetButtonStatusPipe],

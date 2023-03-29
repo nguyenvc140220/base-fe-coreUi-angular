@@ -1,10 +1,23 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ComponentBase } from '@shared/ultils/component-base.component';
 import { Paginator } from 'primeng/paginator';
 import { Router } from '@angular/router';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ContactCreateModalComponent } from '../contact-create-modal/contact-create-modal.component';
+import { ContactService } from '@shared/services/contacts/contact.service';
+import { DynamicQueryModel } from '@shared/models/dynamic-field/dynamic-query.model';
+import { CustomTableComponent } from '@shared/components/custom-table/custom-table.component';
+import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
+import { DynamicFilterComponent } from '@shared/components/dynamic-filter/dynamic-filter.component';
+import { DynamicCreateComponent } from '@shared/components/dynamic-create/dynamic-create.component';
+import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
+import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 
 @Component({
   selector: 'app-contacts-table',
@@ -15,14 +28,20 @@ export class ContactsTableComponent
   extends ComponentBase<any>
   implements OnInit, OnDestroy
 {
-  cols: any[];
+  cols: DynamicPropertyModel[] = [];
+  checkedCols: DynamicPropertyModel[] = [];
   searchKey: string = '';
 
+  query: DynamicQueryModel = {
+    payload: {},
+  };
+  @ViewChild('paginator') paginator: Paginator;
   constructor(
     injector: Injector,
     private dialogService: DialogService,
     private router: Router,
-    private breadcrumbStore: BreadcrumbStore
+    private breadcrumbStore: BreadcrumbStore,
+    private contactService: ContactService
   ) {
     super(injector);
     this.breadcrumbStore.items = [{ label: 'Danh sách liên hệ' }];
@@ -39,60 +58,115 @@ export class ContactsTableComponent
   }
 
   private initDataTable() {
-    {
-      this.cols = [
-        { field: 'id', header: 'ID' },
-        { field: 'action', header: 'Thao tác' },
-        { field: 'fullName', header: 'Số điện thoại' },
-        { field: 'email', header: 'email' },
-        { field: 'fullName', header: 'Họ và tên' },
-        { field: 'status', header: 'Trạng thái' },
-      ];
-    }
+    this.contactService
+      .getContactProperties({ page: 1, size: 100 })
+      .subscribe((res) => {
+        if (res.statusCode == 200) {
+          this.cols = [
+            { code: 'action', displayName: 'Thao tác', isDisplay: true },
+          ];
+          this.cols.push(
+            ...res.data.content.map((p, index) => {
+              return {
+                code: p.code,
+                displayName: p.displayName,
+                isDisplay: true,
+                order: index,
+              } as DynamicPropertyModel;
+            })
+          );
+          this.checkedCols = this.cols
+            .filter((c) => c.isDisplay)
+            .sort((c) => c.order);
+        }
+      });
+
     this.loadData(null);
   }
-
+  searchData() {
+    if (this.searchKey && this.searchKey.trim() != '') {
+      this.query.payload = {
+        field: this.checkedCols.map((c) => c.code).join(','),
+        operator: DynamicFilterOperatorEnum.MULTI_MATCH,
+        value: this.searchKey.trim(),
+      };
+    } else this.query.payload = {};
+    this.loadData(null);
+  }
   loadData(event) {
     this.primengTableHelper.isLoading = true;
-
-    this.primengTableHelper.isLoading = false;
-    this.primengTableHelper.records = [
-      {
-        name: 'nguyenvc',
-        email: 'metech@gmail.com',
-        status: '',
-        id: '1',
-        action: '',
-      },
-      {
-        name: 'tiendc',
-        email: 'metech@gmail.com',
-        status: '',
-        id: '2',
-        action: '',
-      },
-      {
-        name: 'luongld',
-        email: 'metech@gmail.com',
-        status: '',
-        id: '3',
-        action: '',
-      },
-    ];
-    this.primengTableHelper.totalRecordsCount = 3;
+    this.query.currentPage = this.primengTableHelper.getCurrentPage(
+      this.paginator
+    );
+    this.query.pageSize = this.primengTableHelper.getMaxResultCount(
+      this.paginator,
+      event
+    );
+    this.contactService.getContacts(this.query).subscribe((res) => {
+      this.primengTableHelper.isLoading = false;
+      if (res.statusCode == 200) {
+        this.primengTableHelper.records = res.data.content;
+        this.primengTableHelper.totalRecordsCount = res.data.totalElements;
+      }
+    });
   }
 
-  paginate(event?: Paginator) {}
+  paginate(event?: Paginator) {
+    this.loadData(event);
+  }
 
   createContact() {
-    const dialog = this.dialogService.open(ContactCreateModalComponent, {
+    const dialog = this.dialogService.open(DynamicCreateComponent, {
       header: 'Thêm mới liên hệ',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      data: { type: DynamicEntityTypeEnum.CONTACT },
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
       }
     });
+  }
+
+  showCustomTable() {
+    const dialog = this.dialogService.open(CustomTableComponent, {
+      header: 'Tùy chỉnh bảng',
+      width: '60%',
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      data: {
+        type: DynamicEntityTypeEnum.CONTACT,
+        columns: this.cols.length > 0 ? this.cols.slice(1) : undefined,
+      },
+    });
+    dialog.onClose.subscribe((res) => {
+      if (res) {
+        this.cols = [
+          { code: 'action', displayName: 'Thao tác', isDisplay: true },
+        ];
+        this.cols.push(...res);
+        this.checkedCols = this.cols
+          .filter((c) => c.isDisplay)
+          .sort((c) => c.order);
+      }
+    });
+  }
+
+  showDynamicFilter() {
+    const dialog = this.dialogService.open(DynamicFilterComponent, {
+      header: 'Bộ lọc',
+      width: '60%',
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      data: { type: DynamicEntityTypeEnum.CONTACT },
+    });
+    dialog.onClose.subscribe((res) => {
+      if (res) {
+        this.query.payload = res;
+        this.loadData(null);
+      }
+    });
+  }
+
+  routeContactDetail(contact) {
+    this.router.navigate(['contacts/detail', contact['id']]);
   }
 }

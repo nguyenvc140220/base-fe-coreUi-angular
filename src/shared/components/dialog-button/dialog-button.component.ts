@@ -12,9 +12,13 @@ export class DialogButtonComponent {
   buttonClicked: ButtonEnum;
 
   @Input() status = this.buttonStatus.ENABLE;
-  @Input() showDraft = this.buttonStatus.HIDDEN;
+  @Input() showDraft = false;
+  @Input() showReset = false;
   @Input() saveLabel = 'Lưu';
   @Input() saveIcon = 'pi pi-save';
+
+  @Input() resetLabel = 'Phục hồi mặc định';
+  @Input() resetIcon = 'pi pi-undo';
   @Output() event: EventEmitter<ButtonEnum> = new EventEmitter();
 
   onClick(button: ButtonEnum) {
