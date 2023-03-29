@@ -1,0 +1,16 @@
+export enum DynamicFilterOperatorEnum {
+  EQ = 'EQ',
+  LT = 'LT',
+  LTE = 'LTE',
+  GT = 'GT',
+  GTE = 'GTE',
+  BETWEEN = 'BETWEEN',
+  IN = 'IN',
+  MATCH = 'MATCH',
+  NE = 'NE',
+  NIN = 'NIN',
+  MULTI_MATCH = 'MULTI_MATCH',
+  CONTAIN = 'CONTAIN',
+  NULL = 'NULL',
+  NOT_NULL = 'NOT_NULL',
+}

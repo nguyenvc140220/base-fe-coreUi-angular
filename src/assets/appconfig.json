@@ -1,7 +1,9 @@
 {
   "baseUrl": "http://localhost:4200",
-  "keycloakBaseUrl": "http://metech-cms.metechvn.com/keycloak",
-  "socketEndpoint": "http://172.16.88.249:3001",
+  "keycloakBaseUrl": "http://172.16.86.250:8181/keycloak",
+  "mktBackendUrl": "http://172.16.88.214:8089/api",
+  "elasticQuery": "http://172.16.88.250:8080",
+  "socketEndpoint": "http://172.16.88.247/ws",
   "socketIOConfig": {
     "url": "http://172.16.88.247",
     "options": {
