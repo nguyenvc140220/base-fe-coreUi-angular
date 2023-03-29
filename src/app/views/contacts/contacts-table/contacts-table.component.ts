@@ -16,9 +16,10 @@ import { CustomTableComponent } from '@shared/components/custom-table/custom-tab
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 import { DynamicFilterComponent } from '@shared/components/dynamic-filter/dynamic-filter.component';
 import { DynamicCreateComponent } from '@shared/components/dynamic-create/dynamic-create.component';
-import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { MessageService } from 'primeng/api';
+import { DynamicFilterTypeEnum } from '@shared/enums/dynamic-filter-type.enum';
+import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
 
 @Component({
   selector: 'app-contacts-table',
@@ -89,9 +90,14 @@ export class ContactsTableComponent
   searchData() {
     if (this.searchKey && this.searchKey.trim() != '') {
       this.query.payload = {
-        field: this.checkedCols.map((c) => c.code).join(','),
-        operator: DynamicFilterOperatorEnum.MULTI_MATCH,
-        value: this.searchKey.trim(),
+        type: DynamicFilterTypeEnum.OR,
+        payload: this.checkedCols.map((c) => {
+          return {
+            field: c.code,
+            operator: DynamicFilterOperatorEnum.CONTAIN,
+            value: this.searchKey.trim(),
+          };
+        }),
       };
     } else this.query.payload = {};
     this.loadData(null);
@@ -133,6 +139,7 @@ export class ContactsTableComponent
           detail: `Tạo ${DynamicEntityTypeEnum.CONTACT} thành công`,
         });
         // this.router.navigate(['contacts/detail', res]);
+        this.loadData(null);
       }
     });
   }
