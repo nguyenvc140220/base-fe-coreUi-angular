@@ -39,6 +39,7 @@
 </div>
 <div class="row mt-4">
   <app-dialog-button
+    [status]="false | getButtonStatus: isLoading"
     (event)="onDialogEvent($event)"
     class="w-100"
   ></app-dialog-button>

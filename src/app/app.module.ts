@@ -46,7 +46,7 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ErrorInterceptor, JwtInterceptor } from '@shared/interceptors';
-import { ConfigService } from '@shared/ultils/config.service';
+import { ConfigService } from '@shared/utils/config.service';
 import { PagesModule } from './views/pages/pages.module';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { BreadcrumbModule } from 'primeng/breadcrumb';

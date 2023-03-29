@@ -5,15 +5,15 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ComponentBase } from '@shared/ultils/component-base.component';
+import { ComponentBase } from '@shared/utils/component-base.component';
 import { Paginator } from 'primeng/paginator';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 import { UserCreateModalComponent } from '../user-create-modal/user-create-modal.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UserModel } from '@shared/models/users/user.model';
 import { UsersService } from '@shared/services/users/users.service';
-import { MenuItem } from "primeng/api";
-import { UserEditModalComponent } from "../user-edit-modal/user-edit-modal.component";
+import { MenuItem } from 'primeng/api';
+import { UserEditModalComponent } from '../user-edit-modal/user-edit-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -22,11 +22,12 @@ import { UserEditModalComponent } from "../user-edit-modal/user-edit-modal.compo
 })
 export class UserListComponent
   extends ComponentBase<UserModel>
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   cols: any[];
   searchKey: string = '';
   @ViewChild('paginator') paginator: Paginator;
-  items: MenuItem[]
+  items: MenuItem[];
 
   constructor(
     injector: Injector,
@@ -35,7 +36,7 @@ export class UserListComponent
     private usersService: UsersService
   ) {
     super(injector);
-    breadcrumbStore.items = [{label: 'Danh sách người dùng'}];
+    breadcrumbStore.items = [{ label: 'Danh sách người dùng' }];
   }
 
   ngOnInit(): void {
@@ -47,14 +48,14 @@ export class UserListComponent
   private initDataTable() {
     {
       this.cols = [
-        {field: 'username', header: 'Tên đăng nhập'},
-        {field: 'fullName', header: 'Họ và tên'},
-        {field: 'email', header: 'email'},
-        {field: 'enable', header: 'Trạng thái'},
-        {field: 'roles', header: 'Quyền'},
-        {field: 'groups', header: 'Nhóm'},
-        {field: 'createdAt', header: 'Ngày tạo'},
-        {field: 'action', header: 'Thao tác'},
+        { field: 'username', header: 'Tên đăng nhập' },
+        { field: 'fullName', header: 'Họ và tên' },
+        { field: 'email', header: 'email' },
+        { field: 'enable', header: 'Trạng thái' },
+        { field: 'roles', header: 'Quyền' },
+        { field: 'groups', header: 'Nhóm' },
+        { field: 'createdAt', header: 'Ngày tạo' },
+        { field: 'action', header: 'Thao tác' },
       ];
     }
     this.loadData(null);
@@ -64,7 +65,7 @@ export class UserListComponent
     this.primengTableHelper.isLoading = true;
     this.usersService
       .getUsers(
-        this.searchKey ?? "",
+        this.searchKey ?? '',
         this.paginator?.currentPage() ?? 1,
         this.primengTableHelper.defaultRecordsCountPerPage
       )
@@ -83,7 +84,7 @@ export class UserListComponent
     const dialog = this.dialogService.open(UserCreateModalComponent, {
       header: 'Thêm mới người dùng',
       width: '60%',
-      contentStyle: {'max-height': '80vh', overflow: 'auto'},
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
@@ -96,10 +97,10 @@ export class UserListComponent
     const dialog = this.dialogService.open(UserEditModalComponent, {
       header: 'Chỉnh sửa người dùng',
       width: '60%',
-      contentStyle: {'max-height': '80vh', overflow: 'auto'},
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
       data: {
-        userId: userId
-      }
+        userId: userId,
+      },
     });
     dialog.onClose.subscribe((res) => {
       if (res) {

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ConfigService } from '@shared/ultils/config.service';
-import { Observable } from "rxjs";
+import { ConfigService } from '@shared/utils/config.service';
+import { Observable } from 'rxjs';
 
 export abstract class BaseService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');

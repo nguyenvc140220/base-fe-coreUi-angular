@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '@shared/services/base.service';
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '@shared/ultils/config.service';
+import { ConfigService } from '@shared/utils/config.service';
 import { BaseResponse } from '@shared/models';
 import { UserModel } from '@shared/models/users/user.model';
-import { CreateUserRequestModel } from "@shared/models/users/create-user-request-model";
-import { UserValidatorRequestModel } from "@shared/models/users/user-validator-request-model";
-import { UserValidatorResponseModel } from "@shared/models/users/user-validator-response-model";
-import { DetailUserResponseModel } from "@shared/models/users/detail-user-response-model";
-import { EditUserRequestModel } from "@shared/models/users/edit-user-request-model";
+import { CreateUserRequestModel } from '@shared/models/users/create-user-request-model';
+import { UserValidatorRequestModel } from '@shared/models/users/user-validator-request-model';
+import { UserValidatorResponseModel } from '@shared/models/users/user-validator-response-model';
+import { DetailUserResponseModel } from '@shared/models/users/detail-user-response-model';
+import { EditUserRequestModel } from '@shared/models/users/edit-user-request-model';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class UsersService extends BaseService {
   constructor(
     protected http: HttpClient,
@@ -25,7 +25,7 @@ export class UsersService extends BaseService {
       {
         page: page,
         pageSize: pageSize,
-        searchKey: searchKey
+        searchKey: searchKey,
       }
     );
   }
@@ -47,14 +47,14 @@ export class UsersService extends BaseService {
   getUserById(UserId: string) {
     return this.defaultGet<DetailUserResponseModel>(
       `${this.configService.keycloakUrl}/v1.0/account/find-by-id`,
-      {id: UserId}
+      { id: UserId }
     );
   }
 
   updateUserById(request: EditUserRequestModel) {
     return this.defaultPost<BaseResponse<UserModel>>(
       `${this.configService.keycloakUrl}/v1.0/account/update`,
-      {request}
+      { request }
     );
   }
 }
