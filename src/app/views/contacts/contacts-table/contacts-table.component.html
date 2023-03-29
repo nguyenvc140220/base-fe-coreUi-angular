@@ -56,8 +56,11 @@
                 <td *ngSwitchCase="'phoneNumber'" class="underline" (click)="routeContactDetail(contact)">
                     {{contact[col.code]}}
                 </td>
+                <td *ngSwitchCase="'dob'">
+                  {{contact[col.code] | date:'dd/MM/yyyy'}}
+                </td>
                 <td *ngSwitchDefault >
-                  {{contact[col.code]}}
+                  {{contact[col.code] ?? '-'}}
                 </td>
               </ng-container>
             </tr>
