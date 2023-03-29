@@ -6,9 +6,9 @@
               (click)="createContact()"></button>
       <button pButton type="button" (click)="routeContactImport()" label="Import" icon="pi pi-upload"
               class="p-button-text mr-2"></button>
-      <button pButton type="button" label="Bộ lọc" icon="pi pi-filter" class="p-button-text"></button>
+      <button pButton type="button" label="Bộ lọc" icon="pi pi-filter" class="p-button-text" (click)="showDynamicFilter()"></button>
       <button pButton type="button" label="Xuất excel" icon="pi pi-file-export" class="p-button-text"></button>
-      <button pButton type="button" label="Tùy chỉnh bảng" icon="pi pi-cog" class="p-button-text mr-2"></button>
+      <button pButton type="button" label="Tùy chỉnh bảng" icon="pi pi-cog" class="p-button-text mr-2"  (click)="showCustomTable()"></button>
       <button pButton type="button" label="Lịch sử import" icon="pi pi-cog" class="p-button-text mr-2"></button>
     </div>
   </div>
@@ -22,7 +22,8 @@
             <input class="w-full p-inputtext-sm"
                    pInputText
                    [(ngModel)]="searchKey"
-                   placeholder="Tìm kiếm"
+                   (keydown.enter)="searchData()"
+                   placeholder="Nhập dữ liệu tìm kiếm và ấn Enter"
                    type="text">
           </span>
         </div>
@@ -39,25 +40,24 @@
                  scrollHeight="400px">
           <ng-template pTemplate="header">
             <tr>
-              <th *ngFor="let col of cols" style="min-width:300px">
-                {{col.header}}
+              <th *ngFor="let col of checkedCols" style="min-width:200px">
+                {{col.displayName}}
               </th>
             </tr>
           </ng-template>
           <ng-template let-contact pTemplate="body">
             <tr>
-              <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
+              <ng-container *ngFor="let col of checkedCols;" [ngSwitch]="col.code" >
                 <td *ngSwitchCase="'action'">
                   <i class="pi pi-file-edit pr-5"></i>
                   <i class="pi pi-copy pr-5"></i>
                   <i class="pi pi-sitemap pr-5"></i>
                 </td>
-                <td *ngSwitchCase="'status'">
-                  <p-chip label="Đang hoạt động" [style]="{'background-color': '#D9ECD9', 'color': '#328F1A'}">
-                  </p-chip>
+                <td *ngSwitchCase="'phoneNumber'" class="underline" (click)="routeContactDetail(contact)">
+                    {{contact[col.code]}}
                 </td>
-                <td *ngSwitchDefault>
-                  {{contact[col.field]}}
+                <td *ngSwitchDefault >
+                  {{contact[col.code]}}
                 </td>
               </ng-container>
             </tr>

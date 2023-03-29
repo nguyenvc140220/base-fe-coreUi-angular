@@ -26,6 +26,14 @@ export class ConfigService {
     return this.appConfig.keycloakBaseUrl;
   }
 
+  get mktBackendUrl() {
+    return this.appConfig.mktBackendUrl;
+  }
+
+  get elasticQuery() {
+    return this.appConfig.elasticQuery;
+  }
+
   get socketEndpoint() {
     return this.appConfig.socketEndpoint;
   }
