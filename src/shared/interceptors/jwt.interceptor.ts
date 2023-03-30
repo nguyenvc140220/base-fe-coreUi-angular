@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services';
+import { environment } from '@env/environment';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -16,11 +17,12 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    request = request.clone({
-      setHeaders: {
-        'Domain-Name': 'mkt4.metechvn.com',
-      },
-    });
+    if (!environment.production)
+      request = request.clone({
+        setHeaders: {
+          'Domain-Name': 'mkt4.metechvn.com',
+        },
+      });
     const currentUser = this._authenticationService.currentUserValue;
     const isLoggedIn = currentUser && currentUser.access_token;
     if (isLoggedIn) {
