@@ -7,7 +7,7 @@ import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-fiel
 import { DynamicPropertyRequestModel } from '@shared/models/dynamic-field/dynamic-property-request.model';
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ContactService extends BaseService {
   constructor(
     protected http: HttpClient,
@@ -26,4 +26,8 @@ export class ContactService extends BaseService {
     query.index = DynamicEntityTypeEnum.CONTACT;
     return this.dynamicFieldService.getDynamicEntity(query);
   }
+
+  getProperties
+
+  upLoadFile
 }

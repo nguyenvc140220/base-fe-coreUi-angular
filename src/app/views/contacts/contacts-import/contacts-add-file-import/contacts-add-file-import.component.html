@@ -7,6 +7,8 @@
 <div class="mx-3">
   <p-fileUpload #fileUpload
                 accept=".xlsx"
+                showUploadButton="false"
+                showCancelButton="false"
                 invalidFileSizeMessageSummary="Thất bại."
                 invalidFileSizeMessageDetail="Dung lượng file tải lên không được quá {0}"
                 maxFileSize="10485760">
@@ -16,7 +18,7 @@
         <i class="pi pi-cloud-upload"
            style="margin-right: 5px;"></i>
         <span style="font-size: 13px; height: 20px;">Kéo và thả file để tải lên hoặc
-          <span style="color: dodgerblue; cursor: pointer;">
+          <span style="color: dodgerblue; cursor: pointer;" (click)="chooseFile()">
             Duyệt từ máy tính</span>
         </span>
       </div>
@@ -44,33 +46,31 @@
       </div>
       <div class="col-md-1 d-flex justify-content-center align-items-center">
         <i class="pi pi-times"
+           (click)="clearFile(i)"
            style="font-size: 2rem;cursor: pointer;"></i>
       </div>
     </div>
   </div>
-  <ul style="color: red; font-weight: 600; list-style-type: none; padding-left: 0;">
-    <li>Dung lượng file tải lên không được vượt quá 10Mb</li>
+  <ul class="text-red-600 my-4">
+    <li>Dung lượng file tải lên không được vượt quá 50Mb</li>
     <li>Hệ thống chỉ thực hiện import dữ liệu ở sheet đầu tiên của file</li>
-    <li>Trường Đầu số không được quá 20 ký tự số và phải được check trùng trong file, dữ liệu không hợp lệ sẽ bị bỏ
-      qua
+    <li>Mọi thông tin không đúng định dạng sẽ bị bỏ trống, kiểm tra định dạng các trường thông tin tại màn hình thêm mới
+      người liên hệ
     </li>
-    <li>Mọi bản ghi không đúng định dạng sẽ bị bỏ qua, kiểm tra định dạng các trường thông tin tại màn hình thêm mới
-      đầu số
-    </li>
-    <li>Mọi bản ghi để trống thông tin thuộc trường thông tin bắt buộc sẽ bị bỏ qua</li>
   </ul>
 </div>
 <div class="d-flex justify-content-between my-4 mx-3">
-  <button pButton
-
-          type="button"
-          label="Quay lại"
-          class="cancel-btn"></button>
-  <button pButton
-
-          type="button"
-          label="Tiếp theo"
-          class="accept-btn"
-          [disabled]="!fileUpload"
+  <button
+    pButton
+    class="p-button-outlined p-button-info mx-2"
+    icon="pi pi-check"
+    label="Hủy"
   ></button>
+  <p-button
+    class="mx-2"
+    label="Tiếp theo"
+    [disabled]="!fileUpload"
+    (click)="nextStepMappingData()"
+  >
+  </p-button>
 </div>
