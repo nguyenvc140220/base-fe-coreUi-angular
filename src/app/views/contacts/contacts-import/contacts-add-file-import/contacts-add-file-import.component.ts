@@ -5,7 +5,8 @@ import Swal from "sweetalert2";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { DialogService } from "primeng/dynamicdialog";
 import { UsersService } from "@shared/services/users/users.service";
-import { ComponentBase } from "@shared/ultils/component-base.component";
+import { ComponentBase } from "@shared/utils/component-base.component";
+
 
 @Component({
   selector: 'app-contacts-add-file-import',
