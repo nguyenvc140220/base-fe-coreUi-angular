@@ -128,7 +128,7 @@ export class ContactsMappingFileImportComponent implements OnInit, OnDestroy, On
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: (res) => {
-          this.dataHeader.fileName = res.data.file_name;
+          this.dataHeader.fileName = res.data.filePath;
           this.dataHeader.correlationId = res.data.id;
           this.contactService.addHeaderMapping({
             contactsFileId: res.data.id,
