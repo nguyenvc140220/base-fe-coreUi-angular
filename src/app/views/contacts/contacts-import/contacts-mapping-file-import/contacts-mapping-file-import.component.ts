@@ -34,7 +34,7 @@ export class ContactsMappingFileImportComponent implements OnInit, OnDestroy, On
     fileName: "",
     correlationId: "",
     entityType: DynamicEntityTypeEnum.CONTACT,
-    header: {}
+    headers: {}
   }
   page = 1;
   pageSize = 10;
@@ -109,11 +109,11 @@ export class ContactsMappingFileImportComponent implements OnInit, OnDestroy, On
   onChangeProperties(event, headerExcel) {
     console.log(event)
     if (event.value && headerExcel) {
-      let checkExist = Object.keys(this.dataHeader.header).find(key => key == headerExcel)
+      let checkExist = Object.keys(this.dataHeader.headers).find(key => key == headerExcel)
       if (checkExist) {
         return event.value = "";
       }
-      this.dataHeader.header[`${headerExcel}`] = {
+      this.dataHeader.headers[`${headerExcel}`] = {
         "code": event.value.code,
         "dataType": event.value.dataType,
         "validators": {}
