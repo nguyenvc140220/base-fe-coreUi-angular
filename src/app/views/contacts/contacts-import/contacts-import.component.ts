@@ -10,17 +10,15 @@ import { ComponentBase } from '@shared/utils/component-base.component';
   templateUrl: './contacts-import.component.html',
   styleUrls: ['./contacts-import.component.scss'],
 })
-export class ContactsImportComponent extends ComponentBase<any> implements OnInit, OnDestroy, OnChanges {
+export class ContactsImportComponent implements OnInit, OnDestroy, OnChanges {
   steps: MenuItem[];
   activeIndex = 0
   file: File
   numOfRecords: number
 
   constructor(
-    injector: Injector,
     private breadcrumbStore: BreadcrumbStore
   ) {
-    super(injector);
     breadcrumbStore.items = [{
       label: 'Danh sách liên hệ',
       routerLink: '/contacts',

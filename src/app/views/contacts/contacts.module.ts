@@ -11,7 +11,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MenubarModule } from 'primeng/menubar';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ChipModule } from 'primeng/chip';
@@ -30,9 +30,15 @@ import { ContactsTableComponent } from './contacts-table/contacts-table.componen
 import { ContactsRoutingModule } from './contacts-routing.module';
 import { ContactsImportComponent } from './contacts-import/contacts-import.component';
 import { StepsModule } from 'primeng/steps';
-import { ContactsAddFileImportComponent } from './contacts-import/contacts-add-file-import/contacts-add-file-import.component';
-import { ContactsMappingFileImportComponent } from './contacts-import/contacts-mapping-file-import/contacts-mapping-file-import.component';
-import { ContactsResultFileImportComponent } from './contacts-import/contacts-result-file-import/contacts-result-file-import.component';
+import {
+  ContactsAddFileImportComponent
+} from './contacts-import/contacts-add-file-import/contacts-add-file-import.component';
+import {
+  ContactsMappingFileImportComponent
+} from './contacts-import/contacts-mapping-file-import/contacts-mapping-file-import.component';
+import {
+  ContactsResultFileImportComponent
+} from './contacts-import/contacts-result-file-import/contacts-result-file-import.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ContactCreateModalComponent } from './contact-create-modal/contact-create-modal.component';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';

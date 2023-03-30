@@ -1,7 +1,6 @@
 import {
   Component,
   EventEmitter,
-  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -9,27 +8,32 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FileUpload } from "primeng/fileupload";
 import * as XLSX from 'xlsx'
-import Swal from "sweetalert2";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { ContactService } from "@shared/services/contacts/contact.service";
-import { PropertyModel } from "@shared/models/contacts/properties-response-model";
-import { ComponentBase } from "@shared/utils/component-base.component";
+import { DynamicFieldService } from "@shared/services/dynamic-field/dynamic-field.service";
+import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
+import { takeUntil } from "rxjs";
+import { DynamicPropertyModel } from "@shared/models/dynamic-field/dynamic-property.model";
+import { DestroyService } from "@shared/services";
 
 @Component({
   selector: 'app-contacts-mapping-file-import',
   templateUrl: './contacts-mapping-file-import.component.html',
   styleUrls: ['./contacts-mapping-file-import.component.scss']
 })
-export class ContactsMappingFileImportComponent extends ComponentBase<any> implements OnInit, OnDestroy, OnChanges {
+export class ContactsMappingFileImportComponent implements OnInit, OnDestroy, OnChanges {
   value = 0;
   numOfSuccess = 0;
   fileName: string;
   headers: any[];
   sampleData: Object;
-  properties: PropertyModel[];
-  data = {
+  properties: DynamicPropertyModel[];
+  dataHeader = {
+    tenant: "",
+    fileName: "",
+    correlationId: "",
+    entityType: DynamicEntityTypeEnum.CONTACT,
     header: {}
   }
   page = 1;
@@ -42,11 +46,11 @@ export class ContactsMappingFileImportComponent extends ComponentBase<any> imple
   @Output() activeIndexChange = new EventEmitter<number>()
 
   constructor(
-    injector: Injector,
     private breadcrumbStore: BreadcrumbStore,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private dynamicFieldService: DynamicFieldService,
+    private destroy: DestroyService,
   ) {
-    super(injector);
     breadcrumbStore.items = [{
       label: 'Danh sách liên hệ',
       routerLink: '/contacts',
@@ -88,47 +92,55 @@ export class ContactsMappingFileImportComponent extends ComponentBase<any> imple
   }
 
   initProperties(searchKey: string) {
-    this.contactService.getProperties(this.page, this.pageSize, this.searchKey).subscribe({
-      next: (res) => {
-        this.properties = res.data.content
-      },
-      error: (err) => {
-        console.log(err)
-      }
-    });
+    this.contactService
+      .getContactProperties({
+        page: this.page,
+        size: this.pageSize,
+      }).pipe(takeUntil(this.destroy))
+      .subscribe({
+        next: (res) => {
+          if (res.statusCode == 200) {
+            this.properties = res.data.content
+          }
+        }
+      });
   }
 
   onChangeProperties(event, headerExcel) {
     console.log(event)
     if (event.value && headerExcel) {
-
-      this.data.header[`${headerExcel}`] = {
+      let checkExist = Object.keys(this.dataHeader.header).find(key => key == headerExcel)
+      if (checkExist) {
+        return event.value = "";
+      }
+      this.dataHeader.header[`${headerExcel}`] = {
         "code": event.value.code,
         "dataType": event.value.dataType,
         "validators": {}
       }
-      console.log(this.data)
     }
   }
 
   nextStepEnd(event) {
-    // let formData = new FormData();
-    // formData.append("file", this.file);
-    // this.contactService.upLoadFile(this.file).subscribe({
-    //   next: (res) => {
-    //     console.log(res)
-    //   },
-    //   error: (err) => {
-    //     console.log(err)
-    //   }
-    // })
-
     let formData = new FormData();
-    formData.append("file", this.file, this.file?.name);
+    formData.append("file", this.file, this.file.name);
     this.contactService.upLoadFile(formData)
+      .pipe(takeUntil(this.destroy))
       .subscribe({
         next: (res) => {
-          console.log(res)
+          this.dataHeader.fileName = res.data.file_name;
+          this.dataHeader.correlationId = res.data.id;
+          this.contactService.addHeaderMapping({
+            contactsFileId: res.data.id,
+            headerMapping: JSON.stringify(this.dataHeader),
+            headers: this.dataHeader
+          })
+            .pipe(takeUntil(this.destroy))
+            .subscribe({
+              next: (res) => {
+                console.log(res)
+              }
+            });
         },
         error: (err) => {
           console.log(err)

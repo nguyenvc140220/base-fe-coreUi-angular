@@ -13,7 +13,7 @@ import { ComponentBase } from "@shared/utils/component-base.component";
   templateUrl: './contacts-add-file-import.component.html',
   styleUrls: ['./contacts-add-file-import.component.scss']
 })
-export class ContactsAddFileImportComponent extends ComponentBase<any> {
+export class ContactsAddFileImportComponent {
   disableBtn = true;
   @ViewChild('fileUpload') fileUpload: FileUpload;
   @Input() activeIndex: number;
@@ -25,10 +25,9 @@ export class ContactsAddFileImportComponent extends ComponentBase<any> {
   @Output() fileChange = new EventEmitter<File>();
 
   constructor(
-    injector: Injector,
     private breadcrumbStore: BreadcrumbStore,
   ) {
-    super(injector);
+
     breadcrumbStore.items = [{
       label: 'Danh sách liên hệ',
       routerLink: '/contacts',
