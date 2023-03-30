@@ -66,6 +66,9 @@ export class ContactsTableComponent
       .getContactProperties({ page: 1, size: 100 })
       .subscribe((res) => {
         if (res.statusCode == 200) {
+          const customTable = JSON.parse(
+            sessionStorage.getItem('contactCustomTable')
+          );
           this.cols = [
             { code: 'action', displayName: 'Thao tác', isDisplay: true },
           ];
@@ -74,14 +77,21 @@ export class ContactsTableComponent
               return {
                 code: p.code,
                 displayName: p.displayName,
-                isDisplay: true,
-                order: index,
+                isDisplay:
+                  customTable && customTable[p.code] != null
+                    ? customTable[p.code].isDisplay
+                    : true,
+                order:
+                  customTable && customTable[p.code] != null
+                    ? customTable[p.code].order
+                    : index,
               } as DynamicPropertyModel;
             })
           );
+          this.cols = this.cols.sort((a, b) => a.order - b.order);
           this.checkedCols = this.cols
             .filter((c) => c.isDisplay)
-            .sort((c) => c.order);
+            .sort((a, b) => a.order - b.order);
         }
       });
 
@@ -89,15 +99,16 @@ export class ContactsTableComponent
   }
   searchData() {
     if (this.searchKey && this.searchKey.trim() != '') {
+      var payload = this.checkedCols.slice(1).map((c) => {
+        return {
+          field: c.code,
+          operator: DynamicFilterOperatorEnum.CONTAIN,
+          value: this.searchKey.trim(),
+        };
+      });
       this.query.payload = {
         type: DynamicFilterTypeEnum.OR,
-        payload: this.checkedCols.map((c) => {
-          return {
-            field: c.code,
-            operator: DynamicFilterOperatorEnum.CONTAIN,
-            value: this.searchKey.trim(),
-          };
-        }),
+        payload: payload,
       };
     } else this.query.payload = {};
     this.loadData(null);
@@ -156,13 +167,27 @@ export class ContactsTableComponent
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
+        sessionStorage.setItem(
+          'contactCustomTable',
+          JSON.stringify(
+            res.reduce((x, obj) => {
+              return {
+                ...x,
+                [obj.code]: {
+                  isDisplay: obj.isDisplay,
+                  order: obj.order,
+                },
+              };
+            }, {})
+          )
+        );
         this.cols = [
           { code: 'action', displayName: 'Thao tác', isDisplay: true },
         ];
         this.cols.push(...res);
         this.checkedCols = this.cols
           .filter((c) => c.isDisplay)
-          .sort((c) => c.order);
+          .sort((a, b) => a.order - b.order);
       }
     });
   }
