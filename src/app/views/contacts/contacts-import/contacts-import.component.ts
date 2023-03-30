@@ -3,7 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 import { DialogService } from "primeng/dynamicdialog";
 import { UsersService } from "@shared/services/users/users.service";
-import { ComponentBase } from "@shared/ultils/component-base.component";
+import { ComponentBase } from '@shared/utils/component-base.component';
 
 @Component({
   selector: 'app-contacts-import',
