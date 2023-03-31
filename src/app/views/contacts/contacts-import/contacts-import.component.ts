@@ -1,9 +1,6 @@
-import { Component, Injector, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
-import { DialogService } from "primeng/dynamicdialog";
-import { UsersService } from "@shared/services/users/users.service";
-import { ComponentBase } from '@shared/utils/component-base.component';
 
 @Component({
   selector: 'app-contacts-import',

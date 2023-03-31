@@ -30,4 +30,10 @@ export abstract class BaseService {
       headers: headers,
     });
   }
+
+  defaultPut<T>(url, body): Observable<T> {
+    return this.http.put<T>(url, JSON.stringify(body), {
+      headers: this.headers,
+    });
+  }
 }

@@ -172,9 +172,8 @@ export class ContactsTableComponent
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: `Tạo ${DynamicEntityTypeEnum.CONTACT} thành công`,
+          detail: `Chỉnh sửa ${DynamicEntityTypeEnum.CONTACT} thành công`,
         });
-        // this.router.navigate(['contacts/detail', res]);
         this.loadData(null);
       }
     });

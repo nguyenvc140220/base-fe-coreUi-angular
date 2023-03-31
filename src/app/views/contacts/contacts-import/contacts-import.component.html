@@ -18,7 +18,9 @@
     </ng-template>
 
     <ng-template [ngIf]="activeIndex === 2">
-      <app-contacts-result-file-import [(activeIndex)]="activeIndex"></app-contacts-result-file-import>
+      <div class="card">
+        <app-contacts-result-file-import [(activeIndex)]="activeIndex"></app-contacts-result-file-import>
+      </div>
     </ng-template>
   </div>
 </div>
