@@ -39,7 +39,7 @@ export class DynamicFieldService extends BaseService {
   }
 
   updateDynamicEntity(request: DynamicEntityEditModel) {
-    return this.defaultPost<
+    return this.defaultPut<
       BackendBaseResponse<DynamicBaseResponseModel<DynamicEntityModel>>
     >(`${this.configService.mktBackendUrl}/v1.0/entity/update`, request);
   }

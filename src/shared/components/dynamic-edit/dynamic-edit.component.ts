@@ -98,7 +98,6 @@ export class DynamicEditComponent
       .subscribe((res) => {
         if (res.statusCode == 200) {
           var properties = {};
-          console.log(res.data.content)
           res.data.content.forEach((p) => {
             properties[p.code] = p.displayName;
           });
@@ -112,8 +111,6 @@ export class DynamicEditComponent
               });
             }
           });
-
-          console.log(this.contactInfos)
         }
       });
   }
@@ -126,7 +123,7 @@ export class DynamicEditComponent
           this.dynamicFieldService
             .updateDynamicEntity({
               code: this.dynamicType,
-              entityId: this.contactId,
+              idEntity: this.contactId,
               properties: removeNullValue(this.form.value),
             })
             .subscribe({
