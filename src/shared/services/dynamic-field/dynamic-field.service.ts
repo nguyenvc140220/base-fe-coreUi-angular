@@ -9,8 +9,9 @@ import { DynamicPropertyRequestModel } from '@shared/models/dynamic-field/dynami
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { DynamicEntityModel } from '@shared/models/dynamic-field/dynamic-response.model';
 import { DynamicEntityCreateModel } from '@shared/models/dynamic-field/dynamic-entity-create.model';
+import { DynamicEntityEditModel } from "@shared/models/dynamic-field/dynamic-entity-edit.model";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class DynamicFieldService extends BaseService {
   constructor(
     protected http: HttpClient,
@@ -35,5 +36,11 @@ export class DynamicFieldService extends BaseService {
     return this.defaultPost<
       BackendBaseResponse<DynamicBaseResponseModel<DynamicEntityModel>>
     >(`${this.configService.mktBackendUrl}/v1.0/entity`, request);
+  }
+
+  updateDynamicEntity(request: DynamicEntityEditModel) {
+    return this.defaultPost<
+      BackendBaseResponse<DynamicBaseResponseModel<DynamicEntityModel>>
+    >(`${this.configService.mktBackendUrl}/v1.0/entity/update`, request);
   }
 }

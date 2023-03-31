@@ -20,6 +20,7 @@ import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-prope
 import { MessageService } from 'primeng/api';
 import { DynamicFilterTypeEnum } from '@shared/enums/dynamic-filter-type.enum';
 import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
+import { DynamicEditComponent } from "@shared/components/dynamic-edit/dynamic-edit.component";
 
 @Component({
   selector: 'app-contacts-table',
@@ -28,8 +29,7 @@ import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator
 })
 export class ContactsTableComponent
   extends ComponentBase<any>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   cols: DynamicPropertyModel[] = [];
   checkedCols: DynamicPropertyModel[] = [];
   searchKey: string = '';
@@ -38,17 +38,17 @@ export class ContactsTableComponent
     payload: {},
   };
   @ViewChild('paginator') paginator: Paginator;
+
   constructor(
     injector: Injector,
     private dialogService: DialogService,
     private router: Router,
     private breadcrumbStore: BreadcrumbStore,
     private contactService: ContactService,
-
     private messageService: MessageService
   ) {
     super(injector);
-    this.breadcrumbStore.items = [{ label: 'Danh sách liên hệ' }];
+    this.breadcrumbStore.items = [{label: 'Danh sách liên hệ'}];
   }
 
   ngOnInit(): void {
@@ -63,14 +63,14 @@ export class ContactsTableComponent
 
   private initDataTable() {
     this.contactService
-      .getContactProperties({ page: 1, size: 100 })
+      .getContactProperties({page: 1, size: 100})
       .subscribe((res) => {
         if (res.statusCode == 200) {
           const customTable = JSON.parse(
             sessionStorage.getItem('contactCustomTable')
           );
           this.cols = [
-            { code: 'action', displayName: 'Thao tác', isDisplay: true },
+            {code: 'action', displayName: 'Thao tác', isDisplay: true},
           ];
           this.cols.push(
             ...res.data.content.map((p, index) => {
@@ -97,6 +97,7 @@ export class ContactsTableComponent
 
     this.loadData(null);
   }
+
   searchData() {
     if (this.searchKey && this.searchKey.trim() != '') {
       var payload = this.checkedCols.slice(1).map((c) => {
@@ -113,6 +114,7 @@ export class ContactsTableComponent
     } else this.query.payload = {};
     this.loadData(null);
   }
+
   loadData(event) {
     this.primengTableHelper.isLoading = true;
     this.query.currentPage = this.primengTableHelper.getCurrentPage(
@@ -139,8 +141,31 @@ export class ContactsTableComponent
     const dialog = this.dialogService.open(DynamicCreateComponent, {
       header: 'Thêm mới liên hệ',
       width: '60%',
-      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { type: DynamicEntityTypeEnum.CONTACT },
+      contentStyle: {'max-height': '80vh', overflow: 'auto'},
+      data: {type: DynamicEntityTypeEnum.CONTACT},
+    });
+    dialog.onClose.subscribe((res) => {
+      if (res) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Tạo ${DynamicEntityTypeEnum.CONTACT} thành công`,
+        });
+        // this.router.navigate(['contacts/detail', res]);
+        this.loadData(null);
+      }
+    });
+  }
+
+  editContact(contactId) {
+    const dialog = this.dialogService.open(DynamicEditComponent, {
+      header: 'Chỉnh sửa liên hệ',
+      width: '60%',
+      contentStyle: {'max-height': '80vh', overflow: 'auto'},
+      data: {
+        type: DynamicEntityTypeEnum.CONTACT,
+        contactId: contactId,
+      },
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
@@ -159,7 +184,7 @@ export class ContactsTableComponent
     const dialog = this.dialogService.open(CustomTableComponent, {
       header: 'Tùy chỉnh bảng',
       width: '60%',
-      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      contentStyle: {'max-height': '80vh', overflow: 'auto'},
       data: {
         type: DynamicEntityTypeEnum.CONTACT,
         columns: this.cols.length > 0 ? this.cols.slice(1) : undefined,
@@ -182,7 +207,7 @@ export class ContactsTableComponent
           )
         );
         this.cols = [
-          { code: 'action', displayName: 'Thao tác', isDisplay: true },
+          {code: 'action', displayName: 'Thao tác', isDisplay: true},
         ];
         this.cols.push(...res);
         this.checkedCols = this.cols
@@ -196,8 +221,8 @@ export class ContactsTableComponent
     const dialog = this.dialogService.open(DynamicFilterComponent, {
       header: 'Bộ lọc',
       width: '60%',
-      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { type: DynamicEntityTypeEnum.CONTACT },
+      contentStyle: {'max-height': '80vh', overflow: 'auto'},
+      data: {type: DynamicEntityTypeEnum.CONTACT},
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
