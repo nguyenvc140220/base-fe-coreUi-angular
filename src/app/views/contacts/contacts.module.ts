@@ -11,7 +11,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { DialogService, DynamicDialogConfig, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MenubarModule } from 'primeng/menubar';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ChipModule } from 'primeng/chip';
@@ -49,6 +49,7 @@ import { DynamicCreateModule } from '@shared/components/dynamic-create/dynamic-c
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CoreModule } from '@shared/root.module';
+import { DynamicEditModule } from "@shared/components/dynamic-edit/dynamic-edit.module";
 
 const PRIMENG = [
   TableModule,
@@ -97,6 +98,7 @@ const PRIMENG = [
     CustomTableModule,
     DynamicFilterModule,
     DynamicCreateModule,
+    DynamicEditModule,
     ToastModule,
     CoreModule,
   ],

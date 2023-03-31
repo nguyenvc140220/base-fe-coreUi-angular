@@ -6,9 +6,11 @@
               (click)="createContact()"></button>
       <button pButton type="button" (click)="routeContactImport()" label="Import" icon="pi pi-upload"
               class="p-button-text mr-2"></button>
-      <button pButton type="button" label="Bộ lọc" icon="pi pi-filter" class="p-button-text" (click)="showDynamicFilter()"></button>
+      <button pButton type="button" label="Bộ lọc" icon="pi pi-filter" class="p-button-text"
+              (click)="showDynamicFilter()"></button>
       <button pButton type="button" label="Xuất excel" icon="pi pi-file-export" class="p-button-text"></button>
-      <button pButton type="button" label="Tùy chỉnh bảng" icon="pi pi-cog" class="p-button-text mr-2"  (click)="showCustomTable()"></button>
+      <button pButton type="button" label="Tùy chỉnh bảng" icon="pi pi-cog" class="p-button-text mr-2"
+              (click)="showCustomTable()"></button>
       <button pButton type="button" label="Lịch sử import" icon="pi pi-cog" class="p-button-text mr-2"></button>
     </div>
   </div>
@@ -47,19 +49,19 @@
           </ng-template>
           <ng-template let-contact pTemplate="body">
             <tr>
-              <ng-container *ngFor="let col of checkedCols;" [ngSwitch]="col.code" >
+              <ng-container *ngFor="let col of checkedCols;" [ngSwitch]="col.code">
                 <td *ngSwitchCase="'action'">
-                  <i class="pi pi-file-edit pr-5"></i>
+                  <i class="pi pi-file-edit pr-5" (click)="editContact(contact['id'])"></i>
                   <i class="pi pi-copy pr-5"></i>
                   <i class="pi pi-sitemap pr-5"></i>
                 </td>
                 <td *ngSwitchCase="'phoneNumber'" class="underline" (click)="routeContactDetail(contact)">
-                    {{contact[col.code]}}
+                  {{contact[col.code]}}
                 </td>
                 <td *ngSwitchCase="'dob'">
                   {{contact[col.code] | date:'dd/MM/yyyy'}}
                 </td>
-                <td *ngSwitchDefault >
+                <td *ngSwitchDefault>
                   {{contact[col.code] ?? '-'}}
                 </td>
               </ng-container>
