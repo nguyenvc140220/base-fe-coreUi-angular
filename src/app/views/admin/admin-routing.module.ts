@@ -7,6 +7,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./users/users.module').then((m) => m.UsersModule),
   },
+  {
+    path: 'dynamic',
+    loadChildren: () =>
+      import(
+        './dynamic-field-manangement/dynamic-field-manangement.module'
+      ).then((m) => m.DynamicFieldManangementModule),
+  },
 ];
 
 @NgModule({

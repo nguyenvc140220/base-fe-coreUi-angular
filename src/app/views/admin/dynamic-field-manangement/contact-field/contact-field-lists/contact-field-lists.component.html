@@ -1,0 +1,29 @@
+<div>
+
+  <div class="card">
+    <div class="card-body">
+      <button pButton type="button" label="Thêm mới" icon="pi pi-plus" class="p-button-text" (click)="createContactProperty()"></button>
+    </div>
+  </div>
+
+  <div class="card mt-6">
+    <div class="card-body">
+      <div>
+        <div class="max-w-full">
+          <span class="p-input-icon-left w-full">
+            <i class="pi pi-search"></i>
+            <input class="w-full p-inputtext-sm"
+                   pInputText
+                   placeholder="Tìm kiếm"
+                   type="text">
+          </span>
+        </div>
+        <div class="mt-3">
+          <app-dynamic-property-list [dynamicType]="dynamicType">
+
+          </app-dynamic-property-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

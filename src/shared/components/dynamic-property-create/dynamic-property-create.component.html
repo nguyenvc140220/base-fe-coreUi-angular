@@ -1,0 +1,53 @@
+<div class="container p-0">
+  <form [formGroup]="formGroup">
+    <div class="row form-group">
+      <div *ngFor="let e of properties">
+        <div class="mt-2">
+          <div class="d-flex justify-content-between m-2 font-bold">
+            <label >{{e?.displayName}}
+              <span *ngIf="isRequired(e)" class="text-danger">(*)</span>
+            </label>
+            <label
+              *ngIf="e.dataType === INPUT_TYPE.TEXT && maxLength(e)"
+              [ngClass]="{'text-danger': formGroup.get(e.code)?.value?.length === maxLength(e)}">
+              <span>{{maxLength(e) - formGroup.get(e.code)?.value?.length}}</span> / <span>{{maxLength(e)}}</span>
+            </label>
+          </div>
+
+          <ng-template [ngIf]="['TEXT'].includes(e.dataType)">
+            <input type="text" class="form-control" pInputText
+                   placeholder="{{e?.hintText}}" pTooltip="{{e?.tooltip}}" tooltipZIndex="200005"
+                   [maxlength]="maxLength(e)"
+                   tooltipPosition="left" [formControlName]="e.code"/>
+          </ng-template>
+          <ng-template [ngIf]="['NUMBER'].includes(e.dataType)">
+            <input type="number" class="form-control" pInputText
+                   placeholder="{{e?.hintText}}" pTooltip="{{e?.tooltip}}" tooltipZIndex="200005"
+                   tooltipPosition="left" [formControlName]="e.code"/>
+          </ng-template>
+          <ng-template [ngIf]="['DATETIME'].includes(e.dataType)">
+            <p-calendar dateFormat="dd/mm/yy" inputId="dateformat" styleClass="d-flex" appendTo="body"
+                        placeholder="{{e?.hintText}}" pTooltip="{{e?.tooltip}}" tooltipZIndex="200005" [showIcon]="true"
+                        tooltipPosition="left" [formControlName]="e.code" baseZIndex="20001"
+                        showButtonBar="true">
+            </p-calendar>
+          </ng-template>
+          <ng-template [ngIf]="['BOOLEAN'].includes(e.dataType)">
+            <p-radioButton  value="Nam" label="Nam" [formControlName]="e.code">
+            </p-radioButton>
+            <p-radioButton  value="Nữ" label="Nữ" [formControlName]="e.code">
+            </p-radioButton>
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="row mt-4">
+  <app-dialog-button
+    [status]="formGroup.invalid | getButtonStatus: isLoading"
+    (event)="onDialogEvent($event)"
+    class="w-100"
+  ></app-dialog-button>
+</div>

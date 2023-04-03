@@ -1,0 +1,74 @@
+import {
+  Component,
+  Injector,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { ComponentBase } from '@shared/utils/component-base.component';
+import { Paginator } from 'primeng/paginator';
+import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
+import { DestroyService } from '@shared/services';
+import { takeUntil } from 'rxjs';
+import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
+
+@Component({
+  selector: 'app-dynamic-property-list',
+  templateUrl: './dynamic-property-list.component.html',
+  styleUrls: ['./dynamic-property-list.component.scss'],
+})
+export class DynamicPropertyListComponent
+  extends ComponentBase<any>
+  implements OnInit, OnDestroy
+{
+  @Input() dynamicType = DynamicEntityTypeEnum.CONTACT;
+  cols = [
+    { field: 'id', title: 'Hành động' },
+    { field: 'displayName', title: 'Tên trường dữ liệu' },
+    { field: 'dataType', title: 'Kiểu dữ liệu' },
+    { field: 'enabled', title: 'Trạng thái' },
+    { field: 'createdTime', title: 'Ngày tạo' },
+  ];
+  @ViewChild('paginator') paginator: Paginator;
+  constructor(
+    injector: Injector,
+    private dynamicFieldService: DynamicFieldService,
+    private destroyService: DestroyService
+  ) {
+    super(injector);
+  }
+  ngOnDestroy(): void {}
+
+  ngOnInit(): void {
+    this.loadData(null);
+  }
+
+  loadData(event) {
+    this.primengTableHelper.isLoading = true;
+    this.dynamicFieldService
+      .getDynamicProperties({
+        page: this.primengTableHelper.getCurrentPage(this.paginator),
+        type: this.dynamicType,
+        size: this.primengTableHelper.getMaxResultCount(this.paginator, event),
+      })
+      .pipe(takeUntil(this.destroyService))
+      .subscribe({
+        next: (res) => {
+          this.primengTableHelper.isLoading = false;
+          if (res.statusCode == 200) {
+            this.primengTableHelper.records = res.data.content;
+            this.primengTableHelper.totalRecordsCount = res.data.totalElements;
+          }
+        },
+        error: (err) => {
+          this.primengTableHelper.isLoading = false;
+          console.log(err);
+        },
+      });
+  }
+
+  paginate(event: any) {
+    this.loadData(event);
+  }
+}
