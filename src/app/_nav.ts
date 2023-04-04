@@ -32,6 +32,12 @@ export const navItems: INavData[] = [
         icon: 'pi pi-user',
         class: 'm-l-1',
       },
+      {
+        name: 'Trường thông tin liên hệ',
+        url: '/admin/dynamic/contact/fields',
+        icon: 'pi pi-list',
+        class: 'm-l-1',
+      },
     ],
   },
 ];

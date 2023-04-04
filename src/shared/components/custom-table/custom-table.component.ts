@@ -14,7 +14,7 @@ import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-prope
 export class CustomTableComponent implements OnInit, OnDestroy {
   columnTable: DynamicPropertyModel[] = [];
   cols: DynamicPropertyModel[] = [
-    { code: 'header', displayName: 'Chọn tất cả' },
+    new DynamicPropertyModel({ code: 'header', displayName: 'Chọn tất cả' }),
   ];
   selectedCols: DynamicPropertyModel[] = [];
 
@@ -51,12 +51,12 @@ export class CustomTableComponent implements OnInit, OnDestroy {
             this.isLoading = false;
             if (res.statusCode == 200) {
               this.columnTable = res.data.content.map((c, index) => {
-                return {
+                return new DynamicPropertyModel({
                   code: c.code,
                   displayName: c.displayName,
                   isDisplay: true,
                   index: index,
-                } as DynamicPropertyModel;
+                });
               });
               this.selectedCols = this.columnTable;
             }

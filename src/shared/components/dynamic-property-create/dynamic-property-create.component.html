@@ -1,12 +1,12 @@
 <div class="container p-0">
   <app-dynamic-form
-    [formGroup]="form"
-    [properties]="entities">
+    [formGroup]="formGroup"
+    [properties]="properties">
   </app-dynamic-form>
 </div>
 <div class="row mt-4">
   <app-dialog-button
-    [status]="form?.invalid | getButtonStatus: isLoading"
+    [status]="formGroup.invalid | getButtonStatus: isLoading"
     (event)="onDialogEvent($event)"
     class="w-100"
   ></app-dialog-button>

@@ -4,4 +4,5 @@ export enum DynamicDataTypeEnum {
   NUMBER = 'NUMBER',
   DATETIME = 'DATETIME',
   BOOLEAN = 'BOOLEAN',
+  LIST = 'LIST',
 }
