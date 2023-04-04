@@ -21,6 +21,7 @@ import { MessageService } from 'primeng/api';
 import { DynamicFilterTypeEnum } from '@shared/enums/dynamic-filter-type.enum';
 import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
 import { DynamicModeEnum } from '@shared/enums/dynamic-mode.enum';
+import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
 
 @Component({
   selector: 'app-contacts-table',
@@ -82,6 +83,8 @@ export class ContactsTableComponent
               return {
                 code: p.code,
                 displayName: p.displayName,
+                dataType: p.dataType,
+                inputType: p.inputType,
                 isDisplay:
                   customTable && customTable[p.code] != null
                     ? customTable[p.code].isDisplay
@@ -105,17 +108,21 @@ export class ContactsTableComponent
 
   searchData() {
     if (this.searchKey && this.searchKey.trim() != '') {
-      var payload = this.checkedCols.slice(1).map((c) => {
-        return {
-          field: c.code,
-          operator: DynamicFilterOperatorEnum.CONTAIN,
-          value: this.searchKey.trim(),
-        };
-      });
+      var payload = this.checkedCols
+        .slice(1)
+        .filter((c) => c.dataType != DynamicDataTypeEnum.DATETIME)
+        .map((c) => {
+          return {
+            field: c.code,
+            operator: DynamicFilterOperatorEnum.CONTAIN,
+            value: this.searchKey.trim(),
+          };
+        });
       this.query.payload = {
         type: DynamicFilterTypeEnum.OR,
         payload: payload,
       };
+      this.paginator.changePage(1);
     } else this.query.payload = {};
     this.loadData(null);
   }

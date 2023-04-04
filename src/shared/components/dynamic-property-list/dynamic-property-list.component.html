@@ -22,6 +22,12 @@
             <i class="pi pi-copy pr-5"></i>
             <i class="pi pi-sitemap pr-5"></i>
           </td>
+          <td *ngSwitchCase="'entityType'" >
+            {{getPropertyType(property)}}
+          </td>
+          <td *ngSwitchCase="'creationTime'" >
+            {{property[col.field] ?? '-' | date: 'dd/MM/yyyy'}}
+          </td>
           <td *ngSwitchDefault >
             {{property[col.field] ?? '-'}}
           </td>

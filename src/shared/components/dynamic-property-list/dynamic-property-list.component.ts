@@ -12,6 +12,7 @@ import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-fiel
 import { DestroyService } from '@shared/services';
 import { takeUntil } from 'rxjs';
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
+import { DYNAMIC_DATA_TYPE } from '@shared/enums/dynamic-data-type.const';
 
 @Component({
   selector: 'app-dynamic-property-list',
@@ -26,9 +27,9 @@ export class DynamicPropertyListComponent
   cols = [
     { field: 'id', title: 'Hành động' },
     { field: 'displayName', title: 'Tên trường dữ liệu' },
-    { field: 'dataType', title: 'Kiểu dữ liệu' },
+    { field: 'entityType', title: 'Kiểu dữ liệu' },
     { field: 'enabled', title: 'Trạng thái' },
-    { field: 'createdTime', title: 'Ngày tạo' },
+    { field: 'creationTime', title: 'Ngày tạo' },
   ];
   @ViewChild('paginator') paginator: Paginator;
   constructor(
@@ -68,6 +69,15 @@ export class DynamicPropertyListComponent
       });
   }
 
+  getPropertyType(entity) {
+    return (
+      DYNAMIC_DATA_TYPE.find(
+        (d) =>
+          d.value.dataType == entity.dataType &&
+          d.value.inputType == entity.inputType
+      )?.label ?? '-'
+    );
+  }
   paginate(event: any) {
     this.loadData(event);
   }
