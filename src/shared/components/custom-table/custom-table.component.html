@@ -1,46 +1,48 @@
-<div class="mb-4">
-  <p-table [value]="columnTable"
-           [columns]="cols"
-           [reorderableColumns]="true"
-           dataKey="code"
-           [(selection)]="selectedCols"
-           styleClass="p-datatable-striped p-datatable-sm"
-           (onRowSelect)="onRowSelect($event)"
-           (onRowUnselect)="onRowUnselect($event)"
-           [loading]="isLoading"
-           (onHeaderCheckboxToggle)="checkboxToggle($event)">
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 3rem">
-          <p-tableHeaderCheckbox ngDefaultControl></p-tableHeaderCheckbox>
-        </th>
-        <th>
-          Chọn tất cả
-        </th>
-        <th style="width:3rem"></th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-index="rowIndex" let-col>
-      <tr [pReorderableRow]="index" >
-        <td>
-          <p-tableCheckbox [value]="rowData">
-          </p-tableCheckbox>
-        </td>
-        <td >
-          {{rowData['displayName']}}
-        </td>
-        <td pTooltip="Ấn và kéo để sắp xếp" tooltipPosition="left" tooltipZIndex="99999" life=800>
-          <span class="pi pi-bars" pReorderableRowHandle>
-          </span>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
-<div class="row mt-4">
-  <app-dialog-button
-    [showReset]="true"
-    (event)="onDialogEvent($event)"
-    class="w-100"
-  ></app-dialog-button>
+<div class="h-full d-flex flex-column justify-content-between">
+  <div class="mb-4">
+    <p-table [value]="columnTable"
+             [columns]="cols"
+             [reorderableColumns]="true"
+             dataKey="code"
+             [(selection)]="selectedCols"
+             styleClass="p-datatable-striped p-datatable-sm"
+             (onRowSelect)="onRowSelect($event)"
+             (onRowUnselect)="onRowUnselect($event)"
+             [loading]="isLoading"
+             (onHeaderCheckboxToggle)="checkboxToggle($event)">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox ngDefaultControl></p-tableHeaderCheckbox>
+          </th>
+          <th>
+            Chọn tất cả
+          </th>
+          <th style="width:3rem"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-index="rowIndex" let-col>
+        <tr [pReorderableRow]="index" >
+          <td>
+            <p-tableCheckbox *ngIf="!rowData['isFixed']" [value]="rowData">
+            </p-tableCheckbox>
+          </td>
+          <td >
+            {{rowData['displayName']}}
+          </td>
+          <td *ngIf="!rowData['isFixed']" pTooltip="Ấn và kéo để sắp xếp" tooltipPosition="left" tooltipZIndex="99999" life=800>
+            <span class="pi pi-bars" pReorderableRowHandle>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div >
+    <app-dialog-button
+      [showReset]="true"
+      (event)="onDialogEvent($event)"
+      class="w-100"
+    ></app-dialog-button>
+  </div>
 </div>

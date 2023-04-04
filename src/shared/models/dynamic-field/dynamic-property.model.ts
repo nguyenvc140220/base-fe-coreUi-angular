@@ -19,6 +19,7 @@ export class DynamicPropertyModel {
   deletedTime?: number | undefined;
   isDisplay?: boolean;
   order?: number;
+  isFixed?: boolean;
 
   constructor(data?: any) {
     if (data) {
