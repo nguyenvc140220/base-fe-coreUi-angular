@@ -9,6 +9,8 @@ import { removeNullValue } from '@shared/utils/object.utils';
 import { DestroyService } from '@shared/services';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { DynamicFormBuilder } from '@shared/services/dynamic-field/dynamic-form-builder';
+import { DynamicModeEnum } from '@shared/enums/dynamic-mode.enum';
+import { DynamicEntityModel } from '@shared/models/dynamic-field/dynamic-response.model';
 
 @Component({
   selector: 'app-dynamic-create',
@@ -20,8 +22,10 @@ export class DynamicCreateComponent
   implements OnInit, OnDestroy
 {
   form: FormGroup = new FormGroup({});
-  entities: DynamicPropertyModel[];
+  properties: DynamicPropertyModel[];
   dynamicType: DynamicEntityTypeEnum;
+  dynamicMode: DynamicModeEnum;
+  entity: DynamicEntityModel;
   isLoading = false;
   constructor(
     private dynamicFieldService: DynamicFieldService,
@@ -31,6 +35,10 @@ export class DynamicCreateComponent
   ) {
     super();
     this.dynamicType = config.data['type'];
+    this.dynamicMode = config.data['mode'] ?? DynamicModeEnum.ADD;
+    if (this.dynamicMode == DynamicModeEnum.EDIT) {
+      this.entity = config.data['entity'];
+    }
   }
 
   ngOnInit(): void {
@@ -46,11 +54,14 @@ export class DynamicCreateComponent
         next: (res) => {
           this.isLoading = false;
           if (res.statusCode == 200) {
-            this.entities = res.data.content;
+            this.properties = res.data.content;
             this.form = this.dynamicFormBuilder.generateFormGroup(
               this.form,
-              this.entities
+              this.properties
             );
+            if (this.dynamicMode == DynamicModeEnum.EDIT) {
+              this.form.patchValue(this.entity);
+            }
           }
         },
         error: (err) => {
@@ -64,22 +75,42 @@ export class DynamicCreateComponent
       case ButtonEnum.SAVE_BUTTON:
         if (this.form.valid) {
           this.isLoading = true;
-          this.dynamicFieldService
-            .createDynamicEntity({
-              code: this.dynamicType,
-              properties: removeNullValue(this.form.value),
-            })
-            .subscribe({
-              next: (res) => {
-                this.isLoading = false;
-                if (res.statusCode == 200) {
-                  this.ref.close(res.data);
-                }
-              },
-              error: () => {
-                this.isLoading = false;
-              },
-            });
+          if (this.dynamicMode == DynamicModeEnum.EDIT) {
+            this.dynamicFieldService
+              .updateDynamicEntity({
+                code: this.dynamicType,
+                idEntity: this.entity.id,
+                properties: removeNullValue(this.form.value),
+              })
+              .subscribe({
+                next: (res) => {
+                  this.isLoading = false;
+                  if (res.statusCode == 200) {
+                    this.ref.close(res.data);
+                  }
+                },
+                error: () => {
+                  this.isLoading = false;
+                },
+              });
+          } else {
+            this.dynamicFieldService
+              .createDynamicEntity({
+                code: this.dynamicType,
+                properties: removeNullValue(this.form.value),
+              })
+              .subscribe({
+                next: (res) => {
+                  this.isLoading = false;
+                  if (res.statusCode == 200) {
+                    this.ref.close(res.data);
+                  }
+                },
+                error: () => {
+                  this.isLoading = false;
+                },
+              });
+          }
         }
         break;
       default:
