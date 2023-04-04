@@ -59,7 +59,7 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
         currentPage: 1,
         pageSize: 1,
         payload: {
-          field: '_id',
+          field: 'id',
           operator: 'EQ',
           value: this.contactId,
         },

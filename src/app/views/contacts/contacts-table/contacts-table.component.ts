@@ -20,7 +20,7 @@ import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-prope
 import { MessageService } from 'primeng/api';
 import { DynamicFilterTypeEnum } from '@shared/enums/dynamic-filter-type.enum';
 import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
-import { DynamicEditComponent } from '@shared/components/dynamic-edit/dynamic-edit.component';
+import { DynamicModeEnum } from '@shared/enums/dynamic-mode.enum';
 
 @Component({
   selector: 'app-contacts-table',
@@ -147,7 +147,7 @@ export class ContactsTableComponent
       header: 'Thêm mới liên hệ',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { type: DynamicEntityTypeEnum.CONTACT },
+      data: { type: DynamicEntityTypeEnum.CONTACT, mode: DynamicModeEnum.ADD },
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
@@ -162,14 +162,15 @@ export class ContactsTableComponent
     });
   }
 
-  editContact(contactId) {
-    const dialog = this.dialogService.open(DynamicEditComponent, {
+  editContact(contact) {
+    const dialog = this.dialogService.open(DynamicCreateComponent, {
       header: 'Chỉnh sửa liên hệ',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
       data: {
         type: DynamicEntityTypeEnum.CONTACT,
-        contactId: contactId,
+        mode: DynamicModeEnum.EDIT,
+        entity: contact,
       },
     });
     dialog.onClose.subscribe((res) => {

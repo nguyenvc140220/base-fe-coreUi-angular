@@ -51,7 +51,7 @@
             <tr>
               <ng-container *ngFor="let col of checkedCols;" [ngSwitch]="col.code">
                 <td *ngSwitchCase="'action'">
-                  <i class="pi pi-file-edit pr-5" (click)="editContact(contact['id'])"></i>
+                  <i class="pi pi-file-edit pr-5" (click)="editContact(contact)"></i>
                   <i class="pi pi-copy pr-5"></i>
                   <i class="pi pi-sitemap pr-5"></i>
                 </td>
