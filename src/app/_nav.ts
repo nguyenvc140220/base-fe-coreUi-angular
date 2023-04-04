@@ -22,6 +22,11 @@ export const navItems: INavData[] = [
   //   iconComponent: {name: 'cil-user'},
   // },
   {
+    name: 'Phân khúc khách hàng',
+    url: '/segmentation',
+    icon: 'pi pi-filter-fill',
+  },
+  {
     name: 'Admin',
     url: '/admin',
     icon: 'pi pi-cog',
