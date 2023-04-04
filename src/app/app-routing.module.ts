@@ -39,6 +39,11 @@ const routes: Routes = [
           import('./views/contacts/contacts.module').then((m) => m.ContactsModule),
       },
       {
+        path: 'segmentation',
+        loadChildren: () =>
+          import('./views/segmentations/segmentation.module').then((m) => m.SegmentationModule),
+      },
+      {
         path: 'admin',
         loadChildren: () =>
           import('./views/admin/admin.module').then((m) => m.AdminModule),

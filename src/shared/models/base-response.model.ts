@@ -5,3 +5,19 @@ export class BaseResponse<T> {
 
   total?: number | undefined | null;
 }
+
+export class PageResponse<T> {
+  statusCode: number;
+  message: string;
+  data: PagedContent<T>
+}
+
+
+export class PagedContent<T> {
+
+  content: Array<T>;
+  pageSize: number;
+  totalPages: number;
+  totalElements: number;
+
+}
