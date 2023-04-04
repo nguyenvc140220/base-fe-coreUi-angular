@@ -76,6 +76,7 @@ export class ContactsTableComponent
               code: 'action',
               displayName: 'Thao tác',
               isDisplay: true,
+              isFixed: true,
             }),
           ];
           this.cols.push(
@@ -196,10 +197,11 @@ export class ContactsTableComponent
     const dialog = this.dialogService.open(CustomTableComponent, {
       header: 'Tùy chỉnh bảng',
       width: '60%',
-      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      maximizable: true,
+      contentStyle: { overflow: 'auto' },
       data: {
         type: DynamicEntityTypeEnum.CONTACT,
-        columns: this.cols.length > 0 ? this.cols.slice(1) : undefined,
+        columns: this.cols.length > 0 ? JSON.stringify(this.cols) : undefined, //send a copy to not relate to primary
       },
     });
     dialog.onClose.subscribe((res) => {
@@ -218,13 +220,12 @@ export class ContactsTableComponent
             }, {})
           )
         );
-        this.cols = [
-          new DynamicPropertyModel({
-            code: 'action',
-            displayName: 'Thao tác',
-            isDisplay: true,
-          }),
-        ];
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: `Lưu thành công`,
+        });
+        this.cols = [];
         this.cols.push(...res);
         this.checkedCols = this.cols
           .filter((c) => c.isDisplay)
@@ -235,7 +236,7 @@ export class ContactsTableComponent
 
   showDynamicFilter() {
     const dialog = this.dialogService.open(DynamicFilterComponent, {
-      header: 'Bộ lọc',
+      header: 'Bộ lọc liên hệ',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
       data: { type: DynamicEntityTypeEnum.CONTACT },

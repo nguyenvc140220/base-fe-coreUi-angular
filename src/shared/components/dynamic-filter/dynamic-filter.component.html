@@ -1,10 +1,10 @@
 <div class="container p-0">
   <form [formGroup]="form">
-    <div class="row form-group">
-      <div *ngFor="let e of entities" class="col-6">
-        <div class="mt-2">
-          <div class="d-flex justify-content-between ml-2 font-bold">
-            <label class="cus-label">{{e?.displayName}}
+    <div class="row">
+      <div *ngFor="let e of entities"  [ngClass]="e?.isDisplay ? 'col-6': 'hidden'">
+        <div *ngIf="e.isDisplay" class="form-group">
+          <div class="m-2 col-8">
+            <label class="font-bold">{{e?.displayName}}
             </label>
           </div>
           <div class="row">

@@ -29,7 +29,7 @@ export class CustomTableComponent implements OnInit, OnDestroy {
   ) {
     this.dynamicType = config.data['type'];
     if (config.data['columns'] !== undefined) {
-      this.columnTable = config.data['columns'];
+      this.columnTable = JSON.parse(config.data['columns']);
     }
   }
   ngOnDestroy(): void {
@@ -78,7 +78,9 @@ export class CustomTableComponent implements OnInit, OnDestroy {
     event.data.isDisplay = false;
   }
   checkboxToggle(event) {
-    this.columnTable.forEach((c) => (c.isDisplay = event.checked));
+    this.columnTable
+      .filter((c) => !c.isFixed)
+      .forEach((c) => (c.isDisplay = event.checked));
   }
 
   onDialogEvent(button: ButtonEnum) {
@@ -88,11 +90,6 @@ export class CustomTableComponent implements OnInit, OnDestroy {
         break;
       case ButtonEnum.SAVE_BUTTON:
         this.columnTable.forEach((c, index) => (c.order = index));
-
-        // todo
-        // save custom-table to customize
-        //
-
         this.ref.close(this.columnTable);
         break;
       case ButtonEnum.RESET_BUTTON:

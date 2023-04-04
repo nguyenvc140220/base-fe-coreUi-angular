@@ -37,6 +37,9 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
     const filter = JSON.parse(
       sessionStorage.getItem('contactDynamicFormValue')
     );
+    const customTable = JSON.parse(
+      sessionStorage.getItem('contactCustomTable')
+    );
     this.dynamicFieldService
       .getDynamicProperties({
         page: 1,
@@ -48,25 +51,34 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
         next: (res) => {
           this.isLoading = false;
           if (res.statusCode == 200) {
-            this.entities = res.data.content.map((c, index) => {
-              this.form.addControl(
-                c.code,
-                this.fb.control(filter ? filter[c.code] : null, [])
-              );
-              this.form.addControl(
-                c.code + '-operator',
-                this.fb.control(
-                  filter ? filter[c.code + '-operator'] : null,
-                  []
-                )
-              );
-              return {
-                code: c.code,
-                displayName: c.displayName,
-                dataType: c.dataType,
-                order: index,
-              } as DynamicPropertyModel;
-            });
+            this.entities = res.data.content
+              .map((c, index) => {
+                this.form.addControl(
+                  c.code,
+                  this.fb.control(filter ? filter[c.code] : null, [])
+                );
+                this.form.addControl(
+                  c.code + '-operator',
+                  this.fb.control(
+                    filter ? filter[c.code + '-operator'] : null,
+                    []
+                  )
+                );
+                return {
+                  code: c.code,
+                  displayName: c.displayName,
+                  dataType: c.dataType,
+                  isDisplay:
+                    customTable && customTable[c.code] != null
+                      ? customTable[c.code].isDisplay
+                      : true,
+                  order:
+                    customTable && customTable[c.code] != null
+                      ? customTable[c.code].order
+                      : index,
+                } as DynamicPropertyModel;
+              })
+              .sort((a, b) => a.order - b.order);
           }
         },
         error: (err) => {
@@ -101,7 +113,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
   getQuery(formValue) {
     var payload = [];
     this.entities.forEach((e) => {
-      if (formValue[e.code] && formValue[e.code].trim() != '') {
+      if (e.isDisplay && formValue[e.code] && formValue[e.code].trim() != '') {
         payload.push({
           field: e.code,
           operator: formValue[e.code + '-operator'],
