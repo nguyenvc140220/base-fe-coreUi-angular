@@ -1,0 +1,193 @@
+<form [formGroup]="formGroup">
+  <div class="row form-group">
+    <div *ngFor="let e of properties">
+      <div class="mt-2">
+        <div class="d-flex justify-content-between m-2 font-bold">
+          <label >{{e?.displayName}}
+            <span *ngIf="isRequired(e)" class="text-danger">(*)</span>
+          </label>
+          <label
+            *ngIf="e?.dataType === DATA_TYPE.TEXT && maxLength(e)"
+            [ngClass]="{'text-danger': formGroup.get(e?.code)?.value?.length === maxLength(e)}">
+            <span>{{maxLength(e) - formGroup.get(e?.code)?.value?.length}}</span> / <span>{{maxLength(e)}}</span>
+          </label>
+        </div>
+
+        <ng-template [ngIf]="e?.dataType == DATA_TYPE.TEXT">
+          <div [ngSwitch]="e?.inputType">
+            <div *ngSwitchCase="INPUT_TYPE.TEXT_AREA">
+                <textarea
+                  pInputTextarea
+                  type="text"
+                  class="form-control"
+                  pInputText
+                  [maxLength]="maxLength(e) ? maxLength(e) : 4000"
+                  [minlength]="minLength(e)"
+                  placeholder="{{e?.hintText}}"
+                  pTooltip="{{e?.tooltip}}"
+                  tooltipZIndex="200005"
+                  tooltipPosition="left"
+                  [formControlName]="e?.code"
+                  [class.ng-invalid]="showError(e?.code)"
+                  [class.ng-dirty]="showError(e?.code)">
+                </textarea>
+            </div>
+            <div *ngSwitchCase="INPUT_TYPE.EMAIL">
+              <input type="email"
+                     class="form-control"
+                     pInputText
+                     [maxLength]="maxLength(e) ? maxLength(e) : 4000"
+                     [minlength]="minLength(e)"
+                     placeholder="{{e?.hintText}}"
+                     pTooltip="{{e?.tooltip}}"
+                     tooltipZIndex="200005"
+                     tooltipPosition="left"
+                     [formControlName]="e?.code"
+                     [class.ng-invalid]="showError(e?.code)"
+                     [class.ng-dirty]="showError(e?.code)"/>
+            </div>
+            <div *ngSwitchCase="INPUT_TYPE.PHONE_NUMBER">
+              <input type="text"
+                     class="form-control"
+                     pInputText
+                     [maxLength]="maxLength(e) ? maxLength(e) : 4000"
+                     [minlength]="minLength(e)"
+                     placeholder="{{e?.hintText}}"
+                     pTooltip="{{e?.tooltip}}"
+                     tooltipZIndex="200005"
+                     tooltipPosition="left"
+                     [formControlName]="e?.code"
+                     [class.ng-invalid]="showError(e?.code)"
+                     [class.ng-dirty]="showError(e?.code)"/>
+            </div>
+            <div *ngSwitchDefault>
+              <input type="text"
+                     class="form-control"
+                     pInputText
+                     [maxLength]="maxLength(e) ? maxLength(e) : 4000"
+                     [minlength]="minLength(e)"
+                     placeholder="{{e?.hintText}}"
+                     pTooltip="{{e?.tooltip}}"
+                     tooltipZIndex="200005"
+                     tooltipPosition="left"
+                     [formControlName]="e?.code"
+                     [class.ng-invalid]="showError(e?.code)"
+                     [class.ng-dirty]="showError(e?.code)"/>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template [ngIf]="e?.dataType == DATA_TYPE.NUMBER">
+          <p-inputNumber inputId="minmaxfraction"
+                         [min]="minValue(e)"
+                         [max]="maxValue(e)"
+                         styleClass="d-flex"
+                         placeholder="{{e?.hintText}}"
+                         pTooltip="{{e?.tooltip}}"
+                         tooltipZIndex="200005"
+                         tooltipPosition="left"
+                         [formControlName]="e?.code"
+                         [showButtons]="true"
+                         mode="decimal"
+                         [minFractionDigits]="floatingPoint(e) ? 1 : 0"
+                         [maxFractionDigits]="floatingPoint(e) ? floatingPoint(e) : 0"
+                         [class.ng-invalid]="showError(e?.code)"
+                         [class.ng-dirty]="showError(e?.code)">
+          </p-inputNumber>
+        </ng-template>
+
+        <ng-template [ngIf]="e?.dataType == DATA_TYPE.DATETIME">
+          <p-calendar dateFormat="dd/mm/yy"
+                      [showTime]="e?.inputType == INPUT_TYPE.DATETIME_PICKER || e?.inputType == INPUT_TYPE.TIME_PICKER"
+                      [showSeconds]="true"
+                      [timeOnly]="e?.inputType == INPUT_TYPE.TIME_PICKER"
+                      [hourFormat]="'24'"
+                      inputId="dateformat"
+                      styleClass="d-flex"
+                      appendTo="body"
+                      placeholder="{{e?.hintText}}"
+                      pTooltip="{{e?.tooltip}}"
+                      tooltipZIndex="200005"
+                      tooltipPosition="left"
+                      [formControlName]="e?.code"
+                      baseZIndex="20001"
+                      showButtonBar="true"
+                      [class.ng-invalid]="showError(e?.code)"
+                      [class.ng-dirty]="showError(e?.code)">
+          </p-calendar>
+        </ng-template>
+
+        <ng-template [ngIf]="e?.dataType == DATA_TYPE.BOOLEAN">
+        </ng-template>
+
+        <ng-template [ngIf]="e?.dataType == DATA_TYPE.LIST">
+          <div [ngSwitch]="e?.inputType">
+            <div *ngSwitchCase="INPUT_TYPE.CHECK_LIST">
+              <div class="field-checkbox" *ngFor="let item of getBindableValues(e); let i = index">
+                <p-checkbox value="{{item.label}}"
+                            [formControl]="formGroup.controls[e?.code]"
+                            name="checkbox-{{e?.code}}-{{i}}"
+                            inputId="checkbox-{{e?.code}}-{{i}}">
+                </p-checkbox>
+                <label class="ml-2"  for="checkbox-{{e?.code}}-{{i}}">{{item.label}}</label>
+              </div>
+            </div>
+
+            <div *ngSwitchCase="INPUT_TYPE.RADIO">
+              <div class="field-radiobutton" *ngFor="let item of getBindableValues(e); let i = index">
+                <p-radioButton value="{{item.label}}"
+                               [formControlName]="e?.code"
+                               inputId="radio-{{e?.code}}-{{i}}">
+                </p-radioButton>
+                <label class="ml-2" for="radio-{{e?.code}}-{{i}}">{{item.label}}</label>
+              </div>
+            </div>
+
+            <div *ngSwitchCase="INPUT_TYPE.MULTI_SELECT">
+              <p-multiSelect
+                optionLabel="label"
+                optionValue="value"
+                [options]="getBindableValues(e)"
+                showClear="true"
+                pTooltip="{{e?.tooltip}}"
+                tooltipZIndex="200005"
+                tooltipPosition="left"
+                filter="true"
+                styleClass="d-flex"
+                placeholder="{{e?.hintText}}"
+                [maxSelectedLabels]="maxSelected(e)"
+                appendTo="body"
+                [formControlName]="e?.code"
+                (onPanelShow)="onShowDropdown('.p-multiselect-open', '.p-multiselect-panel')"
+                [class.ng-invalid]="showError(e?.code)"
+                [class.ng-dirty]="showError(e?.code)">
+              </p-multiSelect>
+            </div>
+
+            <div *ngSwitchDefault>
+              <p-dropdown
+                optionLabel="label"
+                optionValue="value"
+                [options]="getBindableValues(e)"
+                showClear="true"
+                pTooltip="{{e?.tooltip}}"
+                tooltipZIndex="200005"
+                tooltipPosition="left"
+                filter="true"
+                styleClass="d-flex"
+                placeholder="{{e?.hintText}}"
+                appendTo="body"
+                [formControlName]="e?.code"
+                (onShow)="onShowDropdown('.p-dropdown-open', '.p-dropdown-panel')"
+                [class.ng-invalid]="showError(e?.code)"
+                [class.ng-dirty]="showError(e?.code)">
+              </p-dropdown>
+            </div>
+          </div>
+        </ng-template>
+
+        <small class="form-text text-danger" *ngIf="showError(e?.code)">{{showError(e?.code)}}</small>
+      </div>
+    </div>
+  </div>
+</form>

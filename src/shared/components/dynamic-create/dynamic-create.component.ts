@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ButtonEnum } from '@shared/enums/button-status.enum';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
-import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
 import { takeUntil } from 'rxjs';
 import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { removeNullValue } from '@shared/utils/object.utils';
 import { DestroyService } from '@shared/services';
+import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
+import { DynamicFormBuilder } from '@shared/services/dynamic-field/dynamic-form-builder';
 
 @Component({
   selector: 'app-dynamic-create',
@@ -18,14 +19,13 @@ export class DynamicCreateComponent
   extends DestroyService
   implements OnInit, OnDestroy
 {
-  public form: FormGroup = this.fb.group({});
-  entities = [];
+  form: FormGroup = new FormGroup({});
+  entities: DynamicPropertyModel[];
   dynamicType: DynamicEntityTypeEnum;
-  dynamicDataType: DynamicDataTypeEnum;
   isLoading = false;
   constructor(
-    private fb: FormBuilder,
     private dynamicFieldService: DynamicFieldService,
+    private dynamicFormBuilder: DynamicFormBuilder,
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef
   ) {
@@ -46,15 +46,11 @@ export class DynamicCreateComponent
         next: (res) => {
           this.isLoading = false;
           if (res.statusCode == 200) {
-            this.entities = res.data.content.map((c, index) => {
-              this.form.addControl(c.code, this.fb.control(null, []));
-              return {
-                code: c.code,
-                displayName: c.displayName,
-                dataType: c.dataType,
-                order: index,
-              };
-            });
+            this.entities = res.data.content;
+            this.form = this.dynamicFormBuilder.generateFormGroup(
+              this.form,
+              this.entities
+            );
           }
         },
         error: (err) => {

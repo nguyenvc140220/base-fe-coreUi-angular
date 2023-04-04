@@ -1,0 +1,17 @@
+export enum ValidatorTypeEnum {
+  REQUIRED = 'required',
+  STRING_LENGTH_MIN = 'string_length_min',
+  STRING_PATTERN = 'string_pattern',
+  STRING_LENGTH_MAX = 'string_length_max',
+  LONG_MIN = 'long_min',
+  LONG_MAX = 'long_max',
+  LONG_NEGATIVE = 'long_negative',
+  DOUBLE_MIN = 'double_min',
+  DOUBLE_MAX = 'double_max',
+  DOUBLE_POINT = 'floating_point',
+  BOOLEAN = 'boolean',
+  DATETIME_MIN = 'datetime_min',
+  DATETIME_MAX = 'datetime_max',
+  LIST_SIZE = 'list_size',
+  LIST_MAX_CHOICE = 'max_choice',
+}

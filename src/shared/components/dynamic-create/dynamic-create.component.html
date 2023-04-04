@@ -1,45 +1,12 @@
 <div class="container p-0">
-  <form [formGroup]="form">
-    <div class="row form-group">
-      <div *ngFor="let e of entities" class="col-6">
-        <div class="mt-2">
-          <div class="d-flex justify-content-between ml-2 font-bold">
-            <label class="cus-label">{{e?.displayName}}
-            </label>
-          </div>
-
-          <ng-template [ngIf]="['TEXT'].includes(e.dataType)">
-            <input type="text" class="form-control" pInputText
-                   placeholder="{{e?.displayName}}" pTooltip="{{e?.displayName}}" tooltipZIndex="200005"
-                   tooltipPosition="left" [formControlName]="e.code"/>
-          </ng-template>
-          <ng-template [ngIf]="['NUMBER'].includes(e.dataType)">
-            <input type="number" class="form-control" pInputText
-                   placeholder="{{e?.displayName}}" pTooltip="{{e?.displayName}}" tooltipZIndex="200005"
-                   tooltipPosition="left" [formControlName]="e.code"/>
-          </ng-template>
-          <ng-template [ngIf]="['DATETIME'].includes(e.dataType)">
-            <p-calendar dateFormat="dd/mm/yy" inputId="dateformat" styleClass="d-flex" appendTo="body"
-                        placeholder="{{e?.displayName}}" pTooltip="{{e?.displayName}}" tooltipZIndex="200005" [showIcon]="true"
-                        tooltipPosition="left" [formControlName]="e.code" baseZIndex="20001"
-                        showButtonBar="true">
-            </p-calendar>
-          </ng-template>
-          <ng-template [ngIf]="['BOOLEAN'].includes(e.dataType)">
-            <p-radioButton  value="Nam" label="Nam" [formControlName]="e.code">
-            </p-radioButton>
-            <p-radioButton  value="Nữ" label="Nữ" [formControlName]="e.code">
-            </p-radioButton>
-          </ng-template>
-
-        </div>
-      </div>
-    </div>
-  </form>
+  <app-dynamic-form
+    [formGroup]="form"
+    [properties]="entities">
+  </app-dynamic-form>
 </div>
 <div class="row mt-4">
   <app-dialog-button
-    [status]="false | getButtonStatus: isLoading"
+    [status]="form?.invalid | getButtonStatus: isLoading"
     (event)="onDialogEvent($event)"
     class="w-100"
   ></app-dialog-button>
