@@ -49,7 +49,7 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
   loadData(event?: any) {
     this.primengTableHelper.isLoading = true;
 
-    const currentPage = this.primengTableHelper.getCurrentPage(this.paginator) ?? 1;
+    const currentPage = !event ? 1 : this.primengTableHelper.getCurrentPage(this.paginator) ?? 1;
     const pageSize = this.primengTableHelper.getMaxResultCount(this.paginator, event)
       ?? this.primengTableHelper.defaultRecordsCountPerPage;
 
