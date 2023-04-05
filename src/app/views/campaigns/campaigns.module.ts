@@ -18,9 +18,10 @@ import { DestroyService } from "@shared/services";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
 import { OverlayPanelModule } from "primeng/overlaypanel";
-import { DatePipe, NgForOf, NgSwitch, NgSwitchCase, NgSwitchDefault } from "@angular/common";
+import { DatePipe, NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from "@angular/common";
 import { CampaignsRoutingModule } from "./campaigns-routing.module";
 import { CampaignsTableComponent } from './campaigns-table/campaigns-table.component';
+import { StyleClassModule } from "primeng/styleclass";
 
 const PRIMENG = [
   TableModule,
@@ -57,6 +58,9 @@ const ANGULAR_COMMON = [
     ToastModule,
     OverlayPanelModule,
     DatePipe,
+    NgStyle,
+    NgIf,
+    StyleClassModule,
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],

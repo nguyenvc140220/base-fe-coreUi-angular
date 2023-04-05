@@ -9,7 +9,7 @@ export const navItems: INavData[] = [
   {
     name: 'Chiến dịch',
     url: '/campaigns',
-    iconComponent: {name: 'cil-bullhorn'},
+    icon: 'pi pi-megaphone'
   },
   {
     name: 'Liên hệ',
