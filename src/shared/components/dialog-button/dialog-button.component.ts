@@ -19,6 +19,8 @@ export class DialogButtonComponent {
 
   @Input() resetLabel = 'Phục hồi mặc định';
   @Input() resetIcon = 'pi pi-undo';
+
+  @Input() swapButtons = false;
   @Output() event: EventEmitter<ButtonEnum> = new EventEmitter();
 
   onClick(button: ButtonEnum) {

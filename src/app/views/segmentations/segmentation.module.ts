@@ -21,6 +21,9 @@ import { SegmentationsTableComponent } from './segmentations-table/segmentations
 import { ToastModule } from "primeng/toast";
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { DatePipe, NgForOf, NgSwitch, NgSwitchCase, NgSwitchDefault } from "@angular/common";
+import { DialogButtonModule } from "@shared/components/dialog-button/dialog-button.module";
+import { SegmentationDeleteModalComponent } from './segmentation-delete-modal/segmentation-delete-modal.component';
+import { CoreModule } from "@shared/root.module";
 
 const PRIMENG = [
   TableModule,
@@ -46,17 +49,24 @@ const ANGULAR_COMMON = [
   NgSwitchDefault,
 ];
 
+const SHARED_COMPONENTS = [
+  DialogButtonModule
+];
+
 @NgModule({
   declarations: [
-    SegmentationsTableComponent
+    SegmentationsTableComponent,
+    SegmentationDeleteModalComponent
   ],
   imports: [
     ...PRIMENG,
     ...ANGULAR_COMMON,
+    ...SHARED_COMPONENTS,
     SegmentationRoutingModule,
     ToastModule,
     OverlayPanelModule,
     DatePipe,
+    CoreModule,
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],

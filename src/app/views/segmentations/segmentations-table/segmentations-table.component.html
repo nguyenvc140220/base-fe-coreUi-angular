@@ -42,9 +42,9 @@
             <tr>
               <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
                 <td *ngSwitchCase="'action'" [style]="segmentation[col.field]?.styles || {}">
-                  <i class="pi pi-file-edit pr-5"></i>
-                  <i class="pi pi-copy pr-5"></i>
-                  <i class="pi pi-times pr-5"></i>
+                  <i class="hover:cursor-pointer pi pi-file-edit pr-5"></i>
+                  <i class="hover:cursor-pointer pi pi-copy pr-5"></i>
+                  <i class="hover:cursor-pointer pi pi-times pr-5" (click)="handleRemove(segmentation)"></i>
                 </td>
 
                 <td *ngSwitchCase="'creationTime'" [style]="segmentation[col.field]?.styles || {}">
