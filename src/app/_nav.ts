@@ -4,15 +4,15 @@ export const navItems: INavData[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    iconComponent: { name: 'cil-speedometer' },
+    iconComponent: {name: 'cil-speedometer'},
   },
-  // {
-  //   name: 'Tenants',
-  //   url: '/tenants',
-  //   iconComponent: {name: 'cil-layers'},
-  // },
   {
-    name: 'Contacts',
+    name: 'Chiến dịch',
+    url: '/campaigns',
+    iconComponent: {name: 'cil-bullhorn'},
+  },
+  {
+    name: 'Liên hệ',
     url: '/contacts',
     icon: 'pi pi-users',
   },
