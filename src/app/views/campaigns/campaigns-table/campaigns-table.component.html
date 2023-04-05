@@ -1,1 +1,97 @@
-<p>campaigns-table works!</p>
+<div>
+  <div class="card">
+    <div class="card-body">
+      <button pButton type="button" label="Thêm mới" icon="pi pi-plus" class="p-button-text"></button>
+      <button pButton type="button" label="Bộ lọc" icon="pi pi-filter" class="p-button-text"></button>
+      <button pButton type="button" label="Xuất excel" icon="pi pi-file-export" class="p-button-text"></button>
+    </div>
+  </div>
+</div>
+
+<div class="card mt-6">
+  <div class="card-body">
+    <div>
+      <div class="max-w-full">
+          <span class="p-input-icon-left w-full">
+            <i class="pi pi-search"></i>
+            <input class="w-full p-inputtext-sm"
+                   pInputText
+                   placeholder="Tìm kiếm theo chiến dịch, kịch bản"
+                   type="text">
+          </span>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <p-table [scrollable]="true"
+               [tableStyle]="{'min-width': '50rem'}"
+               [value]="primengTableHelper.records"
+               [loading]="primengTableHelper.isLoading"
+               [paginator]="false"
+               [autoLayout]="true"
+               [lazy]="true"
+               scrollHeight="50vh">
+        <ng-template pTemplate="header">
+          <tr>
+            <th *ngFor="let col of cols" [ngStyle]="col?.styles || { maxWidth: '200px' }">
+              {{col.header}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template let-campaign pTemplate="body">
+          <tr>
+            <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
+              <td *ngSwitchCase="'action'" [style]="campaign[col.field]?.styles || {}">
+                <button *ngIf="campaign.state !== 'PENDING'" pButton label="Báo cáo"></button>&nbsp;
+                <button *ngIf="campaign.state === 'PENDING'" pButton label="Xóa" class="p-button-danger"></button>
+              </td>
+
+              <td *ngSwitchCase="'startTime'" [style]="campaign[col.field]?.styles || {}">
+                {{ campaign[col.field] && (campaign[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
+              </td>
+
+              <td *ngSwitchCase="'endTime'" [style]="campaign[col.field]?.styles || {}">
+                {{ campaign[col.field] && (campaign[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
+              </td>
+
+              <td *ngSwitchCase="'lastModificationTime'" [style]="campaign[col.field]?.styles || {}">
+                {{ campaign[col.field] && (campaign[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
+              </td>
+
+              <td *ngSwitchCase="'state'" [style]="campaign[col.field]?.styles || {}" class="text-center">
+                <p class="mb-2">
+                  <span class="w-100 badge bg-success text-white">{{ campaign[col.field] }}</span>
+                <p *ngIf="campaign.state !== 'FINISH' && campaign.state !== 'RUNNING'">
+                  <p-inputSwitch (onChange)="handleStateChange($event, campaign)"></p-inputSwitch>
+                </p>
+              </td>
+
+              <td *ngSwitchDefault
+                  class="truncate"
+                  [pTooltip]="campaign[col.field]"
+                  [style]="campaign[col.field]?.styles || {}">
+                {{campaign[col.field]}}
+              </td>
+            </ng-container>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="flex primeng-paging-container mt-3">
+        <div class="font-bold">
+          Tổng: {{(primengTableHelper.totalRecordsCount)}}
+        </div>
+        <div class="grow">
+          <p-paginator
+            #paginator
+            (onPageChange)="paginate($event)"
+            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+            [rows]="primengTableHelper.defaultRecordsCountPerPage"
+            [totalRecords]="primengTableHelper.totalRecordsCount">
+          </p-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<p-toast autoZIndex="true"></p-toast>
