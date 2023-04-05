@@ -54,6 +54,10 @@
                   class="p-button-sm p-button-danger w-100"></button>
               </td>
 
+              <td *ngSwitchCase="'name'" [style]="campaign[col.field]?.styles || {}">
+                <p (click)="navigate('campaigns/details', campaign.id)" >{{ campaign[col.field] }}</p>
+              </td>
+
               <td *ngSwitchCase="'startTime'" [style]="campaign[col.field]?.styles || {}">
                 {{ campaign[col.field] && (campaign[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
               </td>

@@ -2,6 +2,7 @@ import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ComponentBase } from "@shared/utils/component-base.component";
 import { ConfigService } from "@shared/utils/config.service";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-campaigns-table',
@@ -24,6 +25,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   mockData = [
     {
+      id: 'id1',
       name: 'Chiến dịch 1',
       script: 'Kịch bản bấm phím 1',
       state: 'PENDING',
@@ -35,6 +37,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       lastModificationTime: new Date().getTime()
     },
     {
+      id: 'id2',
       name: 'Chiến dịch 2',
       script: 'Kịch bản bấm phím 1',
       state: 'RUNNING',
@@ -46,6 +49,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       lastModificationTime: new Date().getTime()
     },
     {
+      id: 'id3',
       name: 'Chiến dịch 3',
       script: 'Kịch bản bấm phím 1',
       state: 'FINISH',
@@ -57,6 +61,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       lastModificationTime: new Date().getTime()
     },
     {
+      id: 'id4',
       name: 'Chiến dịch 4',
       script: 'Kịch bản bấm phím 1',
       state: 'PAUSE',
@@ -70,9 +75,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   ];
   currentState: boolean;
 
-  constructor(
-    injector: Injector,
-    breadcrumbStore: BreadcrumbStore) {
+  constructor(injector: Injector, breadcrumbStore: BreadcrumbStore, private readonly router: Router) {
     super(injector);
 
     breadcrumbStore.items = [{label: 'Quản lý chiến dịch'}];
@@ -120,5 +123,13 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   handleSort($event: any) {
     console.log($event);
+  }
+
+  async navigate(route: string, id: string) {
+    if (!route || !id) return;
+
+    await this.router.navigate([route], {
+      queryParams: {id, name: 'Chào hàng 1'}
+    })
   }
 }

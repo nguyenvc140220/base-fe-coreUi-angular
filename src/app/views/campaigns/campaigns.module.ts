@@ -22,6 +22,10 @@ import { DatePipe, NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefau
 import { CampaignsRoutingModule } from "./campaigns-routing.module";
 import { CampaignsTableComponent } from './campaigns-table/campaigns-table.component';
 import { StyleClassModule } from "primeng/styleclass";
+import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
+import { PanelModule } from "primeng/panel";
+import { CardModule } from "primeng/card";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 const PRIMENG = [
   TableModule,
@@ -49,7 +53,8 @@ const ANGULAR_COMMON = [
 
 @NgModule({
   declarations: [
-    CampaignsTableComponent
+    CampaignsTableComponent,
+    CampaignDetailComponent
   ],
   imports: [
     ...PRIMENG,
@@ -61,6 +66,9 @@ const ANGULAR_COMMON = [
     NgStyle,
     NgIf,
     StyleClassModule,
+    PanelModule,
+    CardModule,
+    FontAwesomeModule
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],
