@@ -7,6 +7,6 @@ import { DynamicFormModule } from '@shared/components/dynamic-form/dynamic-form.
 
 @NgModule({
   declarations: [DynamicCreateComponent],
-  imports: [CommonModule, DialogButtonModule, CoreModule, DynamicFormModule],
+  imports: [CommonModule, DialogButtonModule, CoreModule, DynamicFormModule]
 })
 export class DynamicCreateModule {}

@@ -29,9 +29,9 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'tenants',
+        path: 'campaigns',
         loadChildren: () =>
-          import('./views/tenants/tenants.module').then((m) => m.TenantsModule),
+          import('./views/campaigns/campaigns.module').then((m) => m.CampaignsModule),
       },
       {
         path: 'contacts',

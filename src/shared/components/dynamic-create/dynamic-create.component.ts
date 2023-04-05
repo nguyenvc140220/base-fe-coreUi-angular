@@ -4,13 +4,15 @@ import { FormGroup } from '@angular/forms';
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 import { takeUntil } from 'rxjs';
 import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { removeNullValue } from '@shared/utils/object.utils';
 import { DestroyService } from '@shared/services';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { DynamicFormBuilder } from '@shared/services/dynamic-field/dynamic-form-builder';
 import { DynamicModeEnum } from '@shared/enums/dynamic-mode.enum';
 import { DynamicEntityModel } from '@shared/models/dynamic-field/dynamic-response.model';
+import { ActivatedRoute, Router } from "@angular/router";
+import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: 'app-dynamic-create',
@@ -19,30 +21,44 @@ import { DynamicEntityModel } from '@shared/models/dynamic-field/dynamic-respons
 })
 export class DynamicCreateComponent
   extends DestroyService
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({});
   properties: DynamicPropertyModel[];
   dynamicType: DynamicEntityTypeEnum;
   dynamicMode: DynamicModeEnum;
   entity: DynamicEntityModel;
   isLoading = false;
+
   constructor(
     private dynamicFieldService: DynamicFieldService,
     private dynamicFormBuilder: DynamicFormBuilder,
-    private config: DynamicDialogConfig,
-    private ref: DynamicDialogRef
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private breadcrumbStore: BreadcrumbStore,
+    private messageService: MessageService
   ) {
     super();
-    this.dynamicType = config.data['type'];
-    this.dynamicMode = config.data['mode'] ?? DynamicModeEnum.ADD;
+    this.breadcrumbStore.items = [
+      {label: 'Danh sách liên hệ', routerLink: ['/contacts']}];
+    this.dynamicType = this.activatedRoute.snapshot.paramMap['params']['type'];
+    this.dynamicMode = this.activatedRoute.snapshot.paramMap['params']['mode'];
     if (this.dynamicMode == DynamicModeEnum.EDIT) {
-      this.entity = config.data['entity'];
-    }
+      this.entity = this.router.getCurrentNavigation().extras.state['entity'];
+      this.breadcrumbStore.items.push({label: `${this.entity.id}`}, {label: 'Sửa liên hệ'})
+    } else this.breadcrumbStore.items.push({label: 'Thêm mới liên hệ'})
   }
 
   ngOnInit(): void {
     this.isLoading = true;
+    this.initForm();
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: `Chỉnh sửa ${this.dynamicType} thành công`,
+    });
+  }
+
+  initForm() {
     this.dynamicFieldService
       .getDynamicProperties({
         page: 1,
@@ -70,6 +86,7 @@ export class DynamicCreateComponent
         },
       });
   }
+
   onDialogEvent(button: ButtonEnum) {
     switch (button) {
       case ButtonEnum.SAVE_BUTTON:
@@ -86,7 +103,12 @@ export class DynamicCreateComponent
                 next: (res) => {
                   this.isLoading = false;
                   if (res.statusCode == 200) {
-                    this.ref.close(res.data);
+                    this.messageService.add({
+                      severity: 'success',
+                      summary: 'Success',
+                      detail: `Chỉnh sửa ${this.dynamicType} thành công`,
+                    });
+                    return this.router.navigate(['contacts']);
                   }
                 },
                 error: () => {
@@ -103,7 +125,12 @@ export class DynamicCreateComponent
                 next: (res) => {
                   this.isLoading = false;
                   if (res.statusCode == 200) {
-                    this.ref.close(res.data);
+                    this.messageService.add({
+                      severity: 'success',
+                      summary: 'Success',
+                      detail: `Chỉnh sửa ${this.dynamicType} thành công`,
+                    });
+                    return this.router.navigate(['contacts']);
                   }
                 },
                 error: () => {
@@ -113,8 +140,11 @@ export class DynamicCreateComponent
           }
         }
         break;
+
+      case ButtonEnum.CANCEL_BUTTON:
+        return this.router.navigate(['contacts']);
+        break;
       default:
-        this.ref.close();
         break;
     }
   }
