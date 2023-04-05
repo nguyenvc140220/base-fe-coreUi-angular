@@ -42,8 +42,12 @@
           <tr>
             <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
               <td *ngSwitchCase="'action'" [style]="campaign[col.field]?.styles || {}">
-                <button *ngIf="campaign.state !== 'PENDING'" pButton label="Báo cáo"></button>&nbsp;
-                <button *ngIf="campaign.state === 'PENDING'" pButton label="Xóa" class="p-button-danger"></button>
+                <button *ngIf="campaign.state !== 'PENDING'" pButton label="Báo cáo" class="p-button-sm w-100"></button>&nbsp;
+                <button
+                  *ngIf="campaign.state === 'PENDING'"
+                  pButton
+                  label="Xóa"
+                  class="p-button-sm p-button-danger w-100"></button>
               </td>
 
               <td *ngSwitchCase="'startTime'" [style]="campaign[col.field]?.styles || {}">
