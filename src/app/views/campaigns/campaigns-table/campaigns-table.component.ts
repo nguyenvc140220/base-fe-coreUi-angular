@@ -10,7 +10,17 @@ import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 })
 export class CampaignsTableComponent extends ComponentBase<any> implements OnInit, OnDestroy {
 
-  cols: { field: string; header: string; order?: number; styles?: { maxWidth: string; minWidth?: string } }[];
+  cols: {
+    field: string;
+    header: string;
+    order?: number;
+    styles?: {
+      width?: string;
+      maxWidth?: string;
+      minWidth?: string
+    },
+    sortable?: boolean
+  }[];
 
   mockData = [
     {
@@ -85,15 +95,15 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   private initDataTable() {
     {
       this.cols = [
-        {field: 'name', header: 'Chiến dịch', styles: {maxWidth: '20%', minWidth: '200px'}},
-        {field: 'script', header: 'Kịch bản', styles: {maxWidth: '15%', minWidth: '150px'}},
-        {field: 'state', header: 'Trạng thái', styles: {maxWidth: '60px'}},
-        {field: 'startTime', header: 'Ngày bắt đầu', styles: {maxWidth: '80px'}},
-        {field: 'endTime', header: 'Ngày kết thúc', styles: {maxWidth: '80px'}},
-        {field: 'thoseInCharge', header: 'Người phụ trách', styles: {maxWidth: '150px', minWidth: '120px'}},
-        {field: 'numOfAgents', header: 'SL agents', styles: {maxWidth: '60px'}},
-        {field: 'action', header: 'Thao tác', styles: {maxWidth: '60px'}},
-        {field: 'lastModificationTime', header: 'Ngày cập nhật', styles: {maxWidth: '80px'}},
+        {field: 'name', header: 'Chiến dịch', styles: {minWidth: '200px'}, sortable: true},
+        {field: 'script', header: 'Kịch bản', styles: {minWidth: '200px'}},
+        {field: 'state', header: 'Trạng thái', styles: {minWidth: '160px'}},
+        {field: 'startTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
+        {field: 'endTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
+        {field: 'thoseInCharge', header: 'Người phụ trách', styles: {minWidth: '300px'}},
+        {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
+        {field: 'action', header: 'Thao tác', styles: {minWidth: '160px'}},
+        {field: 'lastModificationTime', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
       ];
     }
 
@@ -106,5 +116,9 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   handleRemove(campaign: any) {
 
+  }
+
+  handleSort($event: any) {
+    console.log($event);
   }
 }

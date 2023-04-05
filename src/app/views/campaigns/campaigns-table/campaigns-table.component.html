@@ -30,11 +30,15 @@
                [paginator]="false"
                [autoLayout]="true"
                [lazy]="true"
+               (onSort)="handleSort($event)"
                scrollHeight="50vh">
         <ng-template pTemplate="header">
           <tr>
-            <th *ngFor="let col of cols" [ngStyle]="col?.styles || { maxWidth: '200px' }">
-              {{col.header}}
+            <th
+              *ngFor="let col of cols"
+              pSortableColumn="{{ col.sortable ? col.field : ''}}"
+              [ngStyle]="col.styles || { minWidth: '200px' }">
+              {{col.header}}&nbsp;<p-sortIcon *ngIf="col.sortable" field="{{col.field}}"></p-sortIcon>
             </th>
           </tr>
         </ng-template>
