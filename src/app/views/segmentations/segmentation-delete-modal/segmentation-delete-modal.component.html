@@ -1,0 +1,13 @@
+<div class="row mt-4">
+  <span>Phân khúc&nbsp;<b>{{ name }}</b>&nbsp;sẽ bị xóa</span>
+</div>
+<div class="row mt-4">
+  <app-dialog-button
+    [status]="loading | getButtonStatus"
+    (event)="handleDialogEvent($event)"
+    [saveLabel]="'Xác nhận'"
+    [saveIcon]="'pi pi-trash'"
+    [swapButtons]="true"
+    class="w-100"
+  ></app-dialog-button>
+</div>

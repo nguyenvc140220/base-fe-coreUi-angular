@@ -6,6 +6,12 @@ export class BaseResponse<T> {
   total?: number | undefined | null;
 }
 
+export class SingleResponse<T> {
+  statusCode: number;
+  message: string;
+  data?: T | undefined | null
+}
+
 export class PageResponse<T> {
   statusCode: number;
   message: string;

@@ -6,9 +6,9 @@ import { SegmentationService } from "@shared/services/segmentation/segmentation.
 import { Subject, takeUntil } from "rxjs";
 import { PageResponse } from "@shared/models";
 import { SegmentationListModel } from "@shared/models/segmentation/segmentation-list.model";
-import { ToasterService } from "@coreui/angular";
 import { MessageService } from "primeng/api";
-import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
+import { DialogService } from "primeng/dynamicdialog";
+import { SegmentationDeleteModalComponent } from "../segmentation-delete-modal/segmentation-delete-modal.component";
 
 @Component({
   selector: 'app-segmentation-table',
@@ -29,6 +29,7 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
   constructor(
     injector: Injector,
     private readonly breadcrumbStore: BreadcrumbStore,
+    private readonly dialogService: DialogService,
     private readonly messageService: MessageService,
     private readonly segmentationService: SegmentationService) {
     super(injector);
@@ -93,5 +94,34 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
     }
 
     this.loadData();
+  }
+
+  handleRemove(segmentation: SegmentationListModel) {
+    const ref = this.dialogService.open(SegmentationDeleteModalComponent, {
+      header: 'Xóa phân khúc khách hàng',
+      width: '50%',
+      autoZIndex: true,
+      closable: true,
+      closeOnEscape: true,
+      data: {
+        id: segmentation.id,
+        name: segmentation.name
+      }
+    });
+
+    ref.onClose?.subscribe(({success, id, name}) => {
+      const message = success ? {
+        severity: 'success',
+        summary: 'Success',
+        detail: `Đã xóa phân khúc khách hàng: ${name}!`,
+      } : {
+        severity: 'error',
+        summary: 'Error',
+        detail: `Xóa phân khúc khách hàng ${name} không thành công. Vui lòng thử lại!`,
+      }
+      this.messageService.add(message);
+
+      if (success) this.loadData();
+    });
   }
 }

@@ -36,4 +36,8 @@ export abstract class BaseService {
       headers: this.headers,
     });
   }
+
+  defaultDelete<T>(url, params): Observable<T> {
+    return this.http.delete<T>(url, params ? {params: params} : {});
+  }
 }

@@ -2,8 +2,9 @@ import { BaseService } from "@shared/services/base.service";
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ConfigService } from "@shared/utils/config.service";
-import { BaseResponse, PageResponse } from "@shared/models";
+import { PageResponse, SingleResponse } from "@shared/models";
 import { SegmentationListModel } from "@shared/models/segmentation/segmentation-list.model";
+import { Observable } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class SegmentationService extends BaseService {
@@ -24,5 +25,9 @@ export class SegmentationService extends BaseService {
         keyword: searchKey,
       }
     );
+  }
+
+  deleteSegmentation(id: string) {
+    return this.defaultDelete<SingleResponse<boolean>>(`${this.configService.mktBackendUrl}/v1.0/segmentation`, {id});
   }
 }
