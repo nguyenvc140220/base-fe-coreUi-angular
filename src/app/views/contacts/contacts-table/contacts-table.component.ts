@@ -16,11 +16,11 @@ import { CustomTableComponent } from '@shared/components/custom-table/custom-tab
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 import { DynamicFilterComponent } from '@shared/components/dynamic-filter/dynamic-filter.component';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
-import { MessageService } from 'primeng/api';
 import { DynamicFilterTypeEnum } from '@shared/enums/dynamic-filter-type.enum';
 import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
 import { DynamicModeEnum } from '@shared/enums/dynamic-mode.enum';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-contacts-table',
@@ -29,7 +29,8 @@ import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
 })
 export class ContactsTableComponent
   extends ComponentBase<any>
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   cols: DynamicPropertyModel[] = [];
   checkedCols: DynamicPropertyModel[] = [];
   searchKey: string = '';
@@ -44,10 +45,11 @@ export class ContactsTableComponent
     private dialogService: DialogService,
     private router: Router,
     private breadcrumbStore: BreadcrumbStore,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private messageService: MessageService
   ) {
     super(injector);
-    this.breadcrumbStore.items = [{label: 'Danh sách liên hệ'}];
+    this.breadcrumbStore.items = [{ label: 'Danh sách liên hệ' }];
   }
 
   ngOnInit(): void {
@@ -62,7 +64,7 @@ export class ContactsTableComponent
 
   private initDataTable() {
     this.contactService
-      .getContactProperties({page: 1, size: 100})
+      .getContactProperties({ page: 1, size: 100 })
       .subscribe((res) => {
         if (res.statusCode == 200) {
           const customTable = JSON.parse(
@@ -148,19 +150,26 @@ export class ContactsTableComponent
   }
 
   createContact() {
-    this.router.navigate(['contacts/create', {
-      type: DynamicEntityTypeEnum.CONTACT,
-      mode: DynamicModeEnum.ADD
-    }]);
+    this.router.navigate([
+      'contacts/create',
+      {
+        type: DynamicEntityTypeEnum.CONTACT,
+        mode: DynamicModeEnum.ADD,
+      },
+    ]);
   }
 
   editContact(contact) {
     this.router.navigate(
-      ['contacts/edit', {
-        type: DynamicEntityTypeEnum.CONTACT,
-        mode: DynamicModeEnum.EDIT
-      }],
-      {state: {entity: contact}});
+      [
+        'contacts/edit',
+        {
+          type: DynamicEntityTypeEnum.CONTACT,
+          mode: DynamicModeEnum.EDIT,
+        },
+      ],
+      { state: { entity: contact } }
+    );
   }
 
   showCustomTable() {
@@ -168,7 +177,7 @@ export class ContactsTableComponent
       header: 'Tùy chỉnh bảng',
       width: '60%',
       maximizable: true,
-      contentStyle: {'max-height': '80vh', overflow: 'auto'},
+      contentStyle: { overflow: 'auto' },
       data: {
         type: DynamicEntityTypeEnum.CONTACT,
         columns: this.cols.length > 0 ? JSON.stringify(this.cols) : undefined, //send a copy to not relate to primary
@@ -190,14 +199,12 @@ export class ContactsTableComponent
             }, {})
           )
         );
-        this.cols = [
-          new DynamicPropertyModel({
-            code: 'action',
-            displayName: 'Thao tác',
-            isDisplay: true,
-          }),
-        ];
-        this.cols.push(...res);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: `Lưu thành công`,
+        });
+        this.cols = res;
         this.checkedCols = this.cols
           .filter((c) => c.isDisplay)
           .sort((a, b) => a.order - b.order);
@@ -209,8 +216,8 @@ export class ContactsTableComponent
     const dialog = this.dialogService.open(DynamicFilterComponent, {
       header: 'Bộ lọc liên hệ',
       width: '60%',
-      contentStyle: {'max-height': '80vh', overflow: 'auto'},
-      data: {type: DynamicEntityTypeEnum.CONTACT},
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      data: { type: DynamicEntityTypeEnum.CONTACT },
     });
     dialog.onClose.subscribe((res) => {
       if (res) {
