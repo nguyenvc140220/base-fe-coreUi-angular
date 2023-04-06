@@ -18,7 +18,7 @@ import { DestroyService } from "@shared/services";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
 import { OverlayPanelModule } from "primeng/overlaypanel";
-import { DatePipe, NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from "@angular/common";
+import { DatePipe, NgClass, NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from "@angular/common";
 import { CampaignsRoutingModule } from "./campaigns-routing.module";
 import { CampaignsTableComponent } from './campaigns-table/campaigns-table.component';
 import { StyleClassModule } from "primeng/styleclass";
@@ -30,6 +30,16 @@ import { StepsModule } from "primeng/steps";
 import {
   CampaignsGeneralInformationComponent
 } from './campaigns-create/campaigns-general-information/campaigns-general-information.component';
+import {
+  CampaignsContactDataComponent
+} from './campaigns-create/campaigns-contact-data/campaigns-contact-data.component';
+import {
+  CampaignsConfigurationComponent
+} from './campaigns-create/campaigns-configuration/campaigns-configuration.component';
+import { CampaignsCompletedComponent } from './campaigns-create/campaigns-completed/campaigns-completed.component';
+import { ReactiveFormsModule } from "@angular/forms";
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { CheckboxModule } from "primeng/checkbox";
 import {
   CampaignDetailTabviewComponent
 } from './campaign-detail/campaign-detail-tabview/campaign-detail-tabview.component';
@@ -70,6 +80,9 @@ const ANGULAR_COMMON = [
     CampaignsCreateComponent,
     CampaignsGeneralInformationComponent,
     CampaignsTableComponent,
+    CampaignsContactDataComponent,
+    CampaignsConfigurationComponent,
+    CampaignsCompletedComponent
   ],
   imports: [
     ...PRIMENG,
@@ -85,7 +98,12 @@ const ANGULAR_COMMON = [
     PanelModule,
     CardModule,
     FontAwesomeModule,
-    ReportIndexModule
+    ReportIndexModule,
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    NgClass,
+    AutoCompleteModule,
+    CheckboxModule
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],
