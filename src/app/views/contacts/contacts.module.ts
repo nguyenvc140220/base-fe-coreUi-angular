@@ -30,15 +30,9 @@ import { ContactsTableComponent } from './contacts-table/contacts-table.componen
 import { ContactsRoutingModule } from './contacts-routing.module';
 import { ContactsImportComponent } from './contacts-import/contacts-import.component';
 import { StepsModule } from 'primeng/steps';
-import {
-  ContactsAddFileImportComponent
-} from './contacts-import/contacts-add-file-import/contacts-add-file-import.component';
-import {
-  ContactsMappingFileImportComponent
-} from './contacts-import/contacts-mapping-file-import/contacts-mapping-file-import.component';
-import {
-  ContactsResultFileImportComponent
-} from './contacts-import/contacts-result-file-import/contacts-result-file-import.component';
+import { ContactsAddFileImportComponent } from './contacts-import/contacts-add-file-import/contacts-add-file-import.component';
+import { ContactsMappingFileImportComponent } from './contacts-import/contacts-mapping-file-import/contacts-mapping-file-import.component';
+import { ContactsResultFileImportComponent } from './contacts-import/contacts-result-file-import/contacts-result-file-import.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ContactCreateModalComponent } from './contact-create-modal/contact-create-modal.component';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
@@ -49,6 +43,7 @@ import { DynamicCreateModule } from '@shared/components/dynamic-create/dynamic-c
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CoreModule } from '@shared/root.module';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 const PRIMENG = [
   TableModule,
@@ -99,6 +94,9 @@ const PRIMENG = [
     DynamicCreateModule,
     ToastModule,
     CoreModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],
