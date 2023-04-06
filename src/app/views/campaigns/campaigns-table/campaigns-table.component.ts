@@ -132,4 +132,8 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       queryParams: {id, name: 'Chào hàng 1'}
     })
   }
+
+  routeAddCampaign() {
+    this.router.navigate(['campaigns/create']);
+  }
 }

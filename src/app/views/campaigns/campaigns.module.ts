@@ -26,6 +26,11 @@ import { CampaignDetailComponent } from './campaign-detail/campaign-detail.compo
 import { PanelModule } from "primeng/panel";
 import { CardModule } from "primeng/card";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { CampaignsCreateComponent } from './campaigns-create/campaigns-create.component';
+import { StepsModule } from "primeng/steps";
+import {
+  CampaignsGeneralInformationComponent
+} from './campaigns-create/campaigns-general-information/campaigns-general-information.component';
 
 const PRIMENG = [
   TableModule,
@@ -54,6 +59,9 @@ const ANGULAR_COMMON = [
 @NgModule({
   declarations: [
     CampaignsTableComponent,
+    CampaignsCreateComponent,
+    CampaignsGeneralInformationComponent,
+    CampaignsTableComponent,
     CampaignDetailComponent
   ],
   imports: [
@@ -66,6 +74,7 @@ const ANGULAR_COMMON = [
     NgStyle,
     NgIf,
     StyleClassModule,
+    StepsModule,
     PanelModule,
     CardModule,
     FontAwesomeModule

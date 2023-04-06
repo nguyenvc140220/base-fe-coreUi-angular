@@ -2,6 +2,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { CampaignsTableComponent } from "./campaigns-table/campaigns-table.component";
 import { CampaignDetailComponent } from "./campaign-detail/campaign-detail.component";
+import { CampaignsCreateComponent } from "./campaigns-create/campaigns-create.component";
 
 
 const routes: Routes = [
@@ -20,6 +21,13 @@ const routes: Routes = [
     }
   },
 
+  {
+    path: 'create',
+    component: CampaignsCreateComponent,
+    data: {
+      title: $localize`Thêm mới chiến dịch`,
+    },
+  },
 ];
 
 @NgModule({
