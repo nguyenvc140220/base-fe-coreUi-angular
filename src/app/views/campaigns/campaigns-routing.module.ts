@@ -1,7 +1,9 @@
 import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { CampaignsTableComponent } from "./campaigns-table/campaigns-table.component";
-import { CampaignDetailComponent } from "./campaign-detail/campaign-detail.component";
+import {
+  CampaignDetailTabviewComponent
+} from "./campaign-detail/campaign-detail-tabview/campaign-detail-tabview.component";
 import { CampaignsCreateComponent } from "./campaigns-create/campaigns-create.component";
 
 
@@ -15,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'details',
-    component: CampaignDetailComponent,
+    component: CampaignDetailTabviewComponent,
     data: {
       title: $localize`Chi tiết chiến dịch`,
     }

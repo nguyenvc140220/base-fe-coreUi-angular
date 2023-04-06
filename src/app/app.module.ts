@@ -26,7 +26,7 @@ import {
   SharedModule,
   SidebarModule,
   TabsModule,
-  UtilitiesModule,
+  UtilitiesModule
 } from '@coreui/angular';
 
 // Import routing module
@@ -95,7 +95,7 @@ const config: SocketIoConfig = { url: '/ws', options: { autoConnect: false } };
     BadgeModule,
     ListGroupModule,
     CardModule,
-    BreadcrumbModule,
+    BreadcrumbModule
   ],
   providers: [
     {
