@@ -39,6 +39,8 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "chart.js": "^3.9.1",
+    "echarts": "^5.4.2",
+    "ngx-echarts": "^15.0.3",
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-socket-io": "^4.4.0",
     "primeicons": "^6.0.1",
