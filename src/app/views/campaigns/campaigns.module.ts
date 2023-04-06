@@ -22,7 +22,6 @@ import { DatePipe, NgClass, NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSw
 import { CampaignsRoutingModule } from "./campaigns-routing.module";
 import { CampaignsTableComponent } from './campaigns-table/campaigns-table.component';
 import { StyleClassModule } from "primeng/styleclass";
-import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
 import { PanelModule } from "primeng/panel";
 import { CardModule } from "primeng/card";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
@@ -41,6 +40,12 @@ import { CampaignsCompletedComponent } from './campaigns-create/campaigns-comple
 import { ReactiveFormsModule } from "@angular/forms";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { CheckboxModule } from "primeng/checkbox";
+import {
+  CampaignDetailTabviewComponent
+} from './campaign-detail/campaign-detail-tabview/campaign-detail-tabview.component';
+import { CampaignSummaryComponent } from './campaign-detail/campaign-summary/campaign-summary.component';
+import { CampaignConcreteComponent } from './campaign-detail/campaign-concrete/campaign-concrete.component';
+import { ReportIndexModule } from "@shared/components/report-index/report-index.module";
 
 const PRIMENG = [
   TableModule,
@@ -69,10 +74,12 @@ const ANGULAR_COMMON = [
 @NgModule({
   declarations: [
     CampaignsTableComponent,
+    CampaignDetailTabviewComponent,
+    CampaignSummaryComponent,
+    CampaignConcreteComponent,
     CampaignsCreateComponent,
     CampaignsGeneralInformationComponent,
     CampaignsTableComponent,
-    CampaignDetailComponent,
     CampaignsContactDataComponent,
     CampaignsConfigurationComponent,
     CampaignsCompletedComponent
@@ -90,6 +97,8 @@ const ANGULAR_COMMON = [
     StepsModule,
     PanelModule,
     CardModule,
+    FontAwesomeModule,
+    ReportIndexModule,
     FontAwesomeModule,
     ReactiveFormsModule,
     NgClass,

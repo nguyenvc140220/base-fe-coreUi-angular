@@ -1,6 +1,5 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ComponentBase } from "@shared/utils/component-base.component";
-import { ConfigService } from "@shared/utils/config.service";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { Router } from "@angular/router";
 
@@ -133,7 +132,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
     })
   }
 
-  routeAddCampaign() {
-    this.router.navigate(['campaigns/create']);
+  async routeAddCampaign() {
+    await this.router.navigate(['campaigns/create']);
   }
 }
