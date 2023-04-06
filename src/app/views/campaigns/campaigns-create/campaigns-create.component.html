@@ -1,0 +1,10 @@
+<div class="card">
+  <p-toast></p-toast>
+  <p-steps [model]="items" [readonly]="false" [(activeIndex)]="activeIndex"></p-steps>
+</div>
+
+<ng-template [ngIf]="activeIndex === 0">
+  <div class="card">
+    <app-campaigns-general-information [(activeIndex)]="activeIndex"></app-campaigns-general-information>
+  </div>
+</ng-template>
