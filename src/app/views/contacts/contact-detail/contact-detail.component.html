@@ -34,17 +34,24 @@
           </p-tabPanel>
         </p-tabView>
         <div class="col-md-4 p-2">
-          <div>
-            <p class="text-lg font-bold" style="color: blue;">Thông tin liên hệ</p>
-          </div>
-          <div class="space-y-2 mt-5">
-            <div class="flex flex-row" *ngFor="let info of contactInfos">
-              <div>
-                {{info.title}} :
+          <p-accordion [activeIndex]="0">
+            <p-accordionTab header="Thông tin chung">
+              <div class="space-y-2">
+                <div class="flex flex-row" *ngFor="let info of contactInfos">
+                  <div>
+                    {{info.title}} :
+                  </div>
+                  <div class="ml-2 font-bold">{{info.value}}</div>
+                </div>
               </div>
-              <div class="ml-2 font-bold">{{info.value}}</div>
-            </div>
-          </div>
+            </p-accordionTab>
+            <p-accordionTab header="Thông tin động">
+              <p>
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+              </p>
+            </p-accordionTab>
+          </p-accordion>
         </div>
       </div>
 
