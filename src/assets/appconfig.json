@@ -1,6 +1,6 @@
 {
   "baseUrl": "http://localhost:4200",
-  "keycloakBaseUrl": "http://172.16.86.250:8181/keycloak",
+  "keycloakBaseUrl": "http://mkt4.metech.vn:8181/keycloak",
   "mktBackendUrl": "http://172.16.88.214:8089/api",
   "elasticQuery": "http://172.16.88.250:8080",
   "socketEndpoint": "http://172.16.88.247/ws",
