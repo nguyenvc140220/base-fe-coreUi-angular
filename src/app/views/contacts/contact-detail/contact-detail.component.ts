@@ -6,6 +6,8 @@ import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { EChartsOption } from 'echarts/types/dist/echarts';
+import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-contact-detail',
@@ -33,7 +35,7 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
       },
     },
     {
-      label: 'Gán',
+      label: 'Gộp',
       icon: 'pi pi-link',
       command: () => {
         console.log('Gán');
@@ -79,7 +81,8 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
     private breadcrumbStore: BreadcrumbStore,
     private dynamicFieldService: DynamicFieldService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private datePipe: DatePipe
   ) {
     super();
     this.breadcrumbStore.items = [
@@ -122,14 +125,17 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
         if (res.statusCode == 200) {
           var properties = {};
           res.data.content.forEach((p) => {
-            properties[p.code] = p.displayName;
+            properties[p.code] = p;
           });
           this.contactInfos = [];
           Object.keys(entity).forEach((key) => {
             if (properties[key])
               this.contactInfos.push({
-                title: properties[key],
-                value: entity[key],
+                title: properties[key].displayName,
+                value:
+                  properties[key].dataType == DynamicDataTypeEnum.DATETIME
+                    ? this.datePipe.transform(entity[key], 'dd/MM/yyyy')
+                    : entity[key],
               });
           });
         }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginatorModule } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
@@ -44,6 +44,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CoreModule } from '@shared/root.module';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { AccordionModule } from 'primeng/accordion';
 
 const PRIMENG = [
   TableModule,
@@ -97,8 +98,15 @@ const PRIMENG = [
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
+    AccordionModule,
   ],
-  providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
+  providers: [
+    DialogService,
+    DynamicDialogRef,
+    DestroyService,
+    MessageService,
+    DatePipe,
+  ],
   exports: [],
 })
 export class ContactsModule {}
