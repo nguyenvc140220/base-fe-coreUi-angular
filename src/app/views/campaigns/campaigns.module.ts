@@ -46,6 +46,7 @@ import {
 import { CampaignSummaryComponent } from './campaign-detail/campaign-summary/campaign-summary.component';
 import { CampaignConcreteComponent } from './campaign-detail/campaign-concrete/campaign-concrete.component';
 import { ReportIndexModule } from "@shared/components/report-index/report-index.module";
+import { TagModule } from "primeng/tag";
 
 const PRIMENG = [
   TableModule,
@@ -62,6 +63,11 @@ const PRIMENG = [
   SplitButtonModule,
   ChipModule,
   TabViewModule,
+  ReportIndexModule,
+  FontAwesomeModule,
+  ReactiveFormsModule,
+  AutoCompleteModule,
+  CheckboxModule
 ];
 
 const ANGULAR_COMMON = [
@@ -69,6 +75,9 @@ const ANGULAR_COMMON = [
   NgForOf,
   NgSwitchCase,
   NgSwitchDefault,
+  NgStyle,
+  NgIf,
+  NgClass,
 ];
 
 @NgModule({
@@ -91,19 +100,13 @@ const ANGULAR_COMMON = [
     ToastModule,
     OverlayPanelModule,
     DatePipe,
-    NgStyle,
-    NgIf,
     StyleClassModule,
     StepsModule,
     PanelModule,
     CardModule,
     FontAwesomeModule,
     ReportIndexModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    NgClass,
-    AutoCompleteModule,
-    CheckboxModule
+    TagModule
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],

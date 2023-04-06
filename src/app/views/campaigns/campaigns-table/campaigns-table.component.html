@@ -35,6 +35,7 @@
                scrollHeight="50vh">
         <ng-template pTemplate="header">
           <tr>
+            <th *ngIf="hasActions" class="actions" pFrozenColumn>Thao tác</th>
             <th
               *ngFor="let col of cols"
               pSortableColumn="{{ col.sortable ? col.field : ''}}"
@@ -45,18 +46,27 @@
         </ng-template>
         <ng-template let-campaign pTemplate="body">
           <tr>
+            <td *ngIf="hasActions" class="actions" pFrozenColumn>
+              <i
+                class="hover:cursor-pointer pi pi-history pr-5"
+                pTooltip="Xem báo cáo"
+              ></i>
+              <i
+                *ngIf="campaign.state === 'PENDING' || campaign.state === 'PAUSE'"
+                [pTooltip]="campaign.state === 'PENDING' ? 'Bắt đầu' : 'Tiếp tục'"
+                class="hover:cursor-pointer pi pi-play pr-5"></i>
+              <i
+                *ngIf="campaign.state === 'RUNNING'"
+                pTooltip="Tạm dừng"
+                class="hover:cursor-pointer pi pi-pause pr-5"></i>
+              <i
+                *ngIf="campaign.state === 'RUNNING'"
+                pTooltip="Kết thúc"
+                class="hover:cursor-pointer pi pi-check pr-5"></i>
+            </td>
             <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
-              <td *ngSwitchCase="'action'" [style]="campaign[col.field]?.styles || {}">
-                <button *ngIf="campaign.state !== 'PENDING'" pButton label="Báo cáo" class="p-button-sm w-100"></button>&nbsp;
-                <button
-                  *ngIf="campaign.state === 'PENDING'"
-                  pButton
-                  label="Xóa"
-                  class="p-button-sm p-button-danger w-100"></button>
-              </td>
-
               <td *ngSwitchCase="'name'" [style]="campaign[col.field]?.styles || {}">
-                <p (click)="navigate('campaigns/details', campaign.id)" >{{ campaign[col.field] }}</p>
+                <p (click)="navigate('campaigns/details', campaign.id)">{{ campaign[col.field] }}</p>
               </td>
 
               <td *ngSwitchCase="'startTime'" [style]="campaign[col.field]?.styles || {}">
@@ -72,11 +82,11 @@
               </td>
 
               <td *ngSwitchCase="'state'" [style]="campaign[col.field]?.styles || {}" class="text-center">
-                <p class="mb-2">
-                  <span class="w-100 badge bg-success text-white">{{ campaign[col.field] }}</span>
-                <p *ngIf="campaign.state !== 'FINISH' && campaign.state !== 'RUNNING'">
-                  <p-inputSwitch (onChange)="handleStateChange($event, campaign)"></p-inputSwitch>
-                </p>
+                <p-tag
+                  [styleClass]="'w-100'"
+                  [value]="getStateLabel(campaign.state)"
+                  [pTooltip]="getStateLabel(campaign.state)"
+                  [severity]="getColor(campaign.state)"/>
               </td>
 
               <td *ngSwitchDefault

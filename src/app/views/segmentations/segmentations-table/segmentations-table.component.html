@@ -1,11 +1,9 @@
 <div>
-
   <div class="card">
     <div class="card-body">
       <button pButton type="button" label="Thêm mới" icon="pi pi-plus" class="p-button-text"></button>
     </div>
   </div>
-
   <div class="card mt-6">
     <div class="card-body">
       <div>
@@ -33,6 +31,7 @@
                  scrollHeight="50vh">
           <ng-template pTemplate="header">
             <tr>
+              <th *ngIf="hasActions" class="actions" pFrozenColumn>Thao tác</th>
               <th *ngFor="let col of cols" style="min-width:300px">
                 {{col.header}}
               </th>
@@ -40,13 +39,21 @@
           </ng-template>
           <ng-template let-segmentation pTemplate="body">
             <tr>
+              <td *ngIf="hasActions" class="actions" pFrozenColumn>
+                <i
+                  class="hover:cursor-pointer pi pi-file-edit pr-5"
+                  pTooltip="Sửa"
+                ></i>
+                <i
+                  class="hover:cursor-pointer pi pi-copy pr-5"
+                  pTooltip="Nhân bản"
+                ></i>
+                <i
+                  class="hover:cursor-pointer pi pi-times pr-5"
+                  pTooltip="Xóa"
+                  (click)="handleRemove(segmentation)"></i>
+              </td>
               <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
-                <td *ngSwitchCase="'action'" [style]="segmentation[col.field]?.styles || {}">
-                  <i class="hover:cursor-pointer pi pi-file-edit pr-5"></i>
-                  <i class="hover:cursor-pointer pi pi-copy pr-5"></i>
-                  <i class="hover:cursor-pointer pi pi-times pr-5" (click)="handleRemove(segmentation)"></i>
-                </td>
-
                 <td *ngSwitchCase="'creationTime'" [style]="segmentation[col.field]?.styles || {}">
                   {{ segmentation[col.field] && (segmentation[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
                 </td>
@@ -67,7 +74,7 @@
         </p-table>
         <div class="flex primeng-paging-container mt-3">
           <div class="font-bold">
-            Tổng: {{(primengTableHelper.totalRecordsCount)}}
+            Tổng: {{primengTableHelper.totalRecordsCount ?? 0}}
           </div>
           <div class="grow">
             <p-paginator

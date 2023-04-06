@@ -99,12 +99,11 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       this.cols = [
         {field: 'name', header: 'Chiến dịch', styles: {minWidth: '200px'}, sortable: true},
         {field: 'script', header: 'Kịch bản', styles: {minWidth: '200px'}},
-        {field: 'state', header: 'Trạng thái', styles: {minWidth: '160px'}},
+        {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
         {field: 'startTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
         {field: 'endTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
         {field: 'thoseInCharge', header: 'Người phụ trách', styles: {minWidth: '300px'}},
         {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
-        {field: 'action', header: 'Thao tác', styles: {minWidth: '160px'}},
         {field: 'lastModificationTime', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
       ];
     }
@@ -134,5 +133,31 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   async routeAddCampaign() {
     await this.router.navigate(['campaigns/create']);
+  }
+
+  getStateLabel(state: string): string {
+    switch (state) {
+      case 'PENDING':
+        return 'Đang chờ';
+      case 'RUNNING':
+        return 'Đang chạy';
+      case 'PAUSE':
+        return 'Tạm dừng';
+      default:
+        return 'Kết thúc';
+    }
+  }
+
+  getColor(state: string): string {
+    switch (state) {
+      case 'PENDING':
+        return 'info';
+      case 'RUNNING':
+        return 'success';
+      case 'PAUSE':
+        return 'Warning';
+      default:
+        return 'danger';
+    }
   }
 }

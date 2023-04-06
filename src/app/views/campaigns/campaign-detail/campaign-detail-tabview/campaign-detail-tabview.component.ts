@@ -9,12 +9,8 @@ import { CampaignSummaryComponent } from "../campaign-summary/campaign-summary.c
 })
 export class CampaignDetailTabviewComponent implements OnInit {
 
-  @ViewChild('campaignSummaryComponent') private readonly campaignSummaryComponent: CampaignSummaryComponent;
-  @ViewChild('campaignConcreteComponent') private readonly campaignConcreteComponent: CampaignConcreteComponent;
-
   ngOnInit(): void {
-    console.log(this.campaignSummaryComponent);
-    console.log(this.campaignConcreteComponent);
+
   }
 
 
