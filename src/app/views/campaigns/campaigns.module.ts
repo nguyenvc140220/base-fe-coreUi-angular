@@ -46,6 +46,7 @@ import {
 import { CampaignSummaryComponent } from './campaign-detail/campaign-summary/campaign-summary.component';
 import { CampaignConcreteComponent } from './campaign-detail/campaign-concrete/campaign-concrete.component';
 import { ReportIndexModule } from "@shared/components/report-index/report-index.module";
+import { TagModule } from "primeng/tag";
 
 const PRIMENG = [
   TableModule,
@@ -104,7 +105,8 @@ const ANGULAR_COMMON = [
     PanelModule,
     CardModule,
     FontAwesomeModule,
-    ReportIndexModule
+    ReportIndexModule,
+    TagModule
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],

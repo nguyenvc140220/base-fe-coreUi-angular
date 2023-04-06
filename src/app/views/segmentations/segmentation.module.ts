@@ -20,7 +20,7 @@ import { SegmentationRoutingModule } from "./segmentation-routing.module";
 import { SegmentationsTableComponent } from './segmentations-table/segmentations-table.component';
 import { ToastModule } from "primeng/toast";
 import { OverlayPanelModule } from "primeng/overlaypanel";
-import { DatePipe, NgForOf, NgSwitch, NgSwitchCase, NgSwitchDefault } from "@angular/common";
+import { DatePipe, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from "@angular/common";
 import { DialogButtonModule } from "@shared/components/dialog-button/dialog-button.module";
 import { SegmentationDeleteModalComponent } from './segmentation-delete-modal/segmentation-delete-modal.component';
 import { CoreModule } from "@shared/root.module";
@@ -45,6 +45,7 @@ const PRIMENG = [
 const ANGULAR_COMMON = [
   NgSwitch,
   NgForOf,
+  NgIf,
   NgSwitchCase,
   NgSwitchDefault,
 ];

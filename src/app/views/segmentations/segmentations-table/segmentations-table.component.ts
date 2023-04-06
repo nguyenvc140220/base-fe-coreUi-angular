@@ -22,9 +22,7 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
 
   private unsubscribe = new Subject();
 
-
   @ViewChild('paginator') paginator: Paginator;
-
 
   constructor(
     injector: Injector,
@@ -85,7 +83,6 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
     {
       this.cols = [
         {field: 'name', header: 'Tên phân khúc', styles: {maxWidth: '300px'}},
-        {field: 'action', header: 'Thao tác', styles: {maxWidth: '200px'}},
         {field: 'numOfContacts', header: 'Liên hệ thuộc phân khúc', styles: {maxWidth: '50px'}},
         {field: 'creationTime', header: 'Ngày tạo', styles: {maxWidth: '100px'}},
         {field: 'createdBy', header: 'Người tạo', styles: {maxWidth: '100px'}},
@@ -99,7 +96,7 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
   handleRemove(segmentation: SegmentationListModel) {
     const ref = this.dialogService.open(SegmentationDeleteModalComponent, {
       header: 'Xóa phân khúc khách hàng',
-      width: '50%',
+      width: '30%',
       autoZIndex: true,
       closable: true,
       closeOnEscape: true,
