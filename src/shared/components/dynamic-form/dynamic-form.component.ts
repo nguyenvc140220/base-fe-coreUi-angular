@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
@@ -10,20 +10,11 @@ import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
 })
-export class DynamicFormComponent implements OnChanges {
+export class DynamicFormComponent {
   @Input() formGroup: FormGroup;
   @Input() properties: DynamicPropertyModel[];
-  defaultProperties: DynamicPropertyModel[];
-  dynamicProperties: DynamicPropertyModel[];
   DATA_TYPE = DynamicDataTypeEnum;
   INPUT_TYPE = DynamicInputTypeEnum;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.properties?.length > 0) {
-      this.defaultProperties = this.properties.filter(el => !el.editable)
-      this.dynamicProperties = this.properties.filter(el => el.editable)
-    }
-  }
 
   onShowDropdown(main: string, overlay: string): void {
     const dropdown = document.querySelector(main) as HTMLElement;
