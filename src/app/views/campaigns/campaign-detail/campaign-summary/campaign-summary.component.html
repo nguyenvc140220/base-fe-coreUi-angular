@@ -1,0 +1,28 @@
+<div class="row text-center flex justify-center items-center">
+  <span pButton
+        class="p-button-text w-auto"
+        label="Bấm để cập nhật"
+        icon="pi pi-refresh"
+        (click)="handleRefresh($event)"></span>&nbsp;
+  <span class="w-auto">Cập nhật lần cuối lúc: {{ 0 | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+</div>
+<p-divider></p-divider>
+<div class="row">
+  <p-panel [toggleable]="true">
+    <ng-template class="w-100" pTemplate="header">
+      <div class="flex justify-around items-center">
+        <span>Tổng quan chiến dịch</span>
+      </div>
+    </ng-template>
+
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 xl:grid-cols-7 gap-4">
+      <app-report-index [icon]="'faUsers'" [label]="'Tổng cuộc gọi'" [reportIndex]="'69.69K'"/>
+      <app-report-index [icon]="'faUsers'" [label]="'Gọi thành công'" [reportIndex]="'6.9K'"/>
+      <app-report-index [icon]="'faChartLine'" [label]="'Hứng thú'" [reportIndex]="'1669'"/>
+      <app-report-index [icon]="'faChartPie'" [label]="'Tổng phút gọi'" [reportIndex]="'1234'"/>
+      <app-report-index [icon]="'faMoneyBillWave'" [label]="'Tổng chi phí'" [reportIndex]="'45M'"/>
+      <app-report-index [icon]="'faGauge'" [label]="'Trung bình gọi (s)'" [reportIndex]="'32.45'"/>
+      <app-report-index [icon]="'faPercent'" [label]="'Tỷ lệ hứng thú (%)'" [reportIndex]="'2.54'"/>
+    </div>
+  </p-panel>
+</div>
