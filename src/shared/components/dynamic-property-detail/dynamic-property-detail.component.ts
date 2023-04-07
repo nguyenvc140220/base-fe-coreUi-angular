@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum'
 
 @Component({
@@ -11,12 +11,14 @@ import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum'
 })
 
 export class DynamicPropertyDetailComponent {
-  formGroup: FormGroup = new FormGroup({});
+  formGroup: FormGroup;
   entity: DynamicPropertyModel;
   constructor(
     public ref: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig
-  ) { }
+  ) {
+    this.formGroup = new FormGroup({});
+  }
   ngOnInit(): void {
     if (this.dynamicDialogConfig.data.entity) {
       console.log('#### form data ####');
@@ -26,7 +28,21 @@ export class DynamicPropertyDetailComponent {
     }
   }
   generateForm() {
-    switch(this.entity.dataType) {
+
+    this.formGroup.addControl('displayName', new FormControl({
+      value: this.entity.displayName,
+      disabled: true,
+    }
+    ));
+    // add tooltip formcontrol, value is entity.tooltip and disabled is true
+    this.formGroup.addControl('tooltip', new FormControl({
+      value: this.entity.tooltip,
+      disabled: true,
+    }
+    ));
+    
+    switch (this.entity.dataType) {
+
       case DynamicDataTypeEnum.DATETIME:
         console.log('#### datetime ####');
         break;
