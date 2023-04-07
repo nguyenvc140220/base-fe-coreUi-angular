@@ -48,6 +48,7 @@ import { CampaignConcreteComponent } from './campaign-detail/campaign-concrete/c
 import { ReportIndexModule } from "@shared/components/report-index/report-index.module";
 import { TagModule } from "primeng/tag";
 import { NgxEchartsModule } from "ngx-echarts";
+import { CustomerSegmentationComponent } from './campaigns-create/campaigns-contact-data/customer-segmentation/customer-segmentation.component';
 
 const PRIMENG = [
   TableModule,
@@ -92,7 +93,8 @@ const ANGULAR_COMMON = [
     CampaignsTableComponent,
     CampaignsContactDataComponent,
     CampaignsConfigurationComponent,
-    CampaignsCompletedComponent
+    CampaignsCompletedComponent,
+    CustomerSegmentationComponent
   ],
   imports: [
     ...PRIMENG,

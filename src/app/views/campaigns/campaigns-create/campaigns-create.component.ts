@@ -35,7 +35,7 @@ export class CampaignsCreateComponent implements OnInit {
       {
         label: 'Data khách hàng',
         command: () => {
-          console.log("vvvvv")
+          this.activeIndex = 1
         },
       },
       {

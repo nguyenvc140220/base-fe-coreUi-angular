@@ -27,14 +27,14 @@
   </ng-template>
 
   <ng-template [ngIf]="activeIndex === 1">
-    <app-campaigns-general-information [(activeIndex)]="activeIndex"></app-campaigns-general-information>
+    <app-campaigns-contact-data [(activeIndex)]="activeIndex"></app-campaigns-contact-data>
   </ng-template>
 
   <ng-template [ngIf]="activeIndex === 2">
-    <app-campaigns-general-information [(activeIndex)]="activeIndex"></app-campaigns-general-information>
+    <app-campaigns-configuration [(activeIndex)]="activeIndex"></app-campaigns-configuration>
   </ng-template>
 
   <ng-template [ngIf]="activeIndex === 3">
-    <app-campaigns-general-information [(activeIndex)]="activeIndex"></app-campaigns-general-information>
+    <app-campaigns-completed [(activeIndex)]="activeIndex"></app-campaigns-completed>
   </ng-template>
 </div>
