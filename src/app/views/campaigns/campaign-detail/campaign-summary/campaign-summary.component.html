@@ -7,7 +7,8 @@
   <span class="w-auto">Cập nhật lần cuối lúc: {{ 0 | date:'dd/MM/yyyy HH:mm:ss' }}</span>
 </div>
 <p-divider></p-divider>
-<div class="row">
+
+<div class="mb-2">
   <p-panel [toggleable]="true">
     <ng-template class="w-100" pTemplate="header">
       <div class="flex justify-around items-center">
@@ -26,8 +27,16 @@
     </div>
   </p-panel>
 
-  <p-panel header="Chi phí gọi theo ngày" [toggleable]="true">
+</div>
 
+<div class="mb-2">
+  <p-panel header="Cuộc gọi hứng thú theo ngày" [toggleable]="true">
+    <div echarts [options]="options_1" class="chart"></div>
   </p-panel>
+</div>
 
+<div class="mb-2">
+  <p-panel header="Trạng thái cuộc gọi" [toggleable]="true">
+    <div echarts [options]="options_2" class="chart"></div>
+  </p-panel>
 </div>
