@@ -15,6 +15,7 @@ import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 import { DYNAMIC_DATA_TYPE } from '@shared/enums/dynamic-data-type.const';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DynamicPropertyDetailComponent } from '@shared/components/dynamic-property-detail/dynamic-property-detail.component';
+import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 
 @Component({
   selector: 'app-dynamic-property-list',
@@ -22,7 +23,7 @@ import { DynamicPropertyDetailComponent } from '@shared/components/dynamic-prope
   styleUrls: ['./dynamic-property-list.component.scss'],
 })
 export class DynamicPropertyListComponent
-  extends ComponentBase<any>
+  extends ComponentBase<DynamicPropertyModel>
   implements OnInit, OnDestroy
 {
   @Input() dynamicType = DynamicEntityTypeEnum.CONTACT;
@@ -30,8 +31,9 @@ export class DynamicPropertyListComponent
     { field: 'id', title: 'Hành động' },
     { field: 'displayName', title: 'Tên trường dữ liệu' },
     { field: 'entityType', title: 'Kiểu dữ liệu' },
-    { field: 'enabled', title: 'Trạng thái' },
+    { field: 'editable', title: 'Trạng thái' },
     { field: 'creationTime', title: 'Ngày tạo' },
+    { field: 'updatedTime', title: 'Ngày cập nhật gần nhất' },
   ];
   @ViewChild('paginator') paginator: Paginator;
   constructor(

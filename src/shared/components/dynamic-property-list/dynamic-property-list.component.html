@@ -18,15 +18,23 @@
       <tr (click)="showDetail(property)">
         <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" >
           <td *ngSwitchCase="'id'">
-            <i class="pi pi-file-edit pr-5"></i>
-            <i class="pi pi-copy pr-5"></i>
-            <i class="pi pi-sitemap pr-5"></i>
+            <i class="pi pi-file-edit pr-5" pTooltip="Sửa"></i>
+            <i class="pi pi-lock pr-5" pTooltip="Ẩn"></i>
+            <i class="pi pi-trash pr-5" pTooltip="Xóa"></i>
           </td>
           <td *ngSwitchCase="'entityType'" >
             {{getPropertyType(property)}}
           </td>
+          <td *ngSwitchCase="'editable'" >
+            <p-chip [label]="!property[col.field] ? 'Hiển thị' : 'Ẩn'"
+                    [style]="!property[col.field] ? {'background-color': '#D9ECD9', 'color': '#328F1A'} : {'background-color': '#FFE6E9', 'color': '#D9001B'}">
+            </p-chip>
+          </td>
           <td *ngSwitchCase="'creationTime'" >
             {{property[col.field] ?? '-' | date: 'dd/MM/yyyy'}}
+          </td>
+          <td *ngSwitchCase="'updatedTime'" class="text-center">
+            {{'-'}}
           </td>
           <td *ngSwitchDefault >
             {{property[col.field] ?? '-'}}

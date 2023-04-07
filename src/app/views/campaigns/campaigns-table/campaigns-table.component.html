@@ -66,7 +66,10 @@
             </td>
             <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
               <td *ngSwitchCase="'name'" [style]="campaign[col.field]?.styles || {}">
-                <p (click)="navigate('campaigns/details', campaign.id)">{{ campaign[col.field] }}</p>
+                <p
+                  class="text-blue-500 hover:underline cursor-pointer"
+                  (click)="navigate('campaigns/details', campaign.id)"
+                >{{ campaign[col.field] }}</p>
               </td>
 
               <td *ngSwitchCase="'startTime'" [style]="campaign[col.field]?.styles || {}">

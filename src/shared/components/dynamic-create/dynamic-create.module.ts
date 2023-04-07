@@ -4,9 +4,16 @@ import { DialogButtonModule } from '@shared/components/dialog-button/dialog-butt
 import { DynamicCreateComponent } from '@shared/components/dynamic-create/dynamic-create.component';
 import { CoreModule } from '@shared/root.module';
 import { DynamicFormModule } from '@shared/components/dynamic-form/dynamic-form.module';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [DynamicCreateComponent],
-  imports: [CommonModule, DialogButtonModule, CoreModule, DynamicFormModule]
+  imports: [
+    CommonModule,
+    DialogButtonModule,
+    CoreModule,
+    DynamicFormModule,
+    DividerModule,
+  ],
 })
 export class DynamicCreateModule {}

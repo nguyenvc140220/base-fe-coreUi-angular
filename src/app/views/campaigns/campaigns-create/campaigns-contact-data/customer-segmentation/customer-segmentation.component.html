@@ -1,0 +1,35 @@
+<p-divider align="center">
+  <p-button label="Phân khúc khách hàng" styleClass="p-button-outlined p-button-secondary"></p-button>
+</p-divider>
+<form>
+  <div class="form-group row flex">
+    <div class="py-4">
+      <div class="d-flex justify-content-between">
+        <div class="text-justify">
+          <label class="sm:text-sm font-normal" for="conditionalSegmentation">Khi khách hàng</label>
+        </div>
+        <div class="col-3 pr-4">
+          <p-dropdown
+            id="conditionalSegmentation"
+            [options]="conditionalSegmentation"
+            optionLabel="label"
+            optionValue="value"
+            [style]="{'minWidth':'100%'}">
+          </p-dropdown>
+        </div>
+        <div class="col-8">
+          <p-multiSelect
+            id=""
+            [options]="segmentations"
+            placeholder="Chọn phân khúc"
+            optionLabel="name"
+            optionValue="id"
+            [style]="{'minWidth':'100%'}">
+          </p-multiSelect>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<p-divider align="left">Và</p-divider>

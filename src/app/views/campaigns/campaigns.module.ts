@@ -47,6 +47,8 @@ import { CampaignSummaryComponent } from './campaign-detail/campaign-summary/cam
 import { CampaignConcreteComponent } from './campaign-detail/campaign-concrete/campaign-concrete.component';
 import { ReportIndexModule } from "@shared/components/report-index/report-index.module";
 import { TagModule } from "primeng/tag";
+import { NgxEchartsModule } from "ngx-echarts";
+import { CustomerSegmentationComponent } from './campaigns-create/campaigns-contact-data/customer-segmentation/customer-segmentation.component';
 
 const PRIMENG = [
   TableModule,
@@ -91,7 +93,8 @@ const ANGULAR_COMMON = [
     CampaignsTableComponent,
     CampaignsContactDataComponent,
     CampaignsConfigurationComponent,
-    CampaignsCompletedComponent
+    CampaignsCompletedComponent,
+    CustomerSegmentationComponent
   ],
   imports: [
     ...PRIMENG,
@@ -106,7 +109,10 @@ const ANGULAR_COMMON = [
     CardModule,
     FontAwesomeModule,
     ReportIndexModule,
-    TagModule
+    TagModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],

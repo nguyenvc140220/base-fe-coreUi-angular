@@ -22,7 +22,6 @@ const routes: Routes = [
       title: $localize`Chi tiết chiến dịch`,
     }
   },
-
   {
     path: 'create',
     component: CampaignsCreateComponent,

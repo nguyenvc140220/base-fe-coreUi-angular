@@ -4,11 +4,13 @@ import { DynamicPropertyListComponent } from './dynamic-property-list.component'
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { DestroyService } from '@shared/services';
+import { DockModule } from 'primeng/dock';
+import { ChipModule } from 'primeng/chip';
 
 @NgModule({
   declarations: [DynamicPropertyListComponent],
   exports: [DynamicPropertyListComponent],
-  imports: [CommonModule, TableModule, PaginatorModule],
+  imports: [CommonModule, TableModule, PaginatorModule, DockModule, ChipModule],
   providers: [DestroyService],
 })
 export class DynamicPropertyListModule {}
