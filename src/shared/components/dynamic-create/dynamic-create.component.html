@@ -1,13 +1,30 @@
 <div class="container card">
-  <app-dynamic-form
-    [formGroup]="form"
-    [properties]="properties">
-  </app-dynamic-form>
-</div>
-<div class="row mt-4">
-  <app-dialog-button
-    [status]="form?.invalid | getButtonStatus: isLoading"
-    (event)="onDialogEvent($event)"
-    class="w-100"
-  ></app-dialog-button>
+  <div class="row mt-2">
+    <app-dialog-button
+      [status]="form?.invalid | getButtonStatus: isLoading"
+      (event)="onDialogEvent($event)"
+      class="w-100"
+    ></app-dialog-button>
+  </div>
+  <p-divider></p-divider>
+  <div class="row">
+    <div class="col-6">
+      <div class="m-1">
+        <div class="text-lg font-bold mb-2">Thông tin chung</div>
+        <app-dynamic-form
+          [formGroup]="form"
+          [properties]="defaultProperties">
+        </app-dynamic-form>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="m-1">
+        <div class="text-lg font-bold mb-2">Trường động</div>
+        <app-dynamic-form
+          [formGroup]="form"
+          [properties]="dynamicProperties">
+        </app-dynamic-form>
+      </div>
+    </div>
+  </div>
 </div>

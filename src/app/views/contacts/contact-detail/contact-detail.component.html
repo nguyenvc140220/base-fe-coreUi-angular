@@ -34,7 +34,7 @@
           </p-tabPanel>
         </p-tabView>
         <div class="col-md-4 p-2">
-          <p-accordion [activeIndex]="0">
+          <p-accordion [multiple]="true" [activeIndex]="[0]">
             <p-accordionTab header="Thông tin chung">
               <div class="space-y-2">
                 <div class="flex flex-row" *ngFor="let info of contactInfos">

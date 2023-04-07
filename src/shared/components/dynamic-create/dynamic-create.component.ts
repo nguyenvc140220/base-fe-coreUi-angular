@@ -10,9 +10,9 @@ import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-prope
 import { DynamicFormBuilder } from '@shared/services/dynamic-field/dynamic-form-builder';
 import { DynamicModeEnum } from '@shared/enums/dynamic-mode.enum';
 import { DynamicEntityModel } from '@shared/models/dynamic-field/dynamic-response.model';
-import { ActivatedRoute, Router } from "@angular/router";
-import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
-import { MessageService } from "primeng/api";
+import { ActivatedRoute, Router } from '@angular/router';
+import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-dynamic-create',
@@ -21,9 +21,12 @@ import { MessageService } from "primeng/api";
 })
 export class DynamicCreateComponent
   extends DestroyService
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   form: FormGroup = new FormGroup({});
   properties: DynamicPropertyModel[];
+  defaultProperties: DynamicPropertyModel[];
+  dynamicProperties: DynamicPropertyModel[];
   dynamicType: DynamicEntityTypeEnum;
   dynamicMode: DynamicModeEnum;
   entity: DynamicEntityModel;
@@ -39,13 +42,17 @@ export class DynamicCreateComponent
   ) {
     super();
     this.breadcrumbStore.items = [
-      {label: 'Danh sách liên hệ', routerLink: ['/contacts']}];
+      { label: 'Danh sách liên hệ', routerLink: ['/contacts'] },
+    ];
     this.dynamicType = this.activatedRoute.snapshot.paramMap['params']['type'];
     this.dynamicMode = this.activatedRoute.snapshot.paramMap['params']['mode'];
     if (this.dynamicMode == DynamicModeEnum.EDIT) {
       this.entity = this.router.getCurrentNavigation().extras.state['entity'];
-      this.breadcrumbStore.items.push({label: `${this.entity.id}`}, {label: 'Sửa liên hệ'})
-    } else this.breadcrumbStore.items.push({label: 'Thêm mới liên hệ'})
+      this.breadcrumbStore.items.push(
+        { label: `${this.entity.id}` },
+        { label: 'Sửa liên hệ' }
+      );
+    } else this.breadcrumbStore.items.push({ label: 'Thêm mới liên hệ' });
   }
 
   ngOnInit(): void {
@@ -78,6 +85,12 @@ export class DynamicCreateComponent
             if (this.dynamicMode == DynamicModeEnum.EDIT) {
               this.form.patchValue(this.entity);
             }
+            this.defaultProperties = this.properties.filter(
+              (el) => !el.editable
+            );
+            this.dynamicProperties = this.properties.filter(
+              (el) => el.editable
+            );
           }
         },
         error: (err) => {
