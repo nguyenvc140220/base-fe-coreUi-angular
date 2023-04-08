@@ -13,6 +13,7 @@ import { DynamicEntityModel } from '@shared/models/dynamic-field/dynamic-respons
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 import { MessageService } from 'primeng/api';
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-dynamic-create',
@@ -21,8 +22,7 @@ import { MessageService } from 'primeng/api';
 })
 export class DynamicCreateComponent
   extends DestroyService
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({});
   properties: DynamicPropertyModel[];
   defaultProperties: DynamicPropertyModel[];
@@ -38,31 +38,30 @@ export class DynamicCreateComponent
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private breadcrumbStore: BreadcrumbStore,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private datePipe: DatePipe
   ) {
     super();
     this.breadcrumbStore.items = [
-      { label: 'Danh sách liên hệ', routerLink: ['/contacts'] },
+      {label: 'Danh sách liên hệ', routerLink: ['/contacts']},
     ];
     this.dynamicType = this.activatedRoute.snapshot.paramMap['params']['type'];
     this.dynamicMode = this.activatedRoute.snapshot.paramMap['params']['mode'];
     if (this.dynamicMode == DynamicModeEnum.EDIT) {
       this.entity = this.router.getCurrentNavigation().extras.state['entity'];
       this.breadcrumbStore.items.push(
-        { label: `${this.entity.id}` },
-        { label: 'Sửa liên hệ' }
+        {
+          label: `${this.entity.id}`,
+          routerLink: ['contacts/detail/' + this.entity.id]
+        },
+        {label: 'Sửa liên hệ'}
       );
-    } else this.breadcrumbStore.items.push({ label: 'Thêm mới liên hệ' });
+    } else this.breadcrumbStore.items.push({label: 'Thêm mới liên hệ'});
   }
 
   ngOnInit(): void {
     this.isLoading = true;
     this.initForm();
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: `Chỉnh sửa ${this.dynamicType} thành công`,
-    });
   }
 
   initForm() {
@@ -83,6 +82,7 @@ export class DynamicCreateComponent
               this.properties
             );
             if (this.dynamicMode == DynamicModeEnum.EDIT) {
+              this.entity['dob'] = this.datePipe.transform(this.entity['dob'], 'dd/MM/yyyy')
               this.form.patchValue(this.entity);
             }
             this.defaultProperties = this.properties.filter(
@@ -105,6 +105,8 @@ export class DynamicCreateComponent
       case ButtonEnum.SAVE_BUTTON:
         if (this.form.valid) {
           this.isLoading = true;
+          if (this.form.value['dob'] != null)
+            this.form.value['dob'] = new Date(this.form.value['dob']).getTime().toString();
           if (this.dynamicMode == DynamicModeEnum.EDIT) {
             this.dynamicFieldService
               .updateDynamicEntity({
