@@ -5,6 +5,7 @@ import { DynamicCreateComponent } from '@shared/components/dynamic-create/dynami
 import { CoreModule } from '@shared/root.module';
 import { DynamicFormModule } from '@shared/components/dynamic-form/dynamic-form.module';
 import { DividerModule } from 'primeng/divider';
+import { ToastModule } from "primeng/toast";
 
 @NgModule({
   declarations: [DynamicCreateComponent],
@@ -14,6 +15,7 @@ import { DividerModule } from 'primeng/divider';
     CoreModule,
     DynamicFormModule,
     DividerModule,
+    ToastModule,
   ],
 })
 export class DynamicCreateModule {}

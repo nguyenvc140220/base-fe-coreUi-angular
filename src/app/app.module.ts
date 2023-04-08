@@ -50,6 +50,7 @@ import { ConfigService } from '@shared/utils/config.service';
 import { PagesModule } from './views/pages/pages.module';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { ToastModule } from "primeng/toast";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -61,7 +62,7 @@ const APP_CONTAINERS = [
   DefaultLayoutComponent,
 ];
 
-const config: SocketIoConfig = { url: '/ws', options: { autoConnect: false } };
+const config: SocketIoConfig = {url: '/ws', options: {autoConnect: false}};
 
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS],
@@ -95,7 +96,8 @@ const config: SocketIoConfig = { url: '/ws', options: { autoConnect: false } };
     BadgeModule,
     ListGroupModule,
     CardModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    ToastModule
   ],
   providers: [
     {
@@ -116,8 +118,8 @@ const config: SocketIoConfig = { url: '/ws', options: { autoConnect: false } };
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     IconSetService,
     Title,
   ],
