@@ -18,9 +18,9 @@
       <tr (click)="showDetail(property)">
         <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" >
           <td *ngSwitchCase="'id'">
-            <i class="pi pi-file-edit pr-5" pTooltip="Sửa"></i>
-            <i class="pi pi-lock pr-5" pTooltip="Ẩn"></i>
-            <i class="pi pi-trash pr-5" pTooltip="Xóa"></i>
+            <i class="pi pi-file-edit pr-5 hover:cursor-pointer" pTooltip="Sửa"></i>
+            <i class="pi pi-lock pr-5 hover:cursor-pointer" pTooltip="Ẩn"></i>
+            <i class="pi pi-trash pr-5 hover:cursor-pointer" pTooltip="Xóa"></i>
           </td>
           <td *ngSwitchCase="'entityType'" >
             {{getPropertyType(property)}}
