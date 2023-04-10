@@ -36,9 +36,9 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
     },
     {
       label: 'Gộp',
-      icon: 'pi pi-link',
+      icon: 'pi pi-sitemap',
       command: () => {
-        console.log('Gán');
+        console.log('Gộp');
       },
     },
   ];
