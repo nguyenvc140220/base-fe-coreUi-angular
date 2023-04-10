@@ -55,7 +55,7 @@
                   <i class="pi pi-copy pr-5 hover:cursor-pointer" pTooltip="Nhân bản"></i>
                   <i class="pi pi-sitemap pr-5 hover:cursor-pointer" pTooltip="Gộp"></i>
                 </td>
-                <td *ngSwitchCase="'phoneNumber'" class="text-blue-500 hover:underline cursor-pointer" (click)="routeContactDetail(contact)">
+                <td *ngSwitchCase="'phoneNumber'" class="text-blue-500" (click)="routeContactDetail(contact)">
                   {{contact[col.code]}}
                 </td>
                 <td *ngSwitchCase="'dob'">

@@ -1,1 +1,104 @@
-<p>campaigns-configuration works!</p>
+<p-accordion [activeIndex]="0" class="py-4">
+  <p-accordionTab header="Chiến lược quay số">
+    <div class="row">
+      <div class="py-4 col-6">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="callNumber">Đầu số gọi ra
+            <span class="text-danger">(*)</span></label>
+        </div>
+        <p-dropdown
+          id="callNumber"
+          [options]=""
+          placeholder="Chọn đầu số gọi ra"
+          optionLabel="label"
+          optionValue="value"
+          [style]="{'minWidth':'100%'}">
+        </p-dropdown>
+      </div>
+
+      <div class="py-4 col-6">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="script">Kịch bản gọi ra
+            <span class="text-danger">(*)</span></label>
+        </div>
+        <p-dropdown
+          id="script"
+          [options]=""
+          placeholder="Chọn kịch bản gọi ra"
+          optionLabel="label"
+          optionValue="value"
+          [style]="{'minWidth':'100%'}">
+        </p-dropdown>
+      </div>
+
+      <div class="py-4 col-6">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="numberOfSpins">Số lần quay cho mỗi khách hàng
+            <span class="text-danger">(*)</span></label>
+        </div>
+        <input
+          class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
+          id="numberOfSpins"
+          maxlength="100"
+          type="number"
+        />
+      </div>
+
+      <div class="py-4 col-6">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="minTiming">Thời gian tối thiểu giữa các lần quay số (Phút)
+            <span class="text-danger">(*)</span></label>
+        </div>
+        <input
+          class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
+          id="minTiming"
+          maxlength="100"
+          type="number"
+        />
+      </div>
+    </div>
+  </p-accordionTab>
+  <form [formGroup]="createForm">
+    <p-accordionTab header="Thời gian quay số">
+      <div *ngFor="let dtItem of createForm.get('lstDayTypes')['controls'];let i = index" [formGroup]="dtItem">
+        <div class="col-1">
+          <p-checkbox [formControl]="dtItem.controls['checked']" class="custom-checkbox mt-2"
+                      label="{{dtItem.controls.dayOfWeek.value }}" binary="true"></p-checkbox>
+        </div>
+        <div class="col-11" formArrayName="lstShift">
+          <div *ngFor="let shift of dtItem.controls.lstShift.controls; let si = index;" [formGroupName]="si">
+            <div class="col-12 d-flex align-items-center mt-2">
+              <div class="col-1 d-flex align-items-center justify-content-end">
+                <i aria-hidden="true"
+                   class="pi pi-times-circle"
+                   pTooltip="Xóa" tooltipPosition="top"></i>
+              </div>
+              <span style="display: flex">
+                        <label class="col-1" style="margin: auto 0; text-align: center;">Từ </label>
+                        <div class="dayType-group">
+                          <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [timeOnly]="true"
+                                      class="col-4"
+                                      [showIcon]="true" [readonlyInput]="true" formControlName="from"></p-calendar>
+                        </div>
+                      </span>
+              <span style="display: flex">
+                        <label class="col-1" style="margin: auto 0; text-align: center; margin-right: 6px">Đến </label>
+                        <div class="dayType-group">
+                          <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [timeOnly]="true"
+                                      class="col-4"
+                                      [showIcon]="true" [readonlyInput]="true" formControlName="to"></p-calendar>
+                        </div>
+                      </span>
+            </div>
+          </div>
+          <div class="col-12 d-flex align-items-center custom-line-height mt-2">
+            <div class="col-1 d-flex justify-content-end">
+              <i aria-hidden="true" class="pi pi-plus-circle" pTooltip="Thêm" tooltipPosition="top"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </p-accordionTab>
+  </form>
+</p-accordion>
