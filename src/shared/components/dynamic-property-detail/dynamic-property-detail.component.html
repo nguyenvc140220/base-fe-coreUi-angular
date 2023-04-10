@@ -42,6 +42,44 @@
             <input id="min-value" formControlName="minValue" type="number"
                 class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
         </div>
+        <div class="mt-4">
+            <label for="double-point" class="text-sm font-medium">Làm tròn đến số thập phân</label>
+            <input id="double-point" formControlName="doublePoint" type="number"
+                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        </div>
     </div>
+    <!-- <div *ngIf="entity.dataType === DynamicDataTypeEnum.LIST"> -->
+    <div class="mt-4">
+        <label class="text-sm font-medium">Cấu hình trường chọn</label>
+        <div class="flex">
+            <p-radioButton value="1" label="Chọn một" formControlName="listSize">
 
+            </p-radioButton>
+        </div>
+        <div class="flex">
+            <p-radioButton value="2" label="Chọn nhiều" formControlName="listSize">
+
+            </p-radioButton>
+        </div>
+        <!-- 
+        
+            <input id="select-radio-single" name="list-size" type="radio" value="1" />
+            <label for="select-radio-single">Chọn một</label>
+        </div>
+        <div class="flex justify-between">
+            <input id="select-radio-multi" name="list-size" type="radio" value="2" />
+            <label for="select-radio-multi">Chọn nhiều</label>
+        </div> -->
+    </div>
+    <!-- <div class="mt-4">
+            <label for="min-value" class="text-sm font-medium">Giá trị tối thiểu</label>
+            <input id="min-value" formControlName="minValue" type="number"
+                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        </div>
+        <div class="mt-4">
+            <label for="double-point" class="text-sm font-medium">Làm tròn đến số thập phân</label>
+            <input id="double-point" formControlName="doublePoint" type="number"
+                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        </div> -->
+    <!-- </div> -->
 </form>

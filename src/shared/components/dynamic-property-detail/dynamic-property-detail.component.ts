@@ -61,26 +61,36 @@ export class DynamicPropertyDetailComponent {
       disabled: true,
     }
     ));
-    
+
 
     switch (this.entity.dataType) {
       case DynamicDataTypeEnum.DATETIME:
-        console.log('#### datetime ####');
         break;
       case DynamicDataTypeEnum.NUMBER:
+        // maxValue is entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MAX)?.validatorValue or entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MAX)?.validatorValue 
+        // minValue is entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MIN)?.validatorValue or entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MIN)?.validatorValue
+        // add maxValue formcontrol, value is entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MAX)?.validatorValue or entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MAX)?.validatorValue and disabled is true
+        const maxValue = this.entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MAX)?.validatorValue
+          || this.entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MAX)?.validatorValue;
+        const minValue = this.entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MIN)?.validatorValue
+          || this.entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MIN)?.validatorValue;
         this.formGroup.addControl('maxValue', new FormControl({
-          value: this.entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MAX)?.validatorValue,
+          value: maxValue,
           disabled: true,
         }
         ));
         this.formGroup.addControl('minValue', new FormControl({
-          value: this.entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MIN)?.validatorValue,
+          value: minValue,
+          disabled: true,
+        }
+        ));
+        this.formGroup.addControl('doublePoint', new FormControl({
+          value: this.entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_POINT)?.validatorValue,
           disabled: true,
         }
         ));
         break;
       case DynamicDataTypeEnum.TEXT:
-        console.log('#### text ####');
         // add maxLength formcontrol, value is entity.maxLength and disabled is true
         this.formGroup.addControl('maxLength', new FormControl({
           value: this.entity.validators.find(x => x.type === ValidatorTypeEnum.STRING_LENGTH_MAX)?.validatorValue,
@@ -89,7 +99,13 @@ export class DynamicPropertyDetailComponent {
         ));
         break;
       case DynamicDataTypeEnum.LIST:
-        console.log('#### list ####');
+        // add listSize formcontrol, value is 1 if entity.validators.find type LIST_SIZE === 1, 2 if > 2
+        const listSize = this.entity.validators.find(x => x.type === ValidatorTypeEnum.LIST_SIZE)?.validatorValue === "1" ? 1 : 2;
+        this.formGroup.addControl('listSize', new FormControl({
+          value: listSize,
+          disabled: true,
+        }
+        ));
         break;
       default:
         console.log('#### default ####');
