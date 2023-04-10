@@ -37,7 +37,7 @@ import {
   CampaignsConfigurationComponent
 } from './campaigns-create/campaigns-configuration/campaigns-configuration.component';
 import { CampaignsCompletedComponent } from './campaigns-create/campaigns-completed/campaigns-completed.component';
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { CheckboxModule } from "primeng/checkbox";
 import {
@@ -48,7 +48,12 @@ import { CampaignConcreteComponent } from './campaign-detail/campaign-concrete/c
 import { ReportIndexModule } from "@shared/components/report-index/report-index.module";
 import { TagModule } from "primeng/tag";
 import { NgxEchartsModule } from "ngx-echarts";
-import { CustomerSegmentationComponent } from './campaigns-create/campaigns-contact-data/customer-segmentation/customer-segmentation.component';
+import {
+  CustomerSegmentationComponent
+} from './campaigns-create/campaigns-contact-data/customer-segmentation/customer-segmentation.component';
+import { AccordionModule } from "primeng/accordion";
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { BrowserModule } from "@angular/platform-browser";
 
 const PRIMENG = [
   TableModule,
@@ -113,6 +118,8 @@ const ANGULAR_COMMON = [
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
+    AccordionModule,
+    FormsModule, ReactiveFormsModule
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],
