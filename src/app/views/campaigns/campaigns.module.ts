@@ -52,8 +52,6 @@ import {
   CustomerSegmentationComponent
 } from './campaigns-create/campaigns-contact-data/customer-segmentation/customer-segmentation.component';
 import { AccordionModule } from "primeng/accordion";
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { BrowserModule } from "@angular/platform-browser";
 
 const PRIMENG = [
   TableModule,
