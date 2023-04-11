@@ -5,6 +5,7 @@ import { PageResponse } from "@shared/models";
 import { SegmentationListModel } from "@shared/models/segmentation/segmentation-list.model";
 import { SegmentationService } from "@shared/services/segmentation/segmentation.service";
 import { DestroyService } from "@shared/services";
+import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-customer-segmentation',
@@ -15,6 +16,7 @@ export class CustomerSegmentationComponent implements OnInit {
   conditionalSegmentation: any[];
   segmentations: any[];
   searchKey: string;
+  segmentationsForm: FormGroup;
 
   constructor(private readonly segmentationService: SegmentationService, private destroy: DestroyService) {};
 
@@ -37,5 +39,35 @@ export class CustomerSegmentationComponent implements OnInit {
           this.segmentations = res.data.content;
         }
       })
+
+    this.segmentationsForm = new FormGroup({
+      segmentations: new FormArray([]),
+      groupName: new FormControl('')
+    });
+
+    const getForm = this.segmentationsForm.get('segmentations') as FormArray;
+
+    let formGroupSegmentation = new FormGroup({
+      options: new FormArray([]),
+      segmentationOptions: new FormControl([Validators.required])
+    })
+    getForm.push(formGroupSegmentation)
+  }
+
+  loadSegmentation(event, index: number) {
+    console.log(event);
+    let getForm = this.segmentationsForm.get('segmentations') as FormArray;
+    let options = getForm.at(index).get('options') as FormArray;
+    options.clear()
+    options.push(new FormControl(event.value))
+  }
+
+  addSegmentation(event) {
+    let getForm = this.segmentationsForm.get('segmentations') as FormArray;
+    let formGroupSegmentation = new FormGroup({
+      options: new FormArray([]),
+      segmentationOptions: new FormControl([Validators.required])
+    })
+    getForm.push(formGroupSegmentation)
   }
 }
