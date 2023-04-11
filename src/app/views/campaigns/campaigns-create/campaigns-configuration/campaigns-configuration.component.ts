@@ -14,13 +14,7 @@ export class CampaignsConfigurationComponent implements OnInit {
 
   lstDayTypes: FormArray;
 
-  form: FormGroup;
-
   constructor(private fb: FormBuilder) {
-    this.createForm = fb.group({
-      name: [],
-      days: fb.array([])
-    })
   }
 
 

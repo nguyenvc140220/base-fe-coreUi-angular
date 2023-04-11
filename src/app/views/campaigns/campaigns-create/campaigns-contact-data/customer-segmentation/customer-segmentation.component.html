@@ -1,40 +1,56 @@
 <p-divider align="center">
   <p-button label="Phân khúc khách hàng" styleClass="p-button-outlined p-button-secondary"></p-button>
 </p-divider>
-<form>
-  <div class="form-group row flex">
-    <div class="py-4">
-      <div class="d-flex justify-content-between">
-        <div class="text-justify">
-          <label class="sm:text-sm font-normal" for="conditionalSegmentation">Khi khách hàng</label>
-        </div>
-        <div class="col-3 pr-4">
-          <p-dropdown
-            id="conditionalSegmentation"
-            [options]="conditionalSegmentation"
-            optionLabel="label"
-            optionValue="value"
-            [style]="{'minWidth':'100%'}">
-          </p-dropdown>
-        </div>
-        <div class="col-8">
-          <p-multiSelect
-            id=""
-            [options]="segmentations"
-            placeholder="Chọn phân khúc"
-            optionLabel="name"
-            optionValue="id"
-            [style]="{'minWidth':'100%'}">
-          </p-multiSelect>
+<form [formGroup]="segmentationsForm">
+  <div *ngFor="let segmentItem of segmentationsForm.get('segmentations')['controls'];let i = index"
+       [formGroup]="segmentItem">
+    <ng-template [ngIf]="i > 0">
+      <p-divider align="left">Và</p-divider>
+    </ng-template>
+    <div class="form-group row flex">
+      <div class="py-4">
+        <div class="d-flex justify-content-between">
+          <div class="text-justify">
+            <label class="sm:text-sm font-normal" for="conditionalSegmentation-{{i}}">Khi khách hàng</label>
+          </div>
+          <div class="col-3 pr-4">
+            <p-dropdown
+              id="conditionalSegmentation-{{i}}"
+              [options]="conditionalSegmentation"
+              optionLabel="label"
+              optionValue="value"
+              [style]="{'minWidth':'100%'}">
+            </p-dropdown>
+          </div>
+          <div class="col-8">
+            <div class="col-12">
+              <p-multiSelect
+                id=""
+                [options]="segmentations"
+                placeholder="Chọn phân khúc"
+                optionLabel="name"
+                [maxSelectedLabels]="1"
+                [selectedItemsLabel]="'Đã chọn {0} phân khúc'"
+                (onChange)="loadSegmentation($event,i)"
+                [style]="{'minWidth':'100%'}">
+              </p-multiSelect>
+            </div>
+
+            <div *ngFor="let options of segmentItem.get('options')['controls']" class="py-2"
+                 class="flex align-items-center gap-2 flex-wrap"
+                 style="display: flex">
+              <p-chip *ngFor="let data of options.value" [label]="data.name" class="px-2"
+                      [style]="{'background-color': '#D9ECD9', 'color': '#328F1A'}">
+              </p-chip>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-12 d-flex align-items-center custom-line-height mt-2">
-    <div class="col-1 d-flex justify-content-end">
-      <i aria-hidden="true" class="pi pi-plus-circle" pTooltip="Thêm" tooltipPosition="top"></i>
-    </div>
+  <div class="col-12 d-flex align-items-center custom-line-height py-4">
+    <i aria-hidden="true" style="font-size: 1.5rem" class="pi pi-plus-circle" pTooltip="Thêm"
+       (click)="addSegmentation($event)"
+       tooltipPosition="top"></i>
   </div>
 </form>
-
-<p-divider align="left">Và</p-divider>
