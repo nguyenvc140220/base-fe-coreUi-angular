@@ -1,7 +1,13 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ComponentBase } from "@shared/utils/component-base.component";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { Router } from "@angular/router";
+import { CampaignService } from "@shared/services/campaign/campaign.service";
+import { Subject, takeUntil } from "rxjs";
+import { BaseResponse } from "@shared/models";
+import { Paginator } from "primeng/paginator";
+import { CampaignListModel } from "@shared/models/campaign/campaign-list.model";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: 'app-campaigns-table',
@@ -22,93 +28,83 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
     sortable?: boolean
   }[];
 
-  mockData = [
-    {
-      id: 'id1',
-      name: 'Chiến dịch 1',
-      script: 'Kịch bản bấm phím 1',
-      state: 'PENDING',
-      startTime: new Date().getTime(),
-      endTime: new Date().getTime(),
-      thoseInCharge: 'Ê giần 1, Ê giần 12, Ê giần 3',
-      numOfAgents: 10,
-      action: '',
-      lastModificationTime: new Date().getTime()
-    },
-    {
-      id: 'id2',
-      name: 'Chiến dịch 2',
-      script: 'Kịch bản bấm phím 1',
-      state: 'RUNNING',
-      startTime: new Date().getTime(),
-      endTime: new Date().getTime(),
-      thoseInCharge: 'Ê giần 1, Ê giần 12, Ê giần 3',
-      numOfAgents: 10,
-      action: '',
-      lastModificationTime: new Date().getTime()
-    },
-    {
-      id: 'id3',
-      name: 'Chiến dịch 3',
-      script: 'Kịch bản bấm phím 1',
-      state: 'FINISH',
-      startTime: new Date().getTime(),
-      endTime: new Date().getTime(),
-      thoseInCharge: 'Ê giần 1, Ê giần 12, Ê giần 3',
-      numOfAgents: 10,
-      action: '',
-      lastModificationTime: new Date().getTime()
-    },
-    {
-      id: 'id4',
-      name: 'Chiến dịch 4',
-      script: 'Kịch bản bấm phím 1',
-      state: 'PAUSE',
-      startTime: new Date().getTime(),
-      endTime: new Date().getTime(),
-      thoseInCharge: 'Ê giần 1, Ê giần 12, Ê giần 3',
-      numOfAgents: 10,
-      action: '',
-      lastModificationTime: new Date().getTime()
-    }
-  ];
-  currentState: boolean;
+  searchKey: string = '';
 
-  constructor(injector: Injector, breadcrumbStore: BreadcrumbStore, private readonly router: Router) {
+  @ViewChild('paginator') paginator: Paginator;
+
+  constructor(
+    injector: Injector,
+    breadcrumbStore: BreadcrumbStore,
+    private readonly router: Router,
+    private readonly messageService: MessageService,
+    private readonly campaignService: CampaignService) {
     super(injector);
 
     breadcrumbStore.items = [{label: 'Quản lý chiến dịch'}];
   }
+
+  private unsubscribe = new Subject();
 
   ngOnDestroy(): void {
   }
 
   ngOnInit(): void {
     this.initDataTable();
-
-    this.primengTableHelper.records = this.mockData;
-    this.primengTableHelper.totalRecordsCount = this.mockData.length;
   }
 
-  paginate($event: any) {
-
+  paginate(event?: Paginator) {
+    this.loadData(event);
   }
 
   private initDataTable() {
     {
       this.cols = [
         {field: 'name', header: 'Chiến dịch', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'script', header: 'Kịch bản', styles: {minWidth: '200px'}},
+        {field: 'campaignScriptId', header: 'Kịch bản', styles: {minWidth: '200px'}},
         {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
-        {field: 'startTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'endTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'thoseInCharge', header: 'Người phụ trách', styles: {minWidth: '300px'}},
+        {field: 'realStartTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
+        {field: 'realEndTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
+        {field: 'agentIds', header: 'Người phụ trách', styles: {minWidth: '300px'}},
         {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
-        {field: 'lastModificationTime', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
+        {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
       ];
     }
 
-    // this.loadData();
+    this.loadData();
+  }
+
+  loadData(event?: any) {
+    this.primengTableHelper.isLoading = true;
+
+    const currentPage = !event ? 1 : this.primengTableHelper.getCurrentPage(this.paginator) ?? 1;
+    const pageSize = this.primengTableHelper.getMaxResultCount(this.paginator, event)
+      ?? this.primengTableHelper.defaultRecordsCountPerPage;
+
+    this.campaignService
+      .getCampaigns(
+        this.searchKey ?? '',
+        currentPage,
+        pageSize
+      )
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        next: (res: BaseResponse<CampaignListModel>) => {
+          this.primengTableHelper.records = res.data;
+          this.primengTableHelper.totalRecordsCount = res.total ?? 0;
+        },
+        error: err => {
+          this.primengTableHelper.isLoading = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Tải danh sách chiến dịch không thành công. Vui lòng thử lại!`,
+          });
+          console.error(`Tải danh sách chiến dịch không thành công: `, err);
+        },
+        complete: () => {
+          this.primengTableHelper.isLoading = false;
+        }
+      })
   }
 
   handleStateChange($event, campaign) {

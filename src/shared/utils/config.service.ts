@@ -30,6 +30,10 @@ export class ConfigService {
     return this.appConfig.mktBackendUrl;
   }
 
+  get campaignPlanningUrl() {
+    return this.appConfig.campaignPlanningUrl;
+  }
+
   get elasticQuery() {
     return this.appConfig.elasticQuery;
   }
