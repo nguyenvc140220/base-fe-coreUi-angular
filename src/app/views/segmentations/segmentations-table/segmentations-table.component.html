@@ -28,7 +28,7 @@
                  [paginator]="false"
                  [autoLayout]="true"
                  [lazy]="true"
-                 scrollHeight="50vh">
+                 scrollHeight="55vh">
           <ng-template pTemplate="header">
             <tr>
               <th *ngIf="hasActions" class="actions" pFrozenColumn>Thao tác</th>
@@ -56,6 +56,10 @@
               <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
                 <td *ngSwitchCase="'creationTime'" [style]="segmentation[col.field]?.styles || {}">
                   {{ segmentation[col.field] && (segmentation[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
+                </td>
+
+                <td *ngSwitchCase="'createdBy'" [style]="segmentation[col.field]?.styles || {}">
+                  {{ !segmentation[col.field] ? 'Hệ thống' : segmentation[col.field] }}
                 </td>
 
                 <td *ngSwitchCase="'lastModificationTime'" [style]="segmentation[col.field]?.styles || {}">

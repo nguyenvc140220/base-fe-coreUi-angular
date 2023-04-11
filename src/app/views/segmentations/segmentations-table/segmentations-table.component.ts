@@ -31,6 +31,10 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
     private readonly messageService: MessageService,
     private readonly segmentationService: SegmentationService) {
     super(injector);
+
+    this.primengTableHelper.predefinedRecordsCountPerPage = [10, 50, 100, 150];
+    this.primengTableHelper.defaultRecordsCountPerPage = 100;
+
     breadcrumbStore.items = [{label: 'Phân khúc khách hàng'}];
   }
 
