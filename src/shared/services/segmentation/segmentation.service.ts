@@ -4,7 +4,6 @@ import { HttpClient } from "@angular/common/http";
 import { ConfigService } from "@shared/utils/config.service";
 import { PageResponse, SingleResponse } from "@shared/models";
 import { SegmentationListModel } from "@shared/models/segmentation/segmentation-list.model";
-import { Observable } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class SegmentationService extends BaseService {
