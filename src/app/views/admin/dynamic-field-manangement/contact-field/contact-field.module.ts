@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { DynamicPropertyListModule } from '@shared/components/dynamic-property-list/dynamic-property-list.module';
 import { DynamicPropertyCreateModule } from '@shared/components/dynamic-property-create/dynamic-property-create.module';
 import { DynamicPropertyDetailModule } from '@shared/components/dynamic-property-detail/dynamic-property-detail.module';
+import { DynamicPropertyEditModule } from '@shared/components/dynamic-property-edit/dynamic-property-edit.module';
 
 @NgModule({
   declarations: [ContactFieldListsComponent],
@@ -19,6 +20,7 @@ import { DynamicPropertyDetailModule } from '@shared/components/dynamic-property
     DynamicPropertyListModule,
     DynamicPropertyCreateModule,
     DynamicPropertyDetailModule,
+    DynamicPropertyEditModule,
   ],
 })
 export class ContactFieldModule {}
