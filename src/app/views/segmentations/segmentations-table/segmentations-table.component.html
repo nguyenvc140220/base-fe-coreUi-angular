@@ -58,6 +58,10 @@
                   {{ segmentation[col.field] && (segmentation[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
                 </td>
 
+                <td *ngSwitchCase="'createdBy'" [style]="segmentation[col.field]?.styles || {}">
+                  {{ !segmentation[col.field] ? 'Hệ thống' : segmentation[col.field] }}
+                </td>
+
                 <td *ngSwitchCase="'lastModificationTime'" [style]="segmentation[col.field]?.styles || {}">
                   {{ segmentation[col.field] && (segmentation[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
                 </td>
