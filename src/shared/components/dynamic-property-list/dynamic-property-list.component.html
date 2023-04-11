@@ -15,7 +15,7 @@
       </tr>
     </ng-template>
     <ng-template let-property pTemplate="body">
-      <tr>
+      <tr (click)="showDetail(property)">
         <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" >
           <td *ngSwitchCase="'id'">
             <i class="pi pi-file-edit pr-5 hover:cursor-pointer" pTooltip="Sửa"></i>

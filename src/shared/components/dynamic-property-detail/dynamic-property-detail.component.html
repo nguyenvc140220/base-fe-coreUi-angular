@@ -1,0 +1,79 @@
+<form [formGroup]="formGroup">
+    <div class="mt4">
+        <label for="display-name" class="text-sm font-medium">Tên trường thông tin</label>
+        <input id="display-name" formControlName="displayName" type="text"
+            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+    </div>
+    <div class="mt4">
+        <label for="tooltip" class="text-sm font-medium">Tooltip</label>
+        <input id="tooltip" formControlName="tooltip" type="text"
+            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+    </div>
+    <div class="mt4">
+        <label for="hint-text" class="text-sm font-medium">Place holder</label>
+        <input id="hint-text" formControlName="hintText" type="text"
+            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+    </div>
+    <div class="mt4">
+        <label for="data-type" class="text-sm font-medium">Kiểu dữ liệu</label>
+        <input id="data-type" formControlName="dataInputType" type="text"
+            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+    </div>
+    <div class="mt4">
+        <label for="editable" class="text-sm font-medium">Dạng dữ liệu</label>
+        <div class="flex items-center">
+            <input id="editable" formControlName="editable" type="checkbox" />
+            <span class="ml-2">Có thể sửa</span>
+        </div>
+    </div>
+    <div class="mt4" *ngIf="entity.dataType === DynamicDataTypeEnum.TEXT">
+        <label for="max-length" class="text-sm font-medium">Độ dài tối đa</label>
+        <input id="max-length" formControlName="maxLength" type="number"
+            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+    </div>
+    <div *ngIf="entity.dataType === DynamicDataTypeEnum.NUMBER">
+        <div class="mt-4">
+            <label for="max-value" class="text-sm font-medium">Giá trị tối đa</label>
+            <input id="max-value" formControlName="maxValue" type="number"
+                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        </div>
+        <div class="mt-4">
+            <label for="min-value" class="text-sm font-medium">Giá trị tối thiểu</label>
+            <input id="min-value" formControlName="minValue" type="number"
+                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        </div>
+        <div class="mt-4">
+            <label for="double-point" class="text-sm font-medium">Làm tròn đến số thập phân</label>
+            <input id="double-point" formControlName="doublePoint" type="number"
+                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        </div>
+    </div>
+    <div *ngIf="entity.dataType === DynamicDataTypeEnum.LIST">
+        <div class="mt-4">
+            <label class="text-sm font-medium">Cấu hình trường chọn</label>
+            <div class="flex">
+                <p-radioButton value="1" label="Chọn một" formControlName="selectSize">
+                </p-radioButton>
+            </div>
+            <div class="flex">
+                <p-radioButton value="2" label="Chọn nhiều" formControlName="selectSize">
+                </p-radioButton>
+            </div>
+        </div>
+        <div class="mt-4">
+            <label for="list-default-values" class="text-sm font-medium">Các lựa chọn</label>
+            <input id="list-default-values" formControlName="listDefaultValues" type="text"
+                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        </div>
+        <div class="mt4">
+            <div class="flex items-center">
+                <input formControlName="editable" type="checkbox" />
+                <span class="ml-2">Cho phép thêm dữ liệu</span>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end my-4 mx-0">
+        <p-button label="Đóng" (click)="close()">
+        </p-button>
+      </div>
+</form>

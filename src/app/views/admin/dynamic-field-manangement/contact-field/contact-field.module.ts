@@ -7,6 +7,7 @@ import { ChipsModule } from 'primeng/chips';
 import { ButtonModule } from 'primeng/button';
 import { DynamicPropertyListModule } from '@shared/components/dynamic-property-list/dynamic-property-list.module';
 import { DynamicPropertyCreateModule } from '@shared/components/dynamic-property-create/dynamic-property-create.module';
+import { DynamicPropertyDetailModule } from '@shared/components/dynamic-property-detail/dynamic-property-detail.module';
 
 @NgModule({
   declarations: [ContactFieldListsComponent],
@@ -17,6 +18,7 @@ import { DynamicPropertyCreateModule } from '@shared/components/dynamic-property
     ButtonModule,
     DynamicPropertyListModule,
     DynamicPropertyCreateModule,
+    DynamicPropertyDetailModule,
   ],
 })
 export class ContactFieldModule {}
