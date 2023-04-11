@@ -26,8 +26,6 @@ export class DynamicPropertyDetailComponent {
   }
   ngOnInit(): void {
     if (this.dynamicDialogConfig.data.entity) {
-      console.log('#### form data ####');
-      console.log(this.dynamicDialogConfig.data.entity);
       this.entity = this.dynamicDialogConfig.data.entity;
       this.generateForm();
     }

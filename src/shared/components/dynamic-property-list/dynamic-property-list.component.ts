@@ -16,6 +16,7 @@ import { DYNAMIC_DATA_TYPE } from '@shared/enums/dynamic-data-type.const';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DynamicPropertyDetailComponent } from '@shared/components/dynamic-property-detail/dynamic-property-detail.component';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
+import { DynamicPropertyEditComponent } from '@shared/components/dynamic-property-edit/dynamic-property-edit.component';
 
 @Component({
   selector: 'app-dynamic-property-list',
@@ -24,8 +25,7 @@ import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-prope
 })
 export class DynamicPropertyListComponent
   extends ComponentBase<DynamicPropertyModel>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   @Input() dynamicType = DynamicEntityTypeEnum.CONTACT;
   cols = [
     { field: 'id', title: 'Hành động' },
@@ -44,7 +44,7 @@ export class DynamicPropertyListComponent
   ) {
     super(injector);
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   ngOnInit(): void {
     this.loadData(null);
@@ -91,7 +91,18 @@ export class DynamicPropertyListComponent
       header: 'Chi tiết trường thông tin',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { entity:entity },
+      data: { entity: entity },
+    });
+    dialog.onClose.subscribe((res) => {
+      console.log(entity);
+    });
+  }
+  edit(entity) {
+    const dialog = this.dialogService.open(DynamicPropertyEditComponent, {
+      header: 'Sửa tên trường thông tin',
+      width: '60%',
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      data: { entity: entity },
     });
     dialog.onClose.subscribe((res) => {
       console.log(entity);
