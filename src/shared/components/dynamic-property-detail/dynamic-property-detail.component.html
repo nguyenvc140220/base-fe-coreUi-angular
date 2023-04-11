@@ -20,9 +20,9 @@
             class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
     </div>
     <div class="mt4">
-        <label for="fixable" class="text-sm font-medium">Dạng dữ liệu</label>
+        <label for="editable" class="text-sm font-medium">Dạng dữ liệu</label>
         <div class="flex items-center">
-            <input id="fixable" formControlName="isFixed" type="checkbox" />
+            <input id="editable" formControlName="editable" type="checkbox" />
             <span class="ml-2">Có thể sửa</span>
         </div>
     </div>
@@ -48,38 +48,32 @@
                 class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
         </div>
     </div>
-    <!-- <div *ngIf="entity.dataType === DynamicDataTypeEnum.LIST"> -->
-    <div class="mt-4">
-        <label class="text-sm font-medium">Cấu hình trường chọn</label>
-        <div class="flex">
-            <p-radioButton value="1" label="Chọn một" formControlName="listSize">
-
-            </p-radioButton>
-        </div>
-        <div class="flex">
-            <p-radioButton value="2" label="Chọn nhiều" formControlName="listSize">
-
-            </p-radioButton>
-        </div>
-        <!-- 
-        
-            <input id="select-radio-single" name="list-size" type="radio" value="1" />
-            <label for="select-radio-single">Chọn một</label>
-        </div>
-        <div class="flex justify-between">
-            <input id="select-radio-multi" name="list-size" type="radio" value="2" />
-            <label for="select-radio-multi">Chọn nhiều</label>
-        </div> -->
-    </div>
-    <!-- <div class="mt-4">
-            <label for="min-value" class="text-sm font-medium">Giá trị tối thiểu</label>
-            <input id="min-value" formControlName="minValue" type="number"
-                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+    <div *ngIf="entity.dataType === DynamicDataTypeEnum.LIST">
+        <div class="mt-4">
+            <label class="text-sm font-medium">Cấu hình trường chọn</label>
+            <div class="flex">
+                <p-radioButton value="1" label="Chọn một" formControlName="selectSize">
+                </p-radioButton>
+            </div>
+            <div class="flex">
+                <p-radioButton value="2" label="Chọn nhiều" formControlName="selectSize">
+                </p-radioButton>
+            </div>
         </div>
         <div class="mt-4">
-            <label for="double-point" class="text-sm font-medium">Làm tròn đến số thập phân</label>
-            <input id="double-point" formControlName="doublePoint" type="number"
+            <label for="list-default-values" class="text-sm font-medium">Các lựa chọn</label>
+            <input id="list-default-values" formControlName="listDefaultValues" type="text"
                 class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
-        </div> -->
-    <!-- </div> -->
+        </div>
+        <div class="mt4">
+            <div class="flex items-center">
+                <input formControlName="editable" type="checkbox" />
+                <span class="ml-2">Cho phép thêm dữ liệu</span>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end my-4 mx-0">
+        <p-button label="Đóng" (click)="close()">
+        </p-button>
+      </div>
 </form>

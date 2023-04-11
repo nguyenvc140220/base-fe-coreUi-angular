@@ -5,6 +5,7 @@ import { CoreModule } from '@shared/root.module';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [DynamicPropertyDetailComponent],
@@ -14,6 +15,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     DialogButtonModule,
     ReactiveFormsModule,
     RadioButtonModule,
+    ButtonModule,
   ],
 })
 export class DynamicPropertyDetailModule { }

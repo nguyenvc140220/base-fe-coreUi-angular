@@ -5,6 +5,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum'
 import { DYNAMIC_DATA_TYPE } from '@shared/enums/dynamic-data-type.const';
 import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
+import { DynamicInputTypeEnum } from '@shared/enums/dynamic-input-type.enum';
 
 @Component({
   selector: 'app-dynam<p-dropdownic-property-detail',
@@ -13,6 +14,7 @@ import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
 })
 
 export class DynamicPropertyDetailComponent {
+
   formGroup: FormGroup;
   entity: DynamicPropertyModel;
   DynamicDataTypeEnum = DynamicDataTypeEnum;
@@ -56,8 +58,8 @@ export class DynamicPropertyDetailComponent {
     }
     ));
     // add isFixed formcontrol, value is entity.isFixed and disabled is true
-    this.formGroup.addControl('isFixed', new FormControl({
-      value: !this.entity.isFixed,
+    this.formGroup.addControl('editable', new FormControl({
+      value: this.entity.editable,
       disabled: true,
     }
     ));
@@ -99,10 +101,16 @@ export class DynamicPropertyDetailComponent {
         ));
         break;
       case DynamicDataTypeEnum.LIST:
-        // add listSize formcontrol, value is 1 if entity.validators.find type LIST_SIZE === 1, 2 if > 2
-        const listSize = this.entity.validators.find(x => x.type === ValidatorTypeEnum.LIST_SIZE)?.validatorValue === "1" ? 1 : 2;
-        this.formGroup.addControl('listSize', new FormControl({
-          value: listSize,
+        if (this.entity.inputType) {
+          const selectSize = this.entity.inputType === DynamicInputTypeEnum.SINGLE_SELECT ? 1 : 2;
+          this.formGroup.addControl('selectSize', new FormControl({
+            value: selectSize,
+            disabled: true,
+          }
+          ));
+        }
+        this.formGroup.addControl('listDefaultValues', new FormControl({
+          value: this.entity.defaultValue,
           disabled: true,
         }
         ));
@@ -110,5 +118,8 @@ export class DynamicPropertyDetailComponent {
       default:
         console.log('#### default ####');
     }
+  }
+  close() {
+    this.ref.close();
   }
 }
