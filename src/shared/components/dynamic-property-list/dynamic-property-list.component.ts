@@ -17,6 +17,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { DynamicPropertyDetailComponent } from '@shared/components/dynamic-property-detail/dynamic-property-detail.component';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { DynamicPropertyEditComponent } from '@shared/components/dynamic-property-edit/dynamic-property-edit.component';
+import { DynamicPropertyDeleteComponent } from '@shared/components/dynamic-property-delete/dynamic-property-delete.component';
 
 @Component({
   selector: 'app-dynamic-property-list',
@@ -100,6 +101,17 @@ export class DynamicPropertyListComponent
   edit(entity) {
     const dialog = this.dialogService.open(DynamicPropertyEditComponent, {
       header: 'Sửa tên trường thông tin',
+      width: '60%',
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      data: { entity: entity },
+    });
+    dialog.onClose.subscribe((res) => {
+      console.log(entity);
+    });
+  }
+  delete(entity) {
+    const dialog = this.dialogService.open(DynamicPropertyDeleteComponent, {
+      header: 'Xóa trường thông tin',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
       data: { entity: entity },
