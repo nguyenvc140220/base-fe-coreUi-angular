@@ -9,6 +9,7 @@ import { DynamicPropertyListModule } from '@shared/components/dynamic-property-l
 import { DynamicPropertyCreateModule } from '@shared/components/dynamic-property-create/dynamic-property-create.module';
 import { DynamicPropertyDetailModule } from '@shared/components/dynamic-property-detail/dynamic-property-detail.module';
 import { DynamicPropertyEditModule } from '@shared/components/dynamic-property-edit/dynamic-property-edit.module';
+import { DynamicPropertyDeleteModule } from '@shared/components/dynamic-property-delete/dynamic-property-delete.module';
 
 @NgModule({
   declarations: [ContactFieldListsComponent],
@@ -21,6 +22,7 @@ import { DynamicPropertyEditModule } from '@shared/components/dynamic-property-e
     DynamicPropertyCreateModule,
     DynamicPropertyDetailModule,
     DynamicPropertyEditModule,
+    DynamicPropertyDeleteModule,
   ],
 })
-export class ContactFieldModule {}
+export class ContactFieldModule { }

@@ -14,7 +14,7 @@
           <td *ngSwitchCase="'id'">
             <i class="pi pi-file-edit pr-5 hover:cursor-pointer" pTooltip="Sửa" (click)="edit(property)"></i>
             <i class="pi pi-lock pr-5 hover:cursor-pointer" pTooltip="Ẩn"></i>
-            <i class="pi pi-trash pr-5 hover:cursor-pointer" pTooltip="Xóa"></i>
+            <i class="pi pi-trash pr-5 hover:cursor-pointer" pTooltip="Xóa" (click)="delete(property)"></i>
           </td>
           <td *ngSwitchCase="'displayName'" (click)="showDetail(property)">
             {{property[col.field]}}</td>
