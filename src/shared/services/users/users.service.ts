@@ -9,25 +9,23 @@ import { UserValidatorRequestModel } from '@shared/models/users/user-validator-r
 import { UserValidatorResponseModel } from '@shared/models/users/user-validator-response-model';
 import { DetailUserResponseModel } from '@shared/models/users/detail-user-response-model';
 import { EditUserRequestModel } from '@shared/models/users/edit-user-request-model';
+import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
+import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
+import { DynamicFieldService } from "@shared/services/dynamic-field/dynamic-field.service";
 
 @Injectable({ providedIn: 'root' })
 export class UsersService extends BaseService {
   constructor(
     protected http: HttpClient,
-    protected configService: ConfigService
+    protected configService: ConfigService,
+    private dynamicFieldService: DynamicFieldService
   ) {
     super(http, configService);
   }
 
-  getUsers(searchKey: string, page: number, pageSize: number | null) {
-    return this.defaultGet<BaseResponse<UserModel>>(
-      `${this.configService.keycloakUrl}/v1.0/account/list`,
-      {
-        page: page,
-        pageSize: pageSize,
-        searchKey: searchKey,
-      }
-    );
+  getUsers(query: DynamicQueryModel) {
+    query.index = DynamicEntityTypeEnum.USER;
+    return this.dynamicFieldService.getDynamicEntity(query);
   }
 
   createUser(request: CreateUserRequestModel) {

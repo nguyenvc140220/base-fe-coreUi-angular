@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { UsersService } from "@shared/services/users/users.service";
 import { takeUntil } from "rxjs";
 import { DestroyService } from "@shared/services";
+import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
 
 @Component({
   selector: 'app-campaigns-general-information',
@@ -15,7 +16,9 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   @Input() formGroup: FormGroup;
   assignedUser: any[];
   searchKey: string;
-
+  query: DynamicQueryModel = {
+    payload: {},
+  };
   constructor(
     private usersService: UsersService,
     private destroy: DestroyService,
@@ -26,12 +29,12 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.usersService
-      .getUsers(this.searchKey ?? '', 1, 10)
+      .getUsers(this.query)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: (res) => {
           if (res.statusCode == 200) {
-            this.assignedUser = res.data;
+            this.assignedUser = res.data.content;
           }
         }
       });
@@ -51,12 +54,12 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   filterUser(event) {
     this.assignedUser = [];
     this.usersService
-      .getUsers(event.originalEvent.data ?? '', 1, 10)
+      .getUsers(this.query)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: (res) => {
           if (res.statusCode == 200) {
-            this.assignedUser = res.data;
+            this.assignedUser = res.data.content;
           }
         }
       });

@@ -1,10 +1,8 @@
 export class CreateUserRequestModel {
   username: string;
   email: string;
-  fullName: string;
+  userFullName: string;
   code: string;
   roles: string[];
-  groups: string[];
   enable: boolean;
-  createdAt: string;
 }

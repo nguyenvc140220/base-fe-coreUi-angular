@@ -22,8 +22,8 @@ export class UserCreateModalComponent implements OnInit {
   form: FormGroup;
   emailErr: string;
   userPermissions = [
-    {label: 'Admin', value: 'ADMIN'},
-    {label: 'Member', value: 'MEMBER'},
+    {label: 'Admin', value: 'admin'},
+    {label: 'Member', value: ''},
   ];
 
   userDto = new UserModel()
@@ -42,11 +42,11 @@ export class UserCreateModalComponent implements OnInit {
   private initForm(): void {
     this.form = new FormGroup({
       username: new FormControl(null, [Validators.required, specialAlphabetCharactersValidator], this.validatorUserNameExist.bind(this)),
-      fullName: new FormControl(null, [Validators.required, specialNonAlphabetCharactersValidator]),
+      userFullName: new FormControl(null, [Validators.required, specialNonAlphabetCharactersValidator]),
       email: new FormControl(null, [Validators.required, Validators.email], this.validatorEmailExist.bind(this)),
-      phone: new FormControl(null),
+      phoneNumber: new FormControl(null),
       roles: new FormControl(null, [Validators.required]),
-      enable: new FormControl(true),
+      status: new FormControl(true),
     });
   }
 
@@ -57,14 +57,11 @@ export class UserCreateModalComponent implements OnInit {
     } else if (button == ButtonEnum.SAVE_BUTTON) {
       const createUserRequest = new CreateUserRequestModel();
       createUserRequest.email = this.form.controls['email']?.value?.trim();
-      createUserRequest.enable = this.form.controls['enable']?.value;
-      createUserRequest.fullName = this.form.controls['fullName']?.value?.trim();
+      createUserRequest.enable = this.form.controls['status']?.value;
+      createUserRequest.userFullName = this.form.controls['userFullName']?.value?.trim();
       createUserRequest.username = this.form.controls['username']?.value?.trim();
       createUserRequest.roles = [this.form.controls['roles']?.value?.trim()]
-      createUserRequest.groups = [];
-      createUserRequest.createdAt = "";
-      createUserRequest.code = "";
-
+      console.log(createUserRequest)
       this.usersService.createUser(createUserRequest).subscribe({
         next: () => {
           this.ref.close('done');
