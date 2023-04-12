@@ -25,7 +25,7 @@ export class CampaignsConfigurationComponent implements OnInit {
   }
 
   loadScripts() {
-    const dynamicScripts = 'assets/elsa-workflows-studio/elsa-custom-type.js';
+    const dynamicScripts = 'assets/elsa-custom-type.js';
     const node = document.createElement('script');
     node.src = dynamicScripts;
     node.type = 'text/javascript';
