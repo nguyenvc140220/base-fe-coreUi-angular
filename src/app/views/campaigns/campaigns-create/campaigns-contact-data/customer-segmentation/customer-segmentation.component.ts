@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { takeUntil } from "rxjs";
 import { PageResponse } from "@shared/models";
 import { SegmentationListModel } from "@shared/models/segmentation/segmentation-list.model";
 import { SegmentationService } from "@shared/services/segmentation/segmentation.service";
 import { DestroyService } from "@shared/services";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { DynamicFilterOperatorEnum } from "@shared/enums/dynamic-filter-operator.enum";
+import { SEGMENTATION_QUERY } from "@shared/constant/campaign.const";
 
 @Component({
   selector: 'app-customer-segmentation',
@@ -13,7 +14,7 @@ import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
   styleUrls: ['./customer-segmentation.component.scss']
 })
 export class CustomerSegmentationComponent implements OnInit {
-  conditionalSegmentation: any[];
+  segmentationQuery = SEGMENTATION_QUERY;
   segmentations: any[];
   searchKey: string;
   @Input() formGroup: FormGroup;
@@ -22,10 +23,6 @@ export class CustomerSegmentationComponent implements OnInit {
   constructor(private readonly segmentationService: SegmentationService, private destroy: DestroyService) {};
 
   ngOnInit(): void {
-    this.conditionalSegmentation = [
-      {label: "Thuộc phân khúc", value: "in"},
-      {label: "Không thuộc phân khúc", value: "notIn"}
-    ];
     this.segmentationService
       .getSegmentations(
         this.searchKey ?? '',
@@ -48,24 +45,32 @@ export class CustomerSegmentationComponent implements OnInit {
 
     let formGroupSegmentation = new FormGroup({
       options: new FormArray([]),
-      segmentationOptions: new FormControl([Validators.required])
+      segmentationSelected: new FormControl(null,[Validators.required]),
+      conditional:new FormControl(this.segmentationQuery[1].value)
     })
     getForm.push(formGroupSegmentation)
   }
 
   loadSegmentation(event, index: number) {
-    console.log(event);
     let getForm = this.segmentationForm.get('segmentations') as FormArray;
     let options = getForm.at(index).get('options') as FormArray;
     options.clear()
     options.push(new FormControl(event.value))
+    console.log(console.log(this.segmentationForm.value))
+    if( this.segmentationForm.get('segmentations').value.length > 0){
+      this.segmentationForm.get('segmentations').value.map(data => {
+        console.log(data)
+      })
+    }
+    this.segmentationForm.value['segmentations']
   }
 
   addSegmentation(event) {
     let getForm = this.segmentationForm.get('segmentations') as FormArray;
     let formGroupSegmentation = new FormGroup({
       options: new FormArray([]),
-      segmentationOptions: new FormControl([Validators.required])
+      segmentationSelected: new FormControl(null,[Validators.required]),
+      conditional:new FormControl(this.segmentationQuery[1].value)
     })
     getForm.push(formGroupSegmentation)
   }

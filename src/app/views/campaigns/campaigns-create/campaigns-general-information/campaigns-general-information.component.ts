@@ -4,6 +4,7 @@ import { UsersService } from "@shared/services/users/users.service";
 import { takeUntil } from "rxjs";
 import { DestroyService } from "@shared/services";
 import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
+import { CAMPAIGN_TYPE } from "@shared/constant/campaign.const";
 
 @Component({
   selector: 'app-campaigns-general-information',
@@ -21,24 +22,7 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   query: DynamicQueryModel = {
     payload: {},
   };
-  campaignType= [
-    {
-      label:"AutoCall IVR",
-      value:"AUTOCALL_IVR"
-    },
-    {
-      label:"AutoCall Predict",
-      value:"AUTOCALL_PREDICT"
-    },
-    {
-      label:"Email",
-      value:"EMAIL"
-    },
-    {
-      label:"SMS",
-      value:"SMS"
-    }
-  ]
+  campaignType= CAMPAIGN_TYPE;
   searchKey: string;
 
   constructor(
