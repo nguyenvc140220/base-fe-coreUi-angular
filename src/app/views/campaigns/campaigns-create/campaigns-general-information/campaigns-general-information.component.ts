@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 import { UsersService } from "@shared/services/users/users.service";
 import { takeUntil } from "rxjs";
 import { DestroyService } from "@shared/services";
+import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
 
 @Component({
   selector: 'app-campaigns-general-information',
@@ -17,6 +18,9 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   @Input() definitionId: string;
   @Output() definitionIdChange= new EventEmitter<string>();
   assignedUser: any[];
+  query: DynamicQueryModel = {
+    payload: {},
+  };
   campaignType= [
     {
       label:"AutoCall IVR",
@@ -45,19 +49,21 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initForm();
+    this.initInput();
+  }
+
+  private initInput(): void {
+    this.query.currentPage= 1;
+    this.query.pageSize = 1000;
     this.usersService
-      .getUsers(this.searchKey ?? '', 1, 1000)
+      .getUsers(this.query)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: (res) => {
           if (res.statusCode == 200) {
-            this.assignedUser = res.data;
+            this.assignedUser = res.data.content;
           }
         }
       });
-  }
-
-  private initForm(): void {
   }
 }
