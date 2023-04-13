@@ -1,38 +1,41 @@
 <form [formGroup]="formGroup">
-  <div class=" form-group  row flex">
-    <div class="py-4">
-      <div class="d-flex justify-content-start">
-        <p-checkbox formControlName="checkDupPhone" value="New York" id="checkDupPhone"></p-checkbox>
-        <label class="sm:text-sm font-normal ml-2" for="checkDupPhone">Check trùng số điện thọai</label>
+  <div *ngFor="let segmentFrom of formGroup.get('segmentFrom')['controls'];let i = index"
+       [formGroup]="segmentFrom">
+    <div class=" form-group  row flex">
+      <div class="py-4">
+        <div class="d-flex justify-content-start">
+          <p-checkbox formControlName="checkDupPhone" value="New York" id="checkDupPhone"></p-checkbox>
+          <label class="sm:text-sm font-normal ml-2" for="checkDupPhone">Check trùng số điện thọai</label>
+        </div>
       </div>
-    </div>
-    <div class="col-8 pb-4">
-      <div class="d-flex justify-content-start">
-        <label class="sm:text-sm font-normal py-1" for="dataContactType">Loại data khách hàng
-          <span class="text-danger">(*)</span>
-        </label>
-      </div>
-      <p-dropdown
-        id="dataContactType"
-        [options]="dataContactTypes"
-        formControlName="dataContactType"
-        placeholder="Chọn loại data khách hàng"
-        optionLabel="label"
-        optionValue="value"
-        (onChange)="eventDataContactType($event)"
-        [style]="{'minWidth':'100%'}">
-      </p-dropdown>
-      <small
-        *ngIf="
+      <div class="col-8 pb-4">
+        <div class="d-flex justify-content-start">
+          <label class="sm:text-sm font-normal py-1" for="dataContactType">Loại data khách hàng
+            <span class="text-danger">(*)</span>
+          </label>
+        </div>
+        <p-dropdown
+          id="dataContactType"
+          [options]="dataContactTypes"
+          formControlName="dataContactType"
+          placeholder="Chọn loại data khách hàng"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="eventDataContactType($event)"
+          [style]="{'minWidth':'100%'}">
+        </p-dropdown>
+        <small
+          *ngIf="
         formGroup.controls['dataContactType']?.touched &&
         formGroup.controls['dataContactType']?.errors?.required
       "
-        class="red-text sm:text-xs text-rose-700"
-      >Không được bỏ trống.</small>
+          class="red-text sm:text-xs text-rose-700"
+        >Không được bỏ trống.</small>
+      </div>
     </div>
+    <ng-template [ngIf]="dataContactType == 'customer-segmentation'">
+      <app-customer-segmentation
+      ></app-customer-segmentation>
+    </ng-template>
   </div>
-  <ng-template [ngIf]="dataContactType == 'customer-segmentation'">
-    <app-customer-segmentation></app-customer-segmentation>
-  </ng-template>
-
 </form>

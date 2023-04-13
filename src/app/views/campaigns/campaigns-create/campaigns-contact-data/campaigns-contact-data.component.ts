@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-campaigns-contact-data',
@@ -10,22 +10,15 @@ export class CampaignsContactDataComponent implements OnInit {
   @Input() activeIndex: number;
   @Output() activeIndexChange = new EventEmitter<number>();
   @Input() formGroup: FormGroup;
-
+  @Output() formGroupChange= new EventEmitter<FormGroup>;
+  @Input() definitionId: string;
+  @Output() definitionIdChange= new EventEmitter<string>();
 
   dataContactTypes: any[];
   dataContactType: string;
 
   ngOnInit(): void {
-    this.initForm()
     this.dataContactTypes = [{value: "customer-segmentation", label: "Phân khúc khách hàng"}]
-  }
-
-  private initForm(): void {
-    this.formGroup = new FormGroup({
-      checkDupPhone: new FormControl(null),
-      dataCustomersType: new FormControl(null),
-      dataContactType: new FormControl(null)
-    })
   }
 
   eventDataContactType(event) {

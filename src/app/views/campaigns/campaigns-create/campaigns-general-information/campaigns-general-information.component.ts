@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { UsersService } from "@shared/services/users/users.service";
 import { takeUntil } from "rxjs";
 import { DestroyService } from "@shared/services";
@@ -13,7 +13,28 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   @Input() activeIndex: number;
   @Output() activeIndexChange = new EventEmitter<number>();
   @Input() formGroup: FormGroup;
+  @Output() formGroupChange= new EventEmitter<FormGroup>;
+  @Input() definitionId: string;
+  @Output() definitionIdChange= new EventEmitter<string>();
   assignedUser: any[];
+  campaignType= [
+    {
+      label:"AutoCall IVR",
+      value:"AUTOCALL_IVR"
+    },
+    {
+      label:"AutoCall Predict",
+      value:"AUTOCALL_PREDICT"
+    },
+    {
+      label:"Email",
+      value:"EMAIL"
+    },
+    {
+      label:"SMS",
+      value:"SMS"
+    }
+  ]
   searchKey: string;
 
   constructor(
@@ -26,7 +47,7 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.usersService
-      .getUsers(this.searchKey ?? '', 1, 10)
+      .getUsers(this.searchKey ?? '', 1, 1000)
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: (res) => {
@@ -38,27 +59,5 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   }
 
   private initForm(): void {
-    this.formGroup = new FormGroup({
-      campaignName: new FormControl(null),
-      campaignType: new FormControl(null),
-      assignedUser: new FormControl(null),
-      phone: new FormControl(null),
-      roles: new FormControl(null),
-      enable: new FormControl(true),
-    })
-  }
-
-  filterUser(event) {
-    this.assignedUser = [];
-    this.usersService
-      .getUsers(event.originalEvent.data ?? '', 1, 10)
-      .pipe(takeUntil(this.destroy))
-      .subscribe({
-        next: (res) => {
-          if (res.statusCode == 200) {
-            this.assignedUser = res.data;
-          }
-        }
-      });
   }
 }

@@ -15,6 +15,8 @@ import {
 export class CampaignsConfigurationComponent implements OnInit {
   @Input() activeIndex: number;
   @Output() activeIndexChange = new EventEmitter<number>();
+  @Input() definitionId: string;
+  @Output() definitionIdChange= new EventEmitter<string>();
   createForm: FormGroup;
   dayInWeeks: any[];
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { takeUntil } from "rxjs";
 import { PageResponse } from "@shared/models";
@@ -16,8 +16,9 @@ export class CustomerSegmentationComponent implements OnInit {
   conditionalSegmentation: any[];
   segmentations: any[];
   searchKey: string;
-  segmentationsForm: FormGroup;
-
+  @Input() formGroup: FormGroup;
+  @Output() formGroupChange= new EventEmitter<FormGroup>;
+  segmentationForm: FormGroup;
   constructor(private readonly segmentationService: SegmentationService, private destroy: DestroyService) {};
 
   ngOnInit(): void {
@@ -25,8 +26,6 @@ export class CustomerSegmentationComponent implements OnInit {
       {label: "Thuộc phân khúc", value: "in"},
       {label: "Không thuộc phân khúc", value: "notIn"}
     ];
-
-
     this.segmentationService
       .getSegmentations(
         this.searchKey ?? '',
@@ -40,12 +39,12 @@ export class CustomerSegmentationComponent implements OnInit {
         }
       })
 
-    this.segmentationsForm = new FormGroup({
+    this.segmentationForm = new FormGroup({
       segmentations: new FormArray([]),
       groupName: new FormControl('')
     });
 
-    const getForm = this.segmentationsForm.get('segmentations') as FormArray;
+    const getForm = this.segmentationForm.get('segmentations') as FormArray;
 
     let formGroupSegmentation = new FormGroup({
       options: new FormArray([]),
@@ -56,14 +55,14 @@ export class CustomerSegmentationComponent implements OnInit {
 
   loadSegmentation(event, index: number) {
     console.log(event);
-    let getForm = this.segmentationsForm.get('segmentations') as FormArray;
+    let getForm = this.segmentationForm.get('segmentations') as FormArray;
     let options = getForm.at(index).get('options') as FormArray;
     options.clear()
     options.push(new FormControl(event.value))
   }
 
   addSegmentation(event) {
-    let getForm = this.segmentationsForm.get('segmentations') as FormArray;
+    let getForm = this.segmentationForm.get('segmentations') as FormArray;
     let formGroupSegmentation = new FormGroup({
       options: new FormArray([]),
       segmentationOptions: new FormControl([Validators.required])
