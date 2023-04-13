@@ -19,7 +19,7 @@
                    pInputText
                    [(ngModel)]="searchKey"
                    placeholder="Tìm kiếm"
-                   (keydown.enter)="loadData(null)"
+                   (keydown.enter)="searchData()"
                    type="text">
           </span>
         </div>
@@ -45,30 +45,18 @@
             <tr>
               <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
                 <td *ngSwitchCase="'action'">
-                  <!--                  <i class="pi pi-ellipsis-v pr-5"></i>-->
-                  <!--                  <p-speedDial [model]="items" direction="down" [transitionDelay]="80" showIcon="pi pi-ellipsis-v"-->
-                  <!--                               hideIcon="pi pi-ellipsis-v" buttonClassName="p-button-outlined"></p-speedDial>-->
-                  <p-overlayPanel class="border-0 p-0 border-gray-600" #op>
-
-                    <button (click)="editUser(user['id'])" class="border-b-2 p-3 border-gray-900 min-w-full">
-                      Sửa
-                    </button>
-                    <br>
-                    <button class="border-b-2 p-3 border-gray-900 min-w-full">Reset mật khẩu</button>
-                    <br>
-                    <button class="p-3 min-w-full">Xem hoạt động</button>
-                  </p-overlayPanel>
-
-                  <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4"
-                          (click)="op.toggle($event)">
-                    <i class="pi pi-ellipsis-v pr-5"></i>
-                  </button>
-                  <div #actualTarget></div>
+                  <i class="pi pi-file-edit pr-5 hover:cursor-pointer" (click)="editUser(user['id'])" pTooltip="Sửa"></i>
+                  <i class="pi pi-copy pr-5 hover:cursor-pointer" pTooltip="Xóa"></i>
+                  <i class="pi pi-copy pr-5 hover:cursor-pointer" pTooltip="Reset mật khẩu"></i>
+                  <i class="pi pi-sitemap pr-5 hover:cursor-pointer" pTooltip="Xem hoạt động"></i>
                 </td>
-                <td *ngSwitchCase="'enable'">
+                <td *ngSwitchCase="'status'">
                   <p-chip [label]="user[col.field] ? 'Đang hoạt động' : 'Ngừng hoạt động'"
                           [style]="user[col.field] ? {'background-color': '#D9ECD9', 'color': '#328F1A'} : {'background-color': '#FFE6E9', 'color': '#D9001B'}">
                   </p-chip>
+                </td>
+                <td *ngSwitchCase="'lastActive'">
+                  {{user[col.field ] | date:'dd/MM/yyyy HH:mm:ss'}}
                 </td>
                 <td *ngSwitchDefault>
                   {{user[col.field]}}

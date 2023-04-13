@@ -90,43 +90,43 @@
   <!--Họ và tên-->
   <div class="mt-4">
     <div class="flex justify-between">
-      <label cLabel class="sm:text-sm" for="fullName">Họ và tên<span
+      <label cLabel class="sm:text-sm" for="userFullName">Họ và tên<span
         class="text-rose-600 sm:text-xs">*</span></label>
       <span
         [ngClass]="{
-          'text-rose-600': form.get('fullName')?.value?.length >= 50
+          'text-rose-600': form.get('userFullName')?.value?.length >= 50
         }"
         class="sm:text-xs"
       >
-        {{ 50 - form.value?.fullName?.length }} / 50
+        {{ 50 - form.value?.userFullName?.length }} / 50
       </span>
     </div>
     <input
       class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
-      formControlName="fullName"
-      id="fullName"
+      formControlName="userFullName"
+      id="userFullName"
       maxlength="50"
       minlength="4"
       type="text"
     />
     <small
       *ngIf="
-        form.controls['fullName']?.touched &&
-        form.controls['fullName']?.errors?.required
+        form.controls['userFullName']?.touched &&
+        form.controls['userFullName']?.errors?.required
       "
       class="red-text sm:text-xs text-rose-700"
     >Không được bỏ trống.</small>
     <small
       *ngIf="
-        form.controls['fullName']?.touched &&
-        form.controls['fullName']?.errors?.minlength
+        form.controls['userFullName']?.touched &&
+        form.controls['userFullName']?.errors?.minlength
       "
       class="red-text sm:text-xs text-rose-700"
     >Tối thiểu 4 ký tự.</small>
     <small
       *ngIf="
-        form.controls['fullName']?.touched &&
-        form.controls['fullName']?.errors?.pattern
+        form.controls['userFullName']?.touched &&
+        form.controls['userFullName']?.errors?.pattern
       "
       class="red-text sm:text-xs text-rose-700"
     >Không được nhập ký tự đặc biệt.</small>
@@ -134,20 +134,20 @@
 
   <div class="mt-4">
     <div class="flex justify-between">
-      <label cLabel class="sm:text-sm" for="phone">Số điện thoại</label>
+      <label cLabel class="sm:text-sm" for="phoneNumber">Số điện thoại</label>
       <span
         [ngClass]="{
           'text-rose-600': form.get('phone')?.value?.maxlength >= 12
         }"
         class="sm:text-xs"
       >
-        {{ 12 - form.value?.phone?.length }} / 12
+        {{ 12 - form.value?.phoneNumber?.length }} / 12
       </span>
     </div>
     <input
       class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
-      id="phone"
-      formControlName="phone"
+      id="phoneNumber"
+      formControlName="phoneNumber"
       type="text"
       minlength="10"
       maxlength="12"
@@ -178,11 +178,11 @@
   </div>
 
   <div class="mt-4 flex">
-    <label cLabel class="sm:text-sm mr-2" for="enable">Trạng thái
+    <label cLabel class="sm:text-sm mr-2" for="status">Trạng thái
     </label>
     <p-inputSwitch
-      id="enable"
-      formControlName="enable">
+      id="status"
+      formControlName="status">
     </p-inputSwitch>
   </div>
 </form>

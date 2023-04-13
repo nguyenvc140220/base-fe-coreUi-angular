@@ -1,0 +1,9 @@
+<form [formGroup]="formGroup">
+    <div class="mt4">
+        <p class="text-sm">Trường thông tin '{{entity.displayName}}' sẽ bị ẩn tại module liên hệ
+        </p>
+    </div>
+  </form>
+<div class="row mt-4">
+    <app-dialog-button (event)="onDialogEvent($event)" [saveLabel]="'Xác nhận'" [saveIcon]="'pi pi-save'" class="w-100"></app-dialog-button>
+</div>
