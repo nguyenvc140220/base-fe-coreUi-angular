@@ -56,24 +56,21 @@ export class CampaignsCreateComponent implements OnInit {
 
   initForm(){
     this.formGroup = new FormGroup({
-      generalInformationFrom: new FormArray([]),
-      segmentFrom: new FormArray([]),
+      generalInformationFrom: new FormArray([
+          new FormGroup({
+          campaignName: new FormControl(null,[Validators.required]),
+          campaignType: new FormControl(null,[Validators.required]),
+          assignedUser: new FormControl(null),
+          description: new FormControl(null),
+        })
+      ]),
+      segmentFrom: new FormArray([
+          new FormGroup({
+          checkDupPhone: new FormControl(null),
+          dataContactType: new FormControl(null,[Validators.required]),
+          segmentQuery:new FormControl(null)
+        })
+      ]),
     });
-
-    const getGeneralInformationFrom = this.formGroup.get('generalInformationFrom') as FormArray;
-    let generalInformationFrom = new FormGroup({
-      campaignName: new FormControl(null,[Validators.required]),
-      campaignType: new FormControl(null,[Validators.required]),
-      assignedUser: new FormControl(null),
-      description: new FormControl(null),
-    })
-    getGeneralInformationFrom.push(generalInformationFrom);
-
-    const getSegmentFrom = this.formGroup.get('segmentFrom') as FormArray;
-    let segmentFrom = new FormGroup({
-      checkDupPhone: new FormControl(null,[Validators.required]),
-      dataContactType: new FormControl(null,[Validators.required])
-    })
-    getSegmentFrom.push(segmentFrom);
   }
 }

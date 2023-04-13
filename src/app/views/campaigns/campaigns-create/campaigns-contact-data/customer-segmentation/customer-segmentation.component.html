@@ -16,7 +16,8 @@
           <div class="col-3 pr-4">
             <p-dropdown
               id="conditionalSegmentation-{{i}}"
-              [options]="conditionalSegmentation"
+              [options]="segmentationQuery"
+              formControlName="conditional"
               optionLabel="label"
               optionValue="value"
               [style]="{'minWidth':'100%'}">
@@ -29,6 +30,7 @@
                 [options]="segmentations"
                 placeholder="Chọn phân khúc"
                 optionLabel="name"
+                formControlName="segmentationSelected"
                 [maxSelectedLabels]="1"
                 [selectedItemsLabel]="'Đã chọn {0} phân khúc'"
                 (onChange)="loadSegmentation($event,i)"

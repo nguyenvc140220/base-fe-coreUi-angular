@@ -4,7 +4,7 @@
     <div class=" form-group  row flex">
       <div class="py-4">
         <div class="d-flex justify-content-start">
-          <p-checkbox formControlName="checkDupPhone" value="New York" id="checkDupPhone"></p-checkbox>
+          <p-checkbox formControlName="checkDupPhone" value="true" id="checkDupPhone"></p-checkbox>
           <label class="sm:text-sm font-normal ml-2" for="checkDupPhone">Check trùng số điện thọai</label>
         </div>
       </div>
@@ -33,8 +33,9 @@
         >Không được bỏ trống.</small>
       </div>
     </div>
-    <ng-template [ngIf]="dataContactType == 'customer-segmentation'">
+    <ng-template [ngIf]="dataContactType == 'SEGMENTATION'">
       <app-customer-segmentation
+        [(formGroup)]="formGroup"
       ></app-customer-segmentation>
     </ng-template>
   </div>
