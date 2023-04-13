@@ -1,8 +1,8 @@
 <p-divider align="center">
   <p-button label="Phân khúc khách hàng" styleClass="p-button-outlined p-button-secondary"></p-button>
 </p-divider>
-<form [formGroup]="segmentationsForm">
-  <div *ngFor="let segmentItem of segmentationsForm.get('segmentations')['controls'];let i = index"
+<form [formGroup]="segmentationForm">
+  <div *ngFor="let segmentItem of segmentationForm.get('segmentations')['controls'];let i = index"
        [formGroup]="segmentItem">
     <ng-template [ngIf]="i > 0">
       <p-divider align="left">Và</p-divider>

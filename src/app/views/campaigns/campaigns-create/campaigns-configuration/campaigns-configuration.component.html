@@ -1,4 +1,4 @@
-<p-accordion [activeIndex]="0" class="py-4">
+<!-- <p-accordion [activeIndex]="0" class="py-4">
   <p-accordionTab header="Chiến lược quay số">
     <div class="row">
       <div class="py-4 col-6">
@@ -101,4 +101,13 @@
 
     </p-accordionTab>
   </form>
-</p-accordion>
+</p-accordion> -->
+<div  class="w-full h-full">
+  <elsa-studio-root
+    server-url="http://172.16.88.13:5009/"
+    monaco-lib-path="assets/monaco">
+    <elsa-workflow-definition-editor-screen
+      workflow-definition-id="41e37bc4a3bd4a0883d71dd0041192645">
+    </elsa-workflow-definition-editor-screen>
+  </elsa-studio-root>
+</div>
