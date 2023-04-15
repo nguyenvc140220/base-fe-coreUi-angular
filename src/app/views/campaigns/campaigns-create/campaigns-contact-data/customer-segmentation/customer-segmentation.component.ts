@@ -5,7 +5,6 @@ import { SegmentationListModel } from "@shared/models/segmentation/segmentation-
 import { SegmentationService } from "@shared/services/segmentation/segmentation.service";
 import { DestroyService } from "@shared/services";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
-import { DynamicFilterOperatorEnum } from "@shared/enums/dynamic-filter-operator.enum";
 import { SEGMENTATION_QUERY } from "@shared/constant/campaign.const";
 
 @Component({
@@ -18,8 +17,10 @@ export class CustomerSegmentationComponent implements OnInit {
   segmentations: any[];
   searchKey: string;
   @Input() formGroup: FormGroup;
-  @Output() formGroupChange= new EventEmitter<FormGroup>;
-  segmentationForm: FormGroup;
+  @Output() formGroupChange = new EventEmitter<FormGroup>;
+  @Input() segmentationForm: FormGroup;
+  @Output() segmentationFormChange = new EventEmitter<FormGroup>;
+
   constructor(private readonly segmentationService: SegmentationService, private destroy: DestroyService) {};
 
   ngOnInit(): void {
@@ -36,19 +37,6 @@ export class CustomerSegmentationComponent implements OnInit {
         }
       })
 
-    this.segmentationForm = new FormGroup({
-      segmentations: new FormArray([]),
-      groupName: new FormControl('')
-    });
-
-    const getForm = this.segmentationForm.get('segmentations') as FormArray;
-
-    let formGroupSegmentation = new FormGroup({
-      options: new FormArray([]),
-      segmentationSelected: new FormControl(null,[Validators.required]),
-      conditional:new FormControl(this.segmentationQuery[1].value)
-    })
-    getForm.push(formGroupSegmentation)
   }
 
   loadSegmentation(event, index: number) {
@@ -56,21 +44,28 @@ export class CustomerSegmentationComponent implements OnInit {
     let options = getForm.at(index).get('options') as FormArray;
     options.clear()
     options.push(new FormControl(event.value))
-    console.log(console.log(this.segmentationForm.value))
-    if( this.segmentationForm.get('segmentations').value.length > 0){
-      this.segmentationForm.get('segmentations').value.map(data => {
-        console.log(data)
+    if (this.segmentationForm.get('segmentations').value.length > 0) {
+      var payload = this.segmentationForm.get('segmentations').value.map(data => {
+        let value = [];
+        // data.segmentationSelected.forEach(el => {
+        //   // value.push(el.id);
+        // })
+        return {
+          field: "SEGMENTATION",
+          operator: data.conditional,
+          value: data.segmentationSelected,
+        };
       })
+      this.formGroup.controls['segmentQuery'].setValue(payload);
     }
-    this.segmentationForm.value['segmentations']
   }
 
   addSegmentation(event) {
     let getForm = this.segmentationForm.get('segmentations') as FormArray;
     let formGroupSegmentation = new FormGroup({
       options: new FormArray([]),
-      segmentationSelected: new FormControl(null,[Validators.required]),
-      conditional:new FormControl(this.segmentationQuery[1].value)
+      segmentationSelected: new FormControl(null, [Validators.required]),
+      conditional: new FormControl(this.segmentationQuery[1].value)
     })
     getForm.push(formGroupSegmentation)
   }

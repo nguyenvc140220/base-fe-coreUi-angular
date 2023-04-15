@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 import { CUSTOMER_TYPE } from "@shared/constant/campaign.const";
 
 @Component({
@@ -11,10 +11,11 @@ export class CampaignsContactDataComponent implements OnInit {
   @Input() activeIndex: number;
   @Output() activeIndexChange = new EventEmitter<number>();
   @Input() formGroup: FormGroup;
-  @Output() formGroupChange= new EventEmitter<FormGroup>;
+  @Output() formGroupChange = new EventEmitter<FormGroup>;
   @Input() definitionId: string;
-  @Output() definitionIdChange= new EventEmitter<string>();
-  segmentationForm:FormGroup;
+  @Output() definitionIdChange = new EventEmitter<string>();
+  @Input() segmentationForm: FormGroup;
+  @Output() segmentationFormChange = new EventEmitter<FormGroup>;
   dataContactTypes = CUSTOMER_TYPE;
   dataContactType: string;
 
