@@ -14,7 +14,7 @@
         class="p-button-outlined mx-2 text-sm"></button>
       <button
         pButton
-        [label]="activeIndex != 4 ? 'Tiếp tục': 'Hoàn tất'"
+        [label]="activeIndex != 3 ? 'Tiếp tục': 'Hoàn tất'"
         style="max-height: 70%"
         (click)="saveData($event)"
         styleClass="p-button-sm text-sm"
@@ -35,7 +35,9 @@
     <app-campaigns-contact-data
       [(activeIndex)]="activeIndex"
       [(formGroup)]="formGroup"
-      [(definitionId)]="definitionId">
+      [(definitionId)]="definitionId"
+      [(segmentationForm)]="segmentationForm"
+    >
     </app-campaigns-contact-data>
   </ng-template>
 

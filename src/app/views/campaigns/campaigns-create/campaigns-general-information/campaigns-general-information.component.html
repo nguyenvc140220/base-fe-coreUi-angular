@@ -1,86 +1,82 @@
 <form [formGroup]="formGroup">
-  <div *ngFor="let generalInformationFrom of formGroup.get('generalInformationFrom')['controls'];let i = index"
-       [formGroup]="generalInformationFrom">
-    <div class=" form-group  row flex">
-      <div class="col-8 row flex">
-        <div class="py-4">
-          <div class="d-flex justify-content-between">
-            <label class="sm:text-sm font-normal">Tên chiến dịch
-              <span class="text-danger">(*)</span>
-            </label>
-            <span [ngClass]="{'text-rose-600': generalInformationFrom.get('campaignName')?.value?.length >= 100}"
-                  class="sm:text-xs">
-            {{ 100 - generalInformationFrom.value?.campaignName?.length }} / 100
+  <div class=" form-group  row flex">
+    <div class="col-8 row flex">
+      <div class="py-4">
+        <div class="d-flex justify-content-between">
+          <label class="sm:text-sm font-normal">Tên chiến dịch
+            <span class="text-danger">(*)</span>
+          </label>
+          <span [ngClass]="{'text-rose-600': formGroup.get('campaignName')?.value?.length >= 100}"
+                class="sm:text-xs">
+            {{ 100 - formGroup.value?.campaignName?.length }} / 100
           </span>
-          </div>
-          <input
-            class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
-            id="campaignName"
-            formControlName="campaignName"
-            maxlength="100"
-            type="text"
-          />
-          <small
-            *ngIf="
-              generalInformationFrom.controls['campaignName']?.touched &&
-              generalInformationFrom.controls['campaignName']?.errors?.required
+        </div>
+        <input
+          class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
+          id="campaignName"
+          formControlName="campaignName"
+          maxlength="100"
+          type="text"
+        />
+        <small
+          *ngIf="
+              formGroup.controls['campaignName']?.touched &&
+              formGroup.controls['campaignName']?.errors?.required
             "
-            class="red-text sm:text-xs text-rose-700"
-          >Không được bỏ trống.</small>
+          class="red-text sm:text-xs text-rose-700"
+        >Không được bỏ trống.</small>
+      </div>
+      <div class="py-4">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="campaignType">Loại chiến dịch
+            <span class="text-danger">(*)</span></label>
         </div>
-        <div class="py-4">
-          <div class="d-flex justify-content-between">
-            <label cLabel class="sm:text-sm" for="campaignType">Loại chiến dịch
-              <span class="text-danger">(*)</span></label>
-          </div>
-          <p-dropdown
-            id="campaignType"
-            [options]="campaignType"
-            formControlName="campaignType"
-            placeholder="Chọn loại chiến dịch"
-            optionLabel="label"
-            optionValue="value"
-            [style]="{'minWidth':'100%'}">
-          </p-dropdown>
-          <small
-            *ngIf="
-              generalInformationFrom.controls['campaignType']?.touched &&
-              generalInformationFrom.controls['campaignType']?.errors?.required
+        <p-dropdown
+          id="campaignType"
+          [options]="campaignType"
+          formControlName="campaignType"
+          placeholder="Chọn loại chiến dịch"
+          optionLabel="label"
+          [style]="{'minWidth':'100%'}">
+        </p-dropdown>
+        <small
+          *ngIf="
+              formGroup.controls['campaignType']?.touched &&
+              formGroup.controls['campaignType']?.errors?.required
             "
-            class="red-text sm:text-xs text-rose-700"
-          >Không được bỏ trống.</small>
-        </div>
+          class="red-text sm:text-xs text-rose-700"
+        >Không được bỏ trống.</small>
+      </div>
 
-        <div class="py-4">
-          <div class="d-flex justify-content-between">
-            <label cLabel class="sm:text-sm" for="assignedUser">Người phụ trách</label>
-          </div>
-          <p-multiSelect
-            id="assignedUser"
-            [options]="assignedUser"
-            placeholder="Chọn người phụ trách"
-            formControlName="assignedUser"
-            optionLabel="username"
-            [maxSelectedLabels]="1"
-            [selectedItemsLabel]="'Đã chọn {0} người phụ trách'"
-            [style]="{'minWidth':'100%'}">
-          </p-multiSelect>
+      <div class="py-4">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="assignedUser">Người phụ trách</label>
         </div>
+        <p-multiSelect
+          id="assignedUser"
+          [options]="assignedUser"
+          placeholder="Chọn người phụ trách"
+          formControlName="assignedUser"
+          optionLabel="username"
+          [maxSelectedLabels]="1"
+          [selectedItemsLabel]="'Đã chọn {0} người phụ trách'"
+          [style]="{'minWidth':'100%'}">
+        </p-multiSelect>
+      </div>
 
-        <div class="py-4">
-          <div class="d-flex justify-content-between">
-            <label cLabel class="sm:text-sm" for="description">Mô tả</label>
-          </div>
-          <textarea
-            id="description"
-            rows="5"
-            formControlName="description"
-            type="text"
-            class="form-control"
-            [style]="{'minWidth':'100%'}"
-            pInputTextarea>
+      <div class="py-4">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="description">Mô tả</label>
+        </div>
+        <textarea
+          id="description"
+          rows="5"
+          formControlName="description"
+          type="text"
+          class="form-control"
+          [style]="{'minWidth':'100%'}"
+          pInputTextarea>
         </textarea>
-        </div>
       </div>
     </div>
   </div>
