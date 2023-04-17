@@ -10,6 +10,8 @@ import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-prope
 import { DynamicEntityModel } from '@shared/models/dynamic-field/dynamic-response.model';
 import { DynamicEntityCreateModel } from '@shared/models/dynamic-field/dynamic-entity-create.model';
 import { DynamicEntityEditModel } from "@shared/models/dynamic-field/dynamic-entity-edit.model";
+import { DynamicPropertyUpdateModel } from '@shared/models/dynamic-field/dynamic-property-update.model';
+import { BaseResponse } from '@shared/models';
 
 @Injectable({providedIn: 'root'})
 export class DynamicFieldService extends BaseService {
@@ -25,7 +27,11 @@ export class DynamicFieldService extends BaseService {
       BackendBaseResponse<DynamicBaseResponseModel<DynamicPropertyModel>>
     >(`${this.configService.mktBackendUrl}/v1.0/property`, request);
   }
-
+  updateDynamicProperties(request: DynamicPropertyUpdateModel) {
+    return this.defaultPut<
+      BackendBaseResponse<BaseResponse<Boolean>>
+    >(`${this.configService.mktBackendUrl}/v1.0/property`, request);
+  }
   getDynamicEntity(query: DynamicQueryModel) {
     return this.defaultPost<
       BackendBaseResponse<DynamicBaseResponseModel<DynamicEntityModel>>

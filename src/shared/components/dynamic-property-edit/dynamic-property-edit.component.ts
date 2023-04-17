@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { FormControl, FormGroup } from '@angular/forms';
+import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
+import { DynamicPropertyUpdateModel } from '@shared/models/dynamic-field/dynamic-property-update.model';
+import { takeUntil } from 'rxjs';
+import { DestroyService } from '@shared/services';
 
 @Component({
   selector: 'app-dynamic-property-edit',
@@ -12,7 +16,9 @@ export class DynamicPropertyEditComponent {
   formGroup: FormGroup;
   constructor(
     public ref: DynamicDialogRef,
-    private dynamicDialogConfig: DynamicDialogConfig
+    private dynamicDialogConfig: DynamicDialogConfig,
+    private dynamicFieldService: DynamicFieldService,
+    private destroyService: DestroyService,
   ) {
     this.formGroup = new FormGroup({});
   }
@@ -23,10 +29,26 @@ export class DynamicPropertyEditComponent {
     }
     ));
   }
+  ngOnDestroy(): void { }
+
   onDialogEvent(event: any) {
     switch (event) {
       case 'SAVE_BUTTON':
-        console.log('SAVE_BUTTON');
+        const req = new DynamicPropertyUpdateModel({
+          code: this.dynamicDialogConfig.data.entity.code,
+          displayName: this.formGroup.value.displayName,
+        });
+        this.dynamicFieldService.updateDynamicProperties(req)
+          .pipe(takeUntil(this.destroyService))
+          .subscribe({
+            next: (res) => {
+              console.log(res);
+              this.ref.close();
+            },
+            error: (err) => {
+              console.log(err);
+            }
+          });
         break;
       case 'CANCEL_BUTTON':
         console.log('CANCEL_BUTTON');
