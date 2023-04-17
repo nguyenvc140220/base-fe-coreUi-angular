@@ -2,9 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
-  Validators,
 } from '@angular/forms';
 
 @Component({
@@ -36,5 +34,6 @@ export class CampaignsConfigurationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.definitionId)
   }
 }

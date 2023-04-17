@@ -25,6 +25,7 @@ export class CampaignsCompletedComponent implements OnInit {
       this.campaignsGeneralForm.value['assignedUser'].map(el => nameUser.push(el.username));
     }
     this.assignedUser = nameUser.toString();
+    console.log(this.segmentationForm.value)
   }
 
   btnEditStep(i: number) {
