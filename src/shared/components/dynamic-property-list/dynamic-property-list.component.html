@@ -13,7 +13,8 @@
         <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field">
           <td *ngSwitchCase="'id'">
             <i class="pi pi-file-edit pr-5 hover:cursor-pointer" pTooltip="Sửa" (click)="edit(property)"></i>
-            <i class="pi pi-lock pr-5 hover:cursor-pointer" pTooltip="Ẩn" (click)="hide(property)"></i>
+            <i class="pi {{property.editable?'pi-lock-open':'pi-lock'}} pr-5 hover:cursor-pointer" pTooltip="{{property.editable?'Hiển thị':'Ẩn'}}"
+              (click)="hideOrOpen(property)"></i>
             <i class="pi pi-trash pr-5 hover:cursor-pointer" pTooltip="Xóa" (click)="delete(property)"></i>
           </td>
           <td *ngSwitchCase="'displayName'" (click)="showDetail(property)">

@@ -121,9 +121,10 @@ export class DynamicPropertyListComponent
       console.log(entity);
     });
   }
-  hide(entity) {
+  hideOrOpen(entity) {
+    const header = entity.editable ? 'Hiển thị trường thông tin' : 'Ẩn trường thông tin';
     const dialog = this.dialogService.open(DynamicPropertyHideComponent, {
-      header: 'Ẩn trường thông tin',
+      header: header,
       width: '30%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
       data: { entity: entity },
