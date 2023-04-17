@@ -4,6 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { ConfigService } from "@shared/utils/config.service";
 import { BaseResponse, PageResponse } from "@shared/models";
 import { CampaignListModel } from "@shared/models/campaign/campaign-list.model";
+import { CreateCampaignModel } from "@shared/models/campaign/create-campaign.model";
+import { CreateCampaignRequestModel } from "@shared/models/campaign/create-campaign-request.model";
 
 @Injectable({providedIn: 'root'})
 export class CampaignService extends BaseService {
@@ -23,6 +25,12 @@ export class CampaignService extends BaseService {
         size: pageSize,
         keyword: searchKey,
       }
+    );
+  }
+
+  createCampaign(body: CreateCampaignRequestModel) {
+    return this.defaultPost<BaseResponse<any>>(
+      `${this.configService.campaignPlanningUrl}/campaign`, body
     );
   }
 }

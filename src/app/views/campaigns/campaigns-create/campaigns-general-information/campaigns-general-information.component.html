@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="campaignsGeneralForm">
   <div class=" form-group  row flex">
     <div class="col-8 row flex">
       <div class="py-4">
@@ -6,9 +6,9 @@
           <label class="sm:text-sm font-normal">Tên chiến dịch
             <span class="text-danger">(*)</span>
           </label>
-          <span [ngClass]="{'text-rose-600': formGroup.get('campaignName')?.value?.length >= 100}"
+          <span [ngClass]="{'text-danger': campaignsGeneralForm.get('campaignName')?.value?.length >= 100}"
                 class="sm:text-xs">
-            {{ 100 - formGroup.value?.campaignName?.length }} / 100
+            {{ 100 - campaignsGeneralForm.value?.campaignName?.length }} / 100
           </span>
         </div>
         <input
@@ -20,10 +20,10 @@
         />
         <small
           *ngIf="
-              formGroup.controls['campaignName']?.touched &&
-              formGroup.controls['campaignName']?.errors?.required
+              campaignsGeneralForm.controls['campaignName']?.touched &&
+              campaignsGeneralForm.controls['campaignName']?.errors?.required
             "
-          class="red-text sm:text-xs text-rose-700"
+          class="red-text sm:text-xs text-danger"
         >Không được bỏ trống.</small>
       </div>
       <div class="py-4">
@@ -37,14 +37,15 @@
           formControlName="campaignType"
           placeholder="Chọn loại chiến dịch"
           optionLabel="label"
-          [style]="{'minWidth':'100%'}">
+          [style]="{'minWidth':'100%'}"
+        >
         </p-dropdown>
         <small
           *ngIf="
-              formGroup.controls['campaignType']?.touched &&
-              formGroup.controls['campaignType']?.errors?.required
+              campaignsGeneralForm.controls['campaignType']?.touched &&
+              campaignsGeneralForm.controls['campaignType']?.errors?.required
             "
-          class="red-text sm:text-xs text-rose-700"
+          class="red-text sm:text-xs text-danger"
         >Không được bỏ trống.</small>
       </div>
 

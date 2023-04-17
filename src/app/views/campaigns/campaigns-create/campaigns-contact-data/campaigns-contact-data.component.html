@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="segmentationForm">
   <div class=" form-group  row flex">
     <div class="py-4">
       <div class="d-flex justify-content-start">
@@ -24,16 +24,15 @@
       </p-dropdown>
       <small
         *ngIf="
-        formGroup.controls['dataContactType']?.touched &&
-        formGroup.controls['dataContactType']?.errors?.required
+        segmentationForm.controls['dataContactType']?.touched &&
+        segmentationForm.controls['dataContactType']?.errors?.required
       "
-        class="red-text sm:text-xs text-rose-700"
+        class="red-text sm:text-xs text-danger"
       >Không được bỏ trống.</small>
     </div>
   </div>
-  <ng-template [ngIf]="formGroup.value?.dataContactType == 'SEGMENTATION'">
+  <ng-template [ngIf]="segmentationForm.value?.dataContactType == 'SEGMENTATION'">
     <app-customer-segmentation
-      [(formGroup)]="formGroup"
       [(segmentationForm)]="segmentationForm"
     ></app-customer-segmentation>
   </ng-template>

@@ -14,15 +14,15 @@ import { CAMPAIGN_TYPE } from "@shared/constant/campaign.const";
 export class CampaignsGeneralInformationComponent implements OnInit {
   @Input() activeIndex: number;
   @Output() activeIndexChange = new EventEmitter<number>();
-  @Input() formGroup: FormGroup;
-  @Output() formGroupChange= new EventEmitter<FormGroup>;
+  @Input() campaignsGeneralForm: FormGroup;
+  @Output() campaignsGeneralFormChange = new EventEmitter<FormGroup>;
   @Input() definitionId: string;
-  @Output() definitionIdChange= new EventEmitter<string>();
+  @Output() definitionIdChange = new EventEmitter<string>();
   assignedUser: any[];
   query: DynamicQueryModel = {
     payload: {},
   };
-  campaignType= CAMPAIGN_TYPE;
+  campaignType = CAMPAIGN_TYPE;
   searchKey: string;
 
   constructor(
@@ -37,7 +37,7 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   }
 
   private initInput(): void {
-    this.query.currentPage= 1;
+    this.query.currentPage = 1;
     this.query.pageSize = 1000;
     this.usersService
       .getUsers(this.query)

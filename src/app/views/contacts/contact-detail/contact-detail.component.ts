@@ -60,11 +60,11 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
         type: 'pie',
         radius: '50%',
         data: [
-          { value: 1048, name: 'Search Engine' },
-          { value: 735, name: 'Direct' },
-          { value: 580, name: 'Email' },
-          { value: 484, name: 'Union Ads' },
-          { value: 300, name: 'Video Ads' },
+          {value: 1048, name: 'Search Engine'},
+          {value: 735, name: 'Direct'},
+          {value: 580, name: 'Email'},
+          {value: 484, name: 'Union Ads'},
+          {value: 300, name: 'Video Ads'},
         ],
         emphasis: {
           itemStyle: {
@@ -85,11 +85,11 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
     private datePipe: DatePipe
   ) {
     super();
-    this.breadcrumbStore.items = [
-      { label: 'Danh sách liên hệ', routerLink: ['/contacts'] },
-      { label: 'Chi tiết liên hệ' },
-    ];
     this.contactId = this.route.snapshot.params['contactId'];
+    this.breadcrumbStore.items = [
+      {label: 'Danh sách liên hệ', routerLink: ['/contacts']},
+      {label: `${this.contactId}`},
+    ];
   }
 
   ngOnInit() {
