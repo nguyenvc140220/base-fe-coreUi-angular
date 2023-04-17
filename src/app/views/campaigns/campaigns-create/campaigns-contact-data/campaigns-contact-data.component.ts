@@ -10,8 +10,6 @@ import { CUSTOMER_TYPE } from "@shared/constant/campaign.const";
 export class CampaignsContactDataComponent implements OnInit {
   @Input() activeIndex: number;
   @Output() activeIndexChange = new EventEmitter<number>();
-  @Input() formGroup: FormGroup;
-  @Output() formGroupChange = new EventEmitter<FormGroup>;
   @Input() definitionId: string;
   @Output() definitionIdChange = new EventEmitter<string>();
   @Input() segmentationForm: FormGroup;

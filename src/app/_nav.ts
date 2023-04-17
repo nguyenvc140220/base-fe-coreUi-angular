@@ -32,7 +32,7 @@ export const navItems: INavData[] = [
     icon: 'pi pi-cog',
     children: [
       {
-        name: 'Quản lí người dùng',
+        name: 'Quản lý người dùng',
         url: '/admin/users',
         icon: 'pi pi-user',
         class: 'm-l-1',

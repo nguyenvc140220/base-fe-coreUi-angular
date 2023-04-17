@@ -12,7 +12,7 @@ const routes: Routes = [
     path: '',
     component: CampaignsTableComponent,
     data: {
-      title: $localize`Quản lí chiến dịch`,
+      title: $localize`Quản lý chiến dịch`,
     }
   },
   {

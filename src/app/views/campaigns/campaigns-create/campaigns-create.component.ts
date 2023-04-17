@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from "primeng/api";
+import { MenuItem, MessageService } from "primeng/api";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { Router } from "@angular/router";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SEGMENTATION_QUERY } from "@shared/constant/campaign.const";
+import { CampaignService } from "@shared/services/campaign/campaign.service";
+import { Subject, takeUntil } from "rxjs";
+import { CreateCampaignModel } from "@shared/models/campaign/create-campaign.model";
+import { CreateCampaignRequestModel } from "@shared/models/campaign/create-campaign-request.model";
 
 @Component({
   selector: 'app-campaigns-create',
@@ -14,12 +18,15 @@ export class CampaignsCreateComponent implements OnInit {
   items: MenuItem[];
   activeIndex = 0
   definitionId: string;
-  formGroup: FormGroup;
+  campaignsGeneralForm: FormGroup;
   segmentationForm: FormGroup;
   segmentationQuery = SEGMENTATION_QUERY;
+  private unsubscribe = new Subject();
 
   constructor(
     private breadcrumbStore: BreadcrumbStore,
+    private readonly messageService: MessageService,
+    private readonly campaignService: CampaignService,
     private router: Router
   ) {
     breadcrumbStore.items = [{
@@ -33,7 +40,6 @@ export class CampaignsCreateComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.definitionId)
     this.items = [
       {
         label: 'Thông tin chung',
@@ -63,25 +69,82 @@ export class CampaignsCreateComponent implements OnInit {
     this.initForm();
   }
 
-  saveData(e) {
+  btnSaveOrNext() {
     if (this.activeIndex == 3) {
-      console.log(this.formGroup.value)
+      // save data
+      if (this.campaignsGeneralForm.valid && this.segmentationForm.valid) {
+        let agentIds = []
+        if (this.campaignsGeneralForm.value['assignedUser']) {
+          this.campaignsGeneralForm.value['assignedUser'].map(el => agentIds.push(el.id));
+        }
+        let body = new CreateCampaignRequestModel();
+        body.name = this.campaignsGeneralForm.value.campaignName
+        body.type = this.campaignsGeneralForm.value.campaignType.value
+        body.workflowId = this.definitionId;
+        body.agentIds = agentIds.toString();
+        body.description = this.campaignsGeneralForm.value.description
+        body.customerType = this.segmentationForm.value.dataContactType
+        if (this.segmentationForm.get('segmentations').value.length > 0) {
+          var payload = this.segmentationForm.get('segmentations').value.map(data => {
+            let value = [];
+            data.segmentationSelected.forEach(el => {
+              value.push(el.id);
+            })
+            return {
+              field: "SEGMENTATION",
+              operator: data.conditional,
+              value: value.toString(),
+            };
+          });
+          body.segmentQuery = JSON.stringify(payload);
+        }
+        this.campaignService.createCampaign(body).pipe(takeUntil(this.unsubscribe)).subscribe({
+          next: (res) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Thành công',
+              detail: `Lưu thành công!`,
+            });
+            return this.router.navigate(['campaigns']);
+          }
+        });
+      }
+    } else {
+      // next step
+      this.activeIndex += 1;
     }
   }
 
+  btnCancel() {
+    this.router.navigate(['campaigns']);
+  }
+
+  onActiveIndexChange(e) {
+    if (!this.campaignsGeneralForm.valid)
+      return this.messageService.add({
+        severity: 'warn',
+        summary: 'Cảnh báo',
+        detail: `Bước "Thông tin chung" chưa điền đẩy đủ thông tin!`,
+      });
+    if (!this.segmentationForm.valid)
+      return this.messageService.add({
+        severity: 'warn',
+        summary: 'Cảnh báo',
+        detail: `Bước "Data khách hàng" chưa điền đẩy đủ thông tin!`,
+      });
+  }
+
   initForm() {
-    this.formGroup = new FormGroup({
+    this.campaignsGeneralForm = new FormGroup({
       campaignName: new FormControl(null, [Validators.required]),
       campaignType: new FormControl(null, [Validators.required]),
       assignedUser: new FormControl(null),
       description: new FormControl(null),
-      checkDupPhone: new FormControl(null),
-      dataContactType: new FormControl(null, [Validators.required]),
-      segmentQuery: new FormControl(null),
-      segmentQueryString: new FormControl(null),
     });
 
     this.segmentationForm = new FormGroup({
+      checkDupPhone: new FormControl(null),
+      dataContactType: new FormControl(null, [Validators.required]),
       segmentations: new FormArray([
         new FormGroup({
           options: new FormArray([]),

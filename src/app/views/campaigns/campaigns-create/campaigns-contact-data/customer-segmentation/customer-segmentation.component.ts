@@ -16,8 +16,6 @@ export class CustomerSegmentationComponent implements OnInit {
   segmentationQuery = SEGMENTATION_QUERY;
   segmentations: any[];
   searchKey: string;
-  @Input() formGroup: FormGroup;
-  @Output() formGroupChange = new EventEmitter<FormGroup>;
   @Input() segmentationForm: FormGroup;
   @Output() segmentationFormChange = new EventEmitter<FormGroup>;
 
@@ -39,26 +37,26 @@ export class CustomerSegmentationComponent implements OnInit {
 
   }
 
-  loadSegmentation(event, index: number) {
-    let getForm = this.segmentationForm.get('segmentations') as FormArray;
-    let options = getForm.at(index).get('options') as FormArray;
-    options.clear()
-    options.push(new FormControl(event.value))
-    if (this.segmentationForm.get('segmentations').value.length > 0) {
-      var payload = this.segmentationForm.get('segmentations').value.map(data => {
-        let value = [];
-        // data.segmentationSelected.forEach(el => {
-        //   // value.push(el.id);
-        // })
-        return {
-          field: "SEGMENTATION",
-          operator: data.conditional,
-          value: data.segmentationSelected,
-        };
-      })
-      this.formGroup.controls['segmentQuery'].setValue(payload);
-    }
-  }
+  // loadSegmentation(event, index: number) {
+  //   let getForm = this.segmentationForm.get('segmentations') as FormArray;
+  //   let options = getForm.at(index).get('options') as FormArray;
+  //   options.clear()
+  //   options.push(new FormControl(event.value))
+  //   if (this.segmentationForm.get('segmentations').value.length > 0) {
+  //     var payload = this.segmentationForm.get('segmentations').value.map(data => {
+  //       let value = [];
+  //       // data.segmentationSelected.forEach(el => {
+  //       //   // value.push(el.id);
+  //       // })
+  //       return {
+  //         field: "SEGMENTATION",
+  //         operator: data.conditional,
+  //         value: data.segmentationSelected,
+  //       };
+  //     })
+  //     this.segmentationForm.controls['segmentQuery'].setValue(payload);
+  //   }
+  // }
 
   addSegmentation(event) {
     let getForm = this.segmentationForm.get('segmentations') as FormArray;
