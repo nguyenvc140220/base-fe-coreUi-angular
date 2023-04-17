@@ -18,7 +18,10 @@
             <input class="w-full p-inputtext-sm"
                    pInputText
                    placeholder="Tìm kiếm theo chiến dịch, kịch bản"
-                   type="text">
+                   type="text"
+                   [(ngModel)]="searchKey"
+                   (keydown.enter)="loadData()"
+            >
           </span>
       </div>
     </div>

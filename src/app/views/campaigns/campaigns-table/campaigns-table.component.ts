@@ -33,6 +33,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   @ViewChild('paginator') paginator: Paginator;
   definitionId = uuid.v4();
+
   constructor(
     injector: Injector,
     breadcrumbStore: BreadcrumbStore,
@@ -53,23 +54,24 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
     this.initDataTable();
   }
 
-  paginate(event?: Paginator) {
+  paginate(event?) {
     this.loadData(event);
   }
 
   private initDataTable() {
-    {
-      this.cols = [
-        {field: 'name', header: 'Chiến dịch', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'campaignScriptId', header: 'Kịch bản', styles: {minWidth: '200px'}},
-        {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
-        {field: 'realStartTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'realEndTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'agentIds', header: 'Người phụ trách', styles: {minWidth: '300px'}},
-        {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
-        {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
-      ];
-    }
+    this.cols = [
+      {field: 'name', header: 'Chiến dịch', styles: {minWidth: '200px'}, sortable: true},
+      {field: 'campaignScriptId', header: 'Kịch bản', styles: {minWidth: '200px'}},
+      {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
+      {field: 'realStartTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
+      {field: 'realEndTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
+      {field: 'agentIds', header: 'Người phụ trách', styles: {minWidth: '300px'}},
+      {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
+      {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
+    ];
+
+    this.primengTableHelper.predefinedRecordsCountPerPage = [10, 50, 100, 150];
+    this.primengTableHelper.defaultRecordsCountPerPage = 100;
 
     this.loadData();
   }
@@ -133,7 +135,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       [
         'campaigns/create'
       ],
-      { state: { definitionId: this.definitionId } }
+      {state: {definitionId: this.definitionId}}
     );
   }
 
