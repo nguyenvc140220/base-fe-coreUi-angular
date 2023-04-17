@@ -108,6 +108,7 @@ export class DynamicPropertyListComponent
     });
     dialog.onClose.subscribe((res) => {
       console.log(entity);
+      this.loadData(null);
     });
   }
   delete(entity) {

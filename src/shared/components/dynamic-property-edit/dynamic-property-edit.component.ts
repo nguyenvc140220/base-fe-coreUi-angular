@@ -1,24 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { FormControl, FormGroup } from '@angular/forms';
 import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
 import { DynamicPropertyUpdateModel } from '@shared/models/dynamic-field/dynamic-property-update.model';
-import { takeUntil } from 'rxjs';
-import { DestroyService } from '@shared/services';
+// import { takeUntil } from 'rxjs';
+// import { DestroyService } from '@shared/services';
 
 @Component({
   selector: 'app-dynamic-property-edit',
   templateUrl: './dynamic-property-edit.component.html',
   styleUrls: ['./dynamic-property-edit.component.scss']
 })
-export class DynamicPropertyEditComponent {
+export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
   constructor(
+    injector: Injector,
     public ref: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig,
     private dynamicFieldService: DynamicFieldService,
-    private destroyService: DestroyService,
+    // private destroyService: DestroyService,
   ) {
     this.formGroup = new FormGroup({});
   }
@@ -39,7 +40,7 @@ export class DynamicPropertyEditComponent {
           displayName: this.formGroup.value.displayName,
         });
         this.dynamicFieldService.updateDynamicProperties(req)
-          .pipe(takeUntil(this.destroyService))
+          // .pipe(takeUntil(this.destroyService))
           .subscribe({
             next: (res) => {
               console.log(res);
