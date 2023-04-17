@@ -22,7 +22,7 @@ export class CampaignService extends BaseService {
       `${this.configService.campaignPlanningUrl}/campaign`,
       {
         skip: (page - 1) * pageSize,
-        size: pageSize,
+        take: pageSize,
         keyword: searchKey,
       }
     );
