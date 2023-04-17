@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 import { UsersService } from "@shared/services/users/users.service";
 import { takeUntil } from "rxjs";
 import { DestroyService } from "@shared/services";
 import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
+import { CAMPAIGN_TYPE } from "@shared/constant/campaign.const";
 
 @Component({
   selector: 'app-campaigns-general-information',
@@ -13,12 +14,17 @@ import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.mo
 export class CampaignsGeneralInformationComponent implements OnInit {
   @Input() activeIndex: number;
   @Output() activeIndexChange = new EventEmitter<number>();
-  @Input() formGroup: FormGroup;
+  @Input() campaignsGeneralForm: FormGroup;
+  @Output() campaignsGeneralFormChange = new EventEmitter<FormGroup>;
+  @Input() definitionId: string;
+  @Output() definitionIdChange = new EventEmitter<string>();
   assignedUser: any[];
-  searchKey: string;
   query: DynamicQueryModel = {
     payload: {},
   };
+  campaignType = CAMPAIGN_TYPE;
+  searchKey: string;
+
   constructor(
     private usersService: UsersService,
     private destroy: DestroyService,
@@ -27,32 +33,12 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initForm();
-    this.usersService
-      .getUsers(this.query)
-      .pipe(takeUntil(this.destroy))
-      .subscribe({
-        next: (res) => {
-          if (res.statusCode == 200) {
-            this.assignedUser = res.data.content;
-          }
-        }
-      });
+    this.initInput();
   }
 
-  private initForm(): void {
-    this.formGroup = new FormGroup({
-      campaignName: new FormControl(null),
-      campaignType: new FormControl(null),
-      assignedUser: new FormControl(null),
-      phone: new FormControl(null),
-      roles: new FormControl(null),
-      enable: new FormControl(true),
-    })
-  }
-
-  filterUser(event) {
-    this.assignedUser = [];
+  private initInput(): void {
+    this.query.currentPage = 1;
+    this.query.pageSize = 1000;
     this.usersService
       .getUsers(this.query)
       .pipe(takeUntil(this.destroy))

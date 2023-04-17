@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="campaignsGeneralForm">
   <div class=" form-group  row flex">
     <div class="col-8 row flex">
       <div class="py-4">
@@ -6,9 +6,9 @@
           <label class="sm:text-sm font-normal">Tên chiến dịch
             <span class="text-danger">(*)</span>
           </label>
-          <span [ngClass]="{'text-rose-600': formGroup.get('campaignName')?.value?.length >= 100}"
+          <span [ngClass]="{'text-danger': campaignsGeneralForm.get('campaignName')?.value?.length >= 100}"
                 class="sm:text-xs">
-            {{ 100 - formGroup.value?.campaignName?.length }} / 100
+            {{ 100 - campaignsGeneralForm.value?.campaignName?.length }} / 100
           </span>
         </div>
         <input
@@ -18,6 +18,13 @@
           maxlength="100"
           type="text"
         />
+        <small
+          *ngIf="
+              campaignsGeneralForm.controls['campaignName']?.touched &&
+              campaignsGeneralForm.controls['campaignName']?.errors?.required
+            "
+          class="red-text sm:text-xs text-danger"
+        >Không được bỏ trống.</small>
       </div>
       <div class="py-4">
         <div class="d-flex justify-content-between">
@@ -26,13 +33,20 @@
         </div>
         <p-dropdown
           id="campaignType"
-          [options]=""
+          [options]="campaignType"
           formControlName="campaignType"
           placeholder="Chọn loại chiến dịch"
           optionLabel="label"
-          optionValue="value"
-          [style]="{'minWidth':'100%'}">
+          [style]="{'minWidth':'100%'}"
+        >
         </p-dropdown>
+        <small
+          *ngIf="
+              campaignsGeneralForm.controls['campaignType']?.touched &&
+              campaignsGeneralForm.controls['campaignType']?.errors?.required
+            "
+          class="red-text sm:text-xs text-danger"
+        >Không được bỏ trống.</small>
       </div>
 
       <div class="py-4">
@@ -42,12 +56,11 @@
         <p-multiSelect
           id="assignedUser"
           [options]="assignedUser"
-          defaultLabel="Chọn người phụ trách"
+          placeholder="Chọn người phụ trách"
           formControlName="assignedUser"
-          (onFilter)="filterUser($event)"
           optionLabel="username"
-          optionValue="value"
-          appendTo="body"
+          [maxSelectedLabels]="1"
+          [selectedItemsLabel]="'Đã chọn {0} người phụ trách'"
           [style]="{'minWidth':'100%'}">
         </p-multiSelect>
       </div>
@@ -59,6 +72,7 @@
         <textarea
           id="description"
           rows="5"
+          formControlName="description"
           type="text"
           class="form-control"
           [style]="{'minWidth':'100%'}"

@@ -12,7 +12,7 @@ import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { SplitButtonModule } from "primeng/splitbutton";
 import { ChipModule } from "primeng/chip";
 import { TabViewModule } from "primeng/tabview";
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { DestroyService } from "@shared/services";
 import { MessageService } from "primeng/api";
@@ -121,6 +121,7 @@ const ANGULAR_COMMON = [
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CampaignsModule {
 }

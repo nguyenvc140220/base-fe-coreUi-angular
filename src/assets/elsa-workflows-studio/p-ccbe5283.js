@@ -1,0 +1,1 @@
+import{e as s}from"./p-d17a08e5.js";import"./p-f3f2f442.js";import{E as o}from"./p-9f020d74.js";class t{show(t,e){const p={caption:t,message:e,promise:null};return s.emit(o.ShowConfirmDialog,this,p),p.promise}hide(){s.emit(o.HideConfirmDialog,this)}}const e=new t;export{t as C,e as c}

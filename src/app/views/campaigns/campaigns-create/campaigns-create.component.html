@@ -1,21 +1,26 @@
 <div class="card px-4">
   <div class="border-b-1 py-2 row p-d-flex">
-    <div class="col-10">
+    <div class="col-9">
       <p-toast></p-toast>
-      <p-steps [model]="items" [readonly]="false" [(activeIndex)]="activeIndex"></p-steps>
+      <p-steps [model]="items"
+               (activeIndexChange)="onActiveIndexChange($event)"
+               [readonly]="false"
+               [(activeIndex)]="activeIndex"></p-steps>
     </div>
-    <div class="col-2  flex justify-content-center">
+    <div class="col-3  flex justify-content-center">
       <button
         pButton
         type="button"
         label="Huỷ"
         styleClass="p-button-sm"
         style="max-height: 70%"
+        (click)="btnCancel()"
         class="p-button-outlined mx-2 text-sm"></button>
       <button
         pButton
-        label="Tiếp tục"
+        [label]="activeIndex != 3 ? 'Tiếp tục': 'Hoàn tất'"
         style="max-height: 70%"
+        (click)="btnSaveOrNext()"
         styleClass="p-button-sm text-sm"
         class="mx-2"></button>
 
@@ -23,18 +28,38 @@
   </div>
 
   <ng-template [ngIf]="activeIndex === 0">
-    <app-campaigns-general-information [(activeIndex)]="activeIndex"></app-campaigns-general-information>
+    <app-campaigns-general-information
+      [(activeIndex)]="activeIndex"
+      [(campaignsGeneralForm)]="campaignsGeneralForm"
+      [(definitionId)]="definitionId"
+    ></app-campaigns-general-information>
   </ng-template>
 
   <ng-template [ngIf]="activeIndex === 1">
-    <app-campaigns-contact-data [(activeIndex)]="activeIndex"></app-campaigns-contact-data>
+    <app-campaigns-contact-data
+      [(activeIndex)]="activeIndex"
+      [(definitionId)]="definitionId"
+      [(segmentationForm)]="segmentationForm"
+    >
+    </app-campaigns-contact-data>
   </ng-template>
 
   <ng-template [ngIf]="activeIndex === 2">
-    <app-campaigns-configuration [(activeIndex)]="activeIndex"></app-campaigns-configuration>
+    <app-campaigns-configuration
+      [(activeIndex)]="activeIndex"
+      [(definitionId)]="definitionId">
+    </app-campaigns-configuration>
   </ng-template>
 
   <ng-template [ngIf]="activeIndex === 3">
-    <app-campaigns-completed [(activeIndex)]="activeIndex"></app-campaigns-completed>
+    <app-campaigns-completed
+      [(activeIndex)]="activeIndex"
+      [(campaignsGeneralForm)]="campaignsGeneralForm"
+      [(definitionId)]="definitionId"
+      [(segmentationForm)]="segmentationForm"
+    >
+    </app-campaigns-completed>
   </ng-template>
 </div>
+<p-toast autoZIndex="true"></p-toast>
+

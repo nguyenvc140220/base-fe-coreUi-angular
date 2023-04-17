@@ -2,7 +2,7 @@
   <label class="text-lg font-bold mb-2" style="font-size: 1.8em;">
     Tổng quan chiến dịch
   </label>
-  <div class="row py-4">
+  <div class="row py-3">
     <p-card class="text-center px-2 col-4">
       <p class="text-lg font-bold mb-2" style="font-size: 1em;">Tổng số khách hàng nhập vào</p>
       <p class="text-lg font-bold mb-2" style="font-size: 1em;">1850</p>
@@ -17,34 +17,100 @@
     </p-card>
   </div>
 
-  <div class="row py-4">
-    <p-card class="px-2 col-12">
-      <p class="text-lg font-bold mb-2" style="font-size: 1em;">Thông tin chung</p>
-      <p class="text-lg mb-2" style="font-size: 1em;">Tên chiến dịch</p>
-      <p class="text-lg mb-2" style="font-size: 1em;">Loại chiến dịch</p>
-      <p class="text-lg mb-2" style="font-size: 1em;">Người phụ trách</p>
-      <p class="text-lg mb-2" style="font-size: 1em;">Mô tả</p>
-    </p-card>
-  </div>
-
-  <div class="row py-4">
-    <p-card class="px-2 col-12">
-      <p class="text-lg font-bold mb-2" style="font-size: 1em;">Trigger</p>
-      <div class="text-lg mb-2" style="display: flex;font-size: 1em;">
-        Loại trigger
-        <div class="font-bold px-4">Phân khúc khách hàng</div>
-        Và
-        <div class="font-bold px-4">Khách hàng HN</div>
-        Hoặc
-        <div class="font-bold px-4">Khách hàng HCM</div>
+  <div class="row py-3">
+    <p-card class="px-2">
+      <div class="col-12  flex justify-content-end max-h-0.5">
+        <button
+          pButton
+          type="button"
+          (click)="btnEditStep(0)"
+          label="Sửa"
+          styleClass="p-button-sm"
+          style="max-height: 10%;font-size: 0.75rem;"
+          class="p-button-outlined text-sm"></button>
+      </div>
+      <div class="col-12">
+        <p class="text-lg font-bold mb-2" style="font-size: 1.2em;">Thông tin chung</p>
+        <div class="row">
+          <p class="text-lg col-2 mb-2" style="font-size: 1em">Tên chiến dịch</p>
+          <strong class="text-lg col-10 mb-2"
+                  style="font-size: 1em"> {{ campaignsGeneralForm.value?.campaignName}}</strong>
+        </div>
+        <div class="row">
+          <p class="text-lg col-2 mb-2" style="font-size: 1em">Loại chiến dịch</p>
+          <strong class="text-lg col-10 mb-2"
+                  style="font-size: 1em"> {{campaignsGeneralForm.value?.campaignType?.label}}</strong>
+        </div>
+        <div class="row">
+          <p class="text-lg col-2 mb-2" style="font-size: 1em">Người phụ trách</p>
+          <strong class="text-lg col-10 mb-2" style="font-size: 1em">{{assignedUser}}</strong>
+        </div>
+        <div class="row">
+          <p class="text-lg col-2 mb-2" style="font-size: 1em">Mô tả</p>
+          <strong class="text-lg col-10 mb-2"
+                  style="font-size: 1em">{{campaignsGeneralForm.value?.description}}</strong>
+        </div>
       </div>
     </p-card>
   </div>
 
-  <div class="row py-4">
-    <p-card class="px-2 col-12">
+  <div class="row py-3">
+    <p-card class="px-2">
+      <div class="col-12  flex justify-content-end max-h-0.5">
+        <button
+          pButton
+          type="button"
+          label="Sửa"
+          (click)="btnEditStep(1)"
+          styleClass="p-button-sm"
+          style="max-height: 10%;font-size: 0.75rem;"
+          class="p-button-outlined text-sm"></button>
+      </div>
+      <p class="text-lg font-bold" style="font-size: 1em;">Trigger</p>
+      <div class="text-lg row" style="display: flex;font-size: 1em;">
+        <div class="col-2">Loại trigger</div>
+        <ng-container *ngIf="segmentationForm.value?.segmentations">
+          <div class="font-bold text-center col-2">Phân khúc khách hàng</div>
+          <div class="col-8 row" style="display: flex">
+            <ng-container *ngFor="let segmentation of segmentationForm.value?.segmentations;">
+              <div class="col-1 mb-2 text-center">
+                và
+              </div>
+              <div class="font-bold col-3 mb-2 text-center">
+                <ng-container *ngIf="segmentation.conditional == 'CONSTANT'">
+                  Thuộc phân phúc
+                </ng-container>
+                <ng-container *ngIf="segmentation.conditional == 'NOTCONSTANT'">
+                  Không thuộc phân phúc
+                </ng-container>
+              </div>
+              <div class="font-bold col-8 mb-2">
+                <ng-container *ngFor="let value of segmentation.segmentationSelected;">
+                  {{value.name}}
+                  <br>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="row py-3">
+    <p-card class="px-2">
+      <div class="col-12  flex justify-content-end max-h-0.5">
+        <button
+          pButton
+          type="button"
+          label="Sửa"
+          (click)="btnEditStep(2)"
+          styleClass="p-button-sm"
+          style="max-height: 10%;font-size: 0.75rem;"
+          class="p-button-outlined text-sm"></button>
+      </div>
       <p class="text-lg font-bold mb-2" style="font-size: 1em;">Cấu hình</p>
-      <p class="text-lg font-bold mb-2" style="font-size: 1em;">Đầu số gọi ra</p>
+      <p class="text-lg mb-2" style="font-size: 1em;">Đầu số gọi ra</p>
       <p class="text-lg mb-2" style="font-size: 1em;">Kịch bản gọi</p>
       <p class="text-lg mb-2" style="font-size: 1em;">Số lần quay số</p>
     </p-card>

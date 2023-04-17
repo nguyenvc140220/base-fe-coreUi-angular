@@ -44,7 +44,7 @@ export class UserListComponent
     {field: 'userFullName', header: 'Họ và tên'},
     {field: 'status', header: 'Trạng thái'},
     {field: 'roles', header: 'Quyền'},
-    {field: 'lastActive', header: 'Ngày hoạt động cuôi'},
+    {field: 'lastActive', header: 'Ngày hoạt động cuối'},
     {field: 'action', header: 'Thao tác'}
   ]
 
@@ -56,6 +56,7 @@ export class UserListComponent
   ) {
     super(injector);
     breadcrumbStore.items = [{label: 'Danh sách người dùng'}];
+    this.primengTableHelper.defaultRecordsCountPerPage = 100;
   }
 
   ngOnInit(): void {

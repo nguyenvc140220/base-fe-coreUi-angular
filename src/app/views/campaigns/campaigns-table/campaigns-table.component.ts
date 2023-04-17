@@ -8,6 +8,7 @@ import { BaseResponse } from "@shared/models";
 import { Paginator } from "primeng/paginator";
 import { CampaignListModel } from "@shared/models/campaign/campaign-list.model";
 import { MessageService } from "primeng/api";
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-campaigns-table',
@@ -31,7 +32,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   searchKey: string = '';
 
   @ViewChild('paginator') paginator: Paginator;
-
+  definitionId = uuid.v4();
   constructor(
     injector: Injector,
     breadcrumbStore: BreadcrumbStore,
@@ -128,7 +129,12 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   }
 
   async routeAddCampaign() {
-    await this.router.navigate(['campaigns/create']);
+    await this.router.navigate(
+      [
+        'campaigns/create'
+      ],
+      { state: { definitionId: this.definitionId } }
+    );
   }
 
   getStateLabel(state: string): string {

@@ -1,8 +1,8 @@
 <p-divider align="center">
   <p-button label="Phân khúc khách hàng" styleClass="p-button-outlined p-button-secondary"></p-button>
 </p-divider>
-<form [formGroup]="segmentationsForm">
-  <div *ngFor="let segmentItem of segmentationsForm.get('segmentations')['controls'];let i = index"
+<form [formGroup]="segmentationForm">
+  <div *ngFor="let segmentItem of segmentationForm.get('segmentations')['controls'];let i = index"
        [formGroup]="segmentItem">
     <ng-template [ngIf]="i > 0">
       <p-divider align="left">Và</p-divider>
@@ -16,7 +16,8 @@
           <div class="col-3 pr-4">
             <p-dropdown
               id="conditionalSegmentation-{{i}}"
-              [options]="conditionalSegmentation"
+              [options]="segmentationQuery"
+              formControlName="conditional"
               optionLabel="label"
               optionValue="value"
               [style]="{'minWidth':'100%'}">
@@ -29,18 +30,25 @@
                 [options]="segmentations"
                 placeholder="Chọn phân khúc"
                 optionLabel="name"
+                formControlName="segmentationSelected"
                 [maxSelectedLabels]="1"
                 [selectedItemsLabel]="'Đã chọn {0} phân khúc'"
-                (onChange)="loadSegmentation($event,i)"
                 [style]="{'minWidth':'100%'}">
               </p-multiSelect>
+              <small
+                *ngIf="
+                  segmentItem.controls['segmentationSelected']?.touched &&
+                  segmentItem.controls['segmentationSelected']?.errors?.required
+                "
+                class="red-text sm:text-xs text-danger"
+              >Không được bỏ trống.</small>
             </div>
-
-            <div *ngFor="let options of segmentItem.get('options')['controls']" class="py-2"
-                 class="flex align-items-center gap-2 flex-wrap"
+            <div class="flex align-items-center gap-2 flex-wrap py-2"
                  style="display: flex">
-              <p-chip *ngFor="let data of options.value" [label]="data.name" class="px-2"
-                      [style]="{'background-color': '#D9ECD9', 'color': '#328F1A'}">
+              <p-chip *ngFor="let value of segmentItem.value?.segmentationSelected"
+                      class="" [style]="{'background-color': '#D9ECD9', 'color': '#328F1A'}">
+                {{value.name}}
+                <br>
               </p-chip>
             </div>
           </div>

@@ -1,0 +1,1 @@
+import{e as s}from"./p-d17a08e5.js";import"./p-f3f2f442.js";import{E as t}from"./p-9f020d74.js";class o{show(o,e,a){s.emit(t.ShowToastNotification,this,{title:o,message:e,autoCloseIn:a})}hide(){s.emit(t.HideToastNotification,this)}}const e=new o;export{o as T,e as t}
