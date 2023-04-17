@@ -23,7 +23,7 @@ export class UserCreateModalComponent implements OnInit {
   emailErr: string;
   userPermissions = [
     {label: 'Admin', value: 'admin'},
-    {label: 'Member', value: ''},
+    {label: 'Member', value: 'member'},
   ];
 
   userDto = new UserModel()

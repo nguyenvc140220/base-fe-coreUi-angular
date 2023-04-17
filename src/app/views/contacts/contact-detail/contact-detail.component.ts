@@ -77,6 +77,20 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
     ],
   };
 
+  contactDefaultField = [
+    {field: 'fullName', label: 'Họ và tên'},
+    {field: 'email', label: 'Email'},
+    {field: 'dob', label: 'Họ và tên'},
+    {field: 'gender', label: 'Trạng thái'},
+    {field: 'identification', label: 'Quyền'},
+    {field: 'province', label: 'Quyền'},
+    {field: 'district', label: 'Quyền'},
+    {field: 'ward', label: 'Quyền'},
+    {field: 'address', label: 'Quyền'},
+    {field: 'createSource', label: 'Quyền'},
+  ]
+
+
   constructor(
     private breadcrumbStore: BreadcrumbStore,
     private dynamicFieldService: DynamicFieldService,
@@ -127,9 +141,10 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
           res.data.content.forEach((p) => {
             properties[p.code] = p;
           });
+          console.log(properties)
           this.contactInfos = [];
-          Object.keys(entity).forEach((key) => {
-            if (properties[key])
+          Object.keys(properties).forEach(key => {
+            if (entity[key]) {
               this.contactInfos.push({
                 title: properties[key].displayName,
                 value:
@@ -137,7 +152,23 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
                     ? this.datePipe.transform(entity[key], 'dd/MM/yyyy')
                     : entity[key],
               });
-          });
+            } else this.contactInfos.push({
+              title: properties[key].displayName,
+              value: "_",
+            });
+          })
+          console.log(this.contactInfos)
+          // Object.keys(entity).forEach((key) => {
+          //   if (properties[key]) {
+          //     this.contactInfos.push({
+          //       title: properties[key].displayName,
+          //       value:
+          //         properties[key].dataType == DynamicDataTypeEnum.DATETIME
+          //           ? this.datePipe.transform(entity[key], 'dd/MM/yyyy')
+          //           : entity[key],
+          //     });
+          //   }
+          // });
         }
       });
   }
