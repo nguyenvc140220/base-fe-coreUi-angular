@@ -77,13 +77,9 @@ export class CampaignsCreateComponent implements OnInit {
 
     if (this.campaignsGeneralForm.valid) {
       this.checkValidStepSuccess(0);
-    } else {
-      this.checkValidStepFalse(0);
     }
     if (this.segmentationForm.valid) {
       this.checkValidStepSuccess(1);
-    } else {
-      this.checkValidStepFalse(1);
     }
 
     if (this.activeIndex == 3) {
@@ -138,14 +134,10 @@ export class CampaignsCreateComponent implements OnInit {
   onActiveIndexChange(e) {
     if (this.campaignsGeneralForm.valid) {
       this.checkValidStepSuccess(0);
-    } else {
-      this.checkValidStepFalse(0);
     }
 
     if (this.segmentationForm.valid) {
       return this.checkValidStepSuccess(1);
-    } else {
-      this.checkValidStepFalse(1);
     }
   }
 
@@ -173,14 +165,7 @@ export class CampaignsCreateComponent implements OnInit {
   checkValidStepSuccess(i) {
     const steps_number = document.getElementsByClassName('p-steps-number');
     const steps_title = document.getElementsByClassName('p-steps-title ');
-    steps_number[i].setAttribute('style', 'color: #ffffff; background: #8dcaf6;');
-    steps_title[i].setAttribute('style', 'color: #2196F3;');
-  }
-
-  checkValidStepFalse(i) {
-    const steps_number = document.getElementsByClassName('p-steps-number');
-    const steps_title = document.getElementsByClassName('p-steps-title ');
-    steps_number[i].setAttribute('style', 'color: #e55353;border: 1px solid #e55353');
-    steps_title[i].setAttribute('style', 'color: #e55353;');
+    steps_number[i].setAttribute('style', 'color: #1B5E20; background: #E8F5E9;');
+    steps_title[i].setAttribute('style', 'color: #1B5E20;');
   }
 }

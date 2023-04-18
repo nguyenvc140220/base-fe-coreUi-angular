@@ -1,5 +1,28 @@
-::ng-deep{
-  .p-tieredmenu-overlay{
+::ng-deep {
+  .p-tieredmenu-overlay {
     width: 150px;
+  }
+
+  .p-accordion-toggle-icon {
+    display: none;
+  }
+
+  .p-accordion-header-link {
+    display: none !important;
+  }
+
+  .accordion-header {
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    color: #495057;
+    background: #f8f9fa;
+    font-weight: 600;
+    border-radius: 3px;
+    transition: box-shadow 0.2s;
+
+  }
+
+  .p-accordion .p-accordion-content {
+    border: 0px solid #ffffff !important;
   }
 }

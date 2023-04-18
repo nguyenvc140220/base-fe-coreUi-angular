@@ -8,6 +8,8 @@ import { takeUntil } from 'rxjs';
 import { EChartsOption } from 'echarts/types/dist/echarts';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
 import { DatePipe } from '@angular/common';
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import * as faIcons from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-contact-detail',
@@ -17,8 +19,12 @@ import { DatePipe } from '@angular/common';
 export class ContactDetailComponent extends DestroyService implements OnInit {
   isLoading = false;
   contactInfos = [];
+  contactInfosShowDefault = [];
+  dynamicContactInfos = [];
   contactId = '';
-
+  tapDefault = 0;
+  tapDynamic = 2;
+  tapDefaultChild = null
   extendItems = [
     {
       label: 'Sửa',
@@ -77,17 +83,17 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
     ],
   };
 
-  contactDefaultField = [
+  showDefaultField = [
     {field: 'fullName', label: 'Họ và tên'},
     {field: 'email', label: 'Email'},
-    {field: 'dob', label: 'Họ và tên'},
-    {field: 'gender', label: 'Trạng thái'},
-    {field: 'identification', label: 'Quyền'},
-    {field: 'province', label: 'Quyền'},
-    {field: 'district', label: 'Quyền'},
-    {field: 'ward', label: 'Quyền'},
-    {field: 'address', label: 'Quyền'},
-    {field: 'createSource', label: 'Quyền'},
+    {field: 'dob', label: 'Ngày sinh'},
+    {field: 'gender', label: 'Giới tính'},
+    // {field: 'identification', label: 'Quyền'},
+    // {field: 'province', label: 'Quyền'},
+    // {field: 'district', label: 'Quyền'},
+    // {field: 'ward', label: 'Quyền'},
+    // {field: 'address', label: 'Quyền'},
+    // {field: 'createSource', label: 'Quyền'},
   ]
 
 
@@ -144,32 +150,39 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
           console.log(properties)
           this.contactInfos = [];
           Object.keys(properties).forEach(key => {
-            if (entity[key]) {
-              this.contactInfos.push({
+            if (properties[key].removable == false) {
+              const found = this.showDefaultField.find(element => element.field == key);
+              const data = {
                 title: properties[key].displayName,
-                value:
-                  properties[key].dataType == DynamicDataTypeEnum.DATETIME
-                    ? this.datePipe.transform(entity[key], 'dd/MM/yyyy')
-                    : entity[key],
-              });
-            } else this.contactInfos.push({
+                value: this.checkTypeEntity(properties[key].dataType, entity[key]),
+              }
+              found ? this.contactInfos.push(data) : this.contactInfosShowDefault.push(data);
+            } else this.dynamicContactInfos.push({
               title: properties[key].displayName,
-              value: "_",
+              value: this.checkTypeEntity(properties[key].dataType, entity[key])
             });
           })
-          console.log(this.contactInfos)
-          // Object.keys(entity).forEach((key) => {
-          //   if (properties[key]) {
-          //     this.contactInfos.push({
-          //       title: properties[key].displayName,
-          //       value:
-          //         properties[key].dataType == DynamicDataTypeEnum.DATETIME
-          //           ? this.datePipe.transform(entity[key], 'dd/MM/yyyy')
-          //           : entity[key],
-          //     });
-          //   }
-          // });
+          console.log(this.contactInfosShowDefault)
         }
       });
+  }
+
+  /**
+   * @param entity : trường dữ liệu
+   * @param value : giá trị trường dữ liệu
+   */
+  checkTypeEntity(entity: any, value) {
+    if (!value) return "_"
+    if (entity.dataType == DynamicDataTypeEnum.DATETIME) {
+      return this.datePipe.transform(value, 'dd/MM/yyyy')
+    } else return value
+  }
+
+  icon(iconName): IconDefinition {
+    return faIcons[iconName];
+  }
+
+  showOrHideAccordionTab(i, name) {
+    this[name] = this[name] == i ? null : i;
   }
 }
