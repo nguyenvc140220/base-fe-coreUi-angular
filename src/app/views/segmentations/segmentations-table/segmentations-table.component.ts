@@ -56,9 +56,10 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
     const pageSize = this.primengTableHelper.getMaxResultCount(this.paginator, event)
       ?? this.primengTableHelper.defaultRecordsCountPerPage;
 
+    this.searchKey = !this.searchKey ? '' : this.searchKey.trim();
     this.segmentationService
       .getSegmentations(
-        this.searchKey ?? '',
+        this.searchKey,
         currentPage,
         pageSize
       )

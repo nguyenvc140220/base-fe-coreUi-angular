@@ -84,9 +84,10 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
     const pageSize = this.primengTableHelper.getMaxResultCount(this.paginator, event)
       ?? this.primengTableHelper.defaultRecordsCountPerPage;
 
+    this.searchKey = !this.searchKey ? '' : this.searchKey.trim();
     this.campaignService
       .getCampaigns(
-        this.searchKey ?? '',
+        this.searchKey,
         currentPage,
         pageSize
       )
