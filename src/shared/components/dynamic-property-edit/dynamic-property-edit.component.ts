@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
 import { DynamicPropertyUpdateModel } from '@shared/models/dynamic-field/dynamic-property-update.model';
 // import { takeUntil } from 'rxjs';
@@ -27,6 +27,9 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
     this.formGroup.addControl('displayName', new FormControl({
       value: this.dynamicDialogConfig.data.entity?.displayName,
       disabled: false,
+    },
+    {
+      validators: [Validators.required],
     }
     ));
   }
