@@ -1,4 +1,4 @@
-import { Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ComponentBase } from "@shared/utils/component-base.component";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { Router } from "@angular/router";
@@ -37,6 +37,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   constructor(
     injector: Injector,
     breadcrumbStore: BreadcrumbStore,
+    private readonly cdr: ChangeDetectorRef,
     private readonly router: Router,
     private readonly messageService: MessageService,
     private readonly campaignService: CampaignService) {
@@ -65,7 +66,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
       {field: 'realStartTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
       {field: 'realEndTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
-      {field: 'agentIds', header: 'Người phụ trách', styles: {minWidth: '300px'}},
+      {field: 'thoseInCharge', header: 'Người phụ trách', styles: {minWidth: '250px'}},
       {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
       {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
     ];
@@ -92,17 +93,28 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: (res: BaseResponse<CampaignListModel>) => {
-          this.primengTableHelper.records = res.data;
           this.primengTableHelper.totalRecordsCount = res.total ?? 0;
+
+          const data = [];
+          const users = res.users ?? {};
+          for (const entry of res.data) {
+            const agentIds = !entry.agentIds || entry.agentIds.trim() === '' ? [] : entry.agentIds.split(',');
+            const thoseInCharge = agentIds.map(id => users[id]?.username ?? '')?.join(', ');
+            data.push({...entry, thoseInCharge, numOfAgents: agentIds.length});
+          }
+
+          this.primengTableHelper.records = data;
         },
         error: err => {
           this.primengTableHelper.isLoading = false;
+          this.primengTableHelper.records = [];
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
             detail: `Tải danh sách chiến dịch không thành công. Vui lòng thử lại!`,
           });
           console.error(`Tải danh sách chiến dịch không thành công: `, err);
+          this.cdr.detectChanges();
         },
         complete: () => {
           this.primengTableHelper.isLoading = false;

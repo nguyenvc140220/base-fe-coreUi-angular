@@ -65,11 +65,12 @@ export class SegmentationsTableComponent extends ComponentBase<any> implements O
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: (res: PageResponse<SegmentationListModel>) => {
-          this.primengTableHelper.records = res.data.content;
-          this.primengTableHelper.totalRecordsCount = res.data.totalElements ?? 0;
+          this.primengTableHelper.records = res?.data?.content;
+          this.primengTableHelper.totalRecordsCount = res?.data?.totalElements ?? 0;
         },
         error: err => {
           this.primengTableHelper.isLoading = false;
+          this.primengTableHelper.records = [];
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
