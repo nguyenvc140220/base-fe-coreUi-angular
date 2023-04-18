@@ -6,7 +6,6 @@ import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SEGMENTATION_QUERY } from "@shared/constant/campaign.const";
 import { CampaignService } from "@shared/services/campaign/campaign.service";
 import { Subject, takeUntil } from "rxjs";
-import { CreateCampaignModel } from "@shared/models/campaign/create-campaign.model";
 import { CreateCampaignRequestModel } from "@shared/models/campaign/create-campaign-request.model";
 
 @Component({
@@ -43,8 +42,13 @@ export class CampaignsCreateComponent implements OnInit {
     this.items = [
       {
         label: 'Thông tin chung',
+        icon: '',
         command: () => {
           this.activeIndex = 0;
+          // const steps_number = document.getElementsByClassName('p-steps-number');
+          // const steps_title = document.getElementsByClassName('p-steps-title ');
+          // steps_number[0].setAttribute('style', 'color: #2196F3;');
+          // steps_title[0].setAttribute('style', 'color: #2196F3;');
         },
       },
       {
@@ -70,6 +74,18 @@ export class CampaignsCreateComponent implements OnInit {
   }
 
   btnSaveOrNext() {
+
+    if (this.campaignsGeneralForm.valid) {
+      this.checkValidStepSuccess(0);
+    } else {
+      this.checkValidStepFalse(0);
+    }
+    if (this.segmentationForm.valid) {
+      this.checkValidStepSuccess(1);
+    } else {
+      this.checkValidStepFalse(1);
+    }
+
     if (this.activeIndex == 3) {
       // save data
       if (this.campaignsGeneralForm.valid && this.segmentationForm.valid) {
@@ -120,18 +136,17 @@ export class CampaignsCreateComponent implements OnInit {
   }
 
   onActiveIndexChange(e) {
-    if (!this.campaignsGeneralForm.valid)
-      return this.messageService.add({
-        severity: 'warn',
-        summary: 'Cảnh báo',
-        detail: `Bước "Thông tin chung" chưa điền đẩy đủ thông tin!`,
-      });
-    if (!this.segmentationForm.valid)
-      return this.messageService.add({
-        severity: 'warn',
-        summary: 'Cảnh báo',
-        detail: `Bước "Data khách hàng" chưa điền đẩy đủ thông tin!`,
-      });
+    if (this.campaignsGeneralForm.valid) {
+      this.checkValidStepSuccess(0);
+    } else {
+      this.checkValidStepFalse(0);
+    }
+
+    if (this.segmentationForm.valid) {
+      return this.checkValidStepSuccess(1);
+    } else {
+      this.checkValidStepFalse(1);
+    }
   }
 
   initForm() {
@@ -155,4 +170,17 @@ export class CampaignsCreateComponent implements OnInit {
     });
   }
 
+  checkValidStepSuccess(i) {
+    const steps_number = document.getElementsByClassName('p-steps-number');
+    const steps_title = document.getElementsByClassName('p-steps-title ');
+    steps_number[i].setAttribute('style', 'color: #ffffff; background: #8dcaf6;');
+    steps_title[i].setAttribute('style', 'color: #2196F3;');
+  }
+
+  checkValidStepFalse(i) {
+    const steps_number = document.getElementsByClassName('p-steps-number');
+    const steps_title = document.getElementsByClassName('p-steps-title ');
+    steps_number[i].setAttribute('style', 'color: #e55353;border: 1px solid #e55353');
+    steps_title[i].setAttribute('style', 'color: #e55353;');
+  }
 }

@@ -16,7 +16,7 @@ export interface CampaignListModel {
   realStartTime: Date;
   realEndTime: Date;
   campaignStatus: string;
-  agentIds: string[];
+  agentIds: string;
   segmentations: string[];
   numOfAgents: number;
 }

@@ -1,4 +1,4 @@
-import { Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ComponentBase } from "@shared/utils/component-base.component";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { Router } from "@angular/router";
@@ -33,9 +33,11 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   @ViewChild('paginator') paginator: Paginator;
   definitionId = uuid.v4();
+
   constructor(
     injector: Injector,
     breadcrumbStore: BreadcrumbStore,
+    private readonly cdr: ChangeDetectorRef,
     private readonly router: Router,
     private readonly messageService: MessageService,
     private readonly campaignService: CampaignService) {
@@ -53,23 +55,24 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
     this.initDataTable();
   }
 
-  paginate(event?: Paginator) {
+  paginate(event?) {
     this.loadData(event);
   }
 
   private initDataTable() {
-    {
-      this.cols = [
-        {field: 'name', header: 'Chiến dịch', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'campaignScriptId', header: 'Kịch bản', styles: {minWidth: '200px'}},
-        {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
-        {field: 'realStartTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'realEndTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
-        {field: 'agentIds', header: 'Người phụ trách', styles: {minWidth: '300px'}},
-        {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
-        {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
-      ];
-    }
+    this.cols = [
+      {field: 'name', header: 'Chiến dịch', styles: {minWidth: '200px'}, sortable: true},
+      {field: 'campaignScriptId', header: 'Kịch bản', styles: {minWidth: '200px'}},
+      {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
+      {field: 'realStartTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
+      {field: 'realEndTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
+      {field: 'thoseInCharge', header: 'Người phụ trách', styles: {minWidth: '250px'}},
+      {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
+      {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
+    ];
+
+    this.primengTableHelper.predefinedRecordsCountPerPage = [10, 50, 100, 150];
+    this.primengTableHelper.defaultRecordsCountPerPage = 100;
 
     this.loadData();
   }
@@ -81,26 +84,38 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
     const pageSize = this.primengTableHelper.getMaxResultCount(this.paginator, event)
       ?? this.primengTableHelper.defaultRecordsCountPerPage;
 
+    this.searchKey = !this.searchKey ? '' : this.searchKey.trim();
     this.campaignService
       .getCampaigns(
-        this.searchKey ?? '',
+        this.searchKey,
         currentPage,
         pageSize
       )
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: (res: BaseResponse<CampaignListModel>) => {
-          this.primengTableHelper.records = res.data;
           this.primengTableHelper.totalRecordsCount = res.total ?? 0;
+
+          const data = [];
+          const users = res.users ?? {};
+          for (const entry of res.data) {
+            const agentIds = !entry.agentIds || entry.agentIds.trim() === '' ? [] : entry.agentIds.split(',');
+            const thoseInCharge = agentIds.map(id => users[id]?.username ?? '')?.join(', ');
+            data.push({...entry, thoseInCharge, numOfAgents: agentIds.length});
+          }
+
+          this.primengTableHelper.records = data;
         },
         error: err => {
           this.primengTableHelper.isLoading = false;
+          this.primengTableHelper.records = [];
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
             detail: `Tải danh sách chiến dịch không thành công. Vui lòng thử lại!`,
           });
           console.error(`Tải danh sách chiến dịch không thành công: `, err);
+          this.cdr.detectChanges();
         },
         complete: () => {
           this.primengTableHelper.isLoading = false;
@@ -133,7 +148,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       [
         'campaigns/create'
       ],
-      { state: { definitionId: this.definitionId } }
+      {state: {definitionId: this.definitionId}}
     );
   }
 

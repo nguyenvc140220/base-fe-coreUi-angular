@@ -2,7 +2,7 @@ export class BaseResponse<T> {
   statusCode: number;
   message: string;
   data?: T[] | undefined | null;
-
+  users?: Map<string, { id: string; username: string; userFullName: string }>;
   total?: number | undefined | null;
 }
 
