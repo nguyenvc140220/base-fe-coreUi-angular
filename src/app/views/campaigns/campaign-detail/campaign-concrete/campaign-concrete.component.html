@@ -17,7 +17,8 @@
         label="Làm mới"
         icon="pi pi-refresh"
         class="p-button-text"
-        (click)="handleRefresh($event)"></button>
+        pTooltip="Cập nhật lần cuối lúc {{ lastRefreshTime | date: 'dd/MM/yyyy HH:mm:ss' }}"
+        (click)="handleRefresh()"></button>
       <button
         pButton
         type="button"

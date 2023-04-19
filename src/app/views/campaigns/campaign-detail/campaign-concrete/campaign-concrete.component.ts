@@ -17,6 +17,8 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
     payload: {},
   };
 
+  lastRefreshTime: Date;
+
   constructor(
     injector: Injector,
     private readonly router: Router,
@@ -108,12 +110,21 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
 
     this.primengTableHelper.predefinedRecordsCountPerPage = [10, 50, 100, 150];
     this.primengTableHelper.defaultRecordsCountPerPage = 100;
+
+    this.loadData();
   }
 
-  handleRefresh($event: MouseEvent) {
+  loadData() {
+    setTimeout(() => {
+      this.lastRefreshTime = new Date();
+      this.primengTableHelper.isLoading = false;
+    }, 300);
+  }
+
+  handleRefresh() {
     this.primengTableHelper.isLoading = true;
 
-    setTimeout(() => this.primengTableHelper.isLoading = false, 300);
+    this.loadData();
   }
 
   showDynamicFilter() {
@@ -126,7 +137,7 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
     dialog.onClose.subscribe((res) => {
       if (res) {
         this.query.payload = res;
-        // this.loadData(null);
+        this.loadData();
       }
     });
   }
