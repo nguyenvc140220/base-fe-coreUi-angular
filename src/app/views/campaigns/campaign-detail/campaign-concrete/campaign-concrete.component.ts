@@ -118,7 +118,7 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
 
   showDynamicFilter() {
     const dialog = this.dialogService.open(DynamicFilterComponent, {
-      header: 'Bộ lọc khách hàng',
+      header: 'Bộ lọc liên hệ',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
       data: { type: DynamicEntityTypeEnum.LEAD },
