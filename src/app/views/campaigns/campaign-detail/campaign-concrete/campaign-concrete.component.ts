@@ -1,6 +1,10 @@
 import { Component, Injector, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ComponentBase } from "@shared/utils/component-base.component";
+import { DynamicFilterComponent } from "@shared/components/dynamic-filter/dynamic-filter.component";
+import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
+import { DialogService } from "primeng/dynamicdialog";
+import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
 
 @Component({
   selector: 'app-campaign-concrete',
@@ -9,7 +13,14 @@ import { ComponentBase } from "@shared/utils/component-base.component";
 })
 export class CampaignConcreteComponent extends ComponentBase<any> implements OnInit {
 
-  constructor(injector: Injector, private readonly router: Router) {
+  query: DynamicQueryModel = {
+    payload: {},
+  };
+
+  constructor(
+    injector: Injector,
+    private readonly router: Router,
+    private readonly dialogService: DialogService) {
     super(injector);
   }
 
@@ -94,10 +105,30 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
     }
     this.primengTableHelper.records = this.mockData;
     this.primengTableHelper.totalRecordsCount = this.mockData.length;
+
+    this.primengTableHelper.predefinedRecordsCountPerPage = [10, 50, 100, 150];
+    this.primengTableHelper.defaultRecordsCountPerPage = 100;
   }
 
   handleRefresh($event: MouseEvent) {
+    this.primengTableHelper.isLoading = true;
 
+    setTimeout(() => this.primengTableHelper.isLoading = false, 300);
+  }
+
+  showDynamicFilter() {
+    const dialog = this.dialogService.open(DynamicFilterComponent, {
+      header: 'Bộ lọc khách hàng',
+      width: '60%',
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      data: { type: DynamicEntityTypeEnum.LEAD },
+    });
+    dialog.onClose.subscribe((res) => {
+      if (res) {
+        this.query.payload = res;
+        // this.loadData(null);
+      }
+    });
   }
 
   async navigate(route: string, contactId: string) {
