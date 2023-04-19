@@ -66,11 +66,11 @@
                   {{ segmentation[col.field] && (segmentation[col.field] | date: 'dd/MM/yyyy HH:mm:ss') }}
                 </td>
 
-                <td *ngSwitchDefault
-                    class="truncate"
-                    [pTooltip]="segmentation[col.field]"
-                    [style]="segmentation[col.field]?.styles || {}">
-                  {{segmentation[col.field]}}
+                <td *ngSwitchDefault>
+                  <app-text-truncate
+                    [text]="segmentation[col.field]"
+                    [style]="segmentation[col.field]?.styles"
+                  ></app-text-truncate>
                 </td>
               </ng-container>
             </tr>
