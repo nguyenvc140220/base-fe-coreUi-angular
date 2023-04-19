@@ -68,6 +68,8 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                   code: c.code,
                   displayName: c.displayName,
                   dataType: c.dataType,
+                  hintText: c.hintText ?? c.displayName,
+                  tooltip: c.tooltip ?? c.displayName,
                   isDisplay:
                     customTable && customTable[c.code] != null
                       ? customTable[c.code].isDisplay
