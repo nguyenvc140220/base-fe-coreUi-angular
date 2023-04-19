@@ -38,7 +38,7 @@ export class DynamicPropertyDeleteComponent implements OnInit, OnDestroy {
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Xóa thành công' });
   }
   showError(err: any) {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: err ? err : 'Xóa thất bại' });
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: err?.error?.msg ? err?.error?.msg : 'Xóa thất bại' });
   }
   onDialogEvent(event: any) {
     switch (event) {
@@ -60,6 +60,7 @@ export class DynamicPropertyDeleteComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             this.showError(err);
+            this.ref.close();
           }
         });    
         break;

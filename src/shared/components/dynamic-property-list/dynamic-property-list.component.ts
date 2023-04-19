@@ -106,10 +106,10 @@ export class DynamicPropertyListComponent
       header: 'Sửa tên trường thông tin',
       width: '30%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { 
+      data: {
         entity: entity,
         messageService: this.messageService
-       },
+      },
     });
     dialog.onClose.subscribe((res) => {
       // console.log(entity);
@@ -121,7 +121,10 @@ export class DynamicPropertyListComponent
       header: 'Xóa trường thông tin',
       width: '30%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { entity: entity },
+      data: {
+        entity: entity,
+        messageService: this.messageService
+      },
     });
     dialog.onClose.subscribe((res) => {
       // console.log(entity);
