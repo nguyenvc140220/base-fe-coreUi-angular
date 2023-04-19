@@ -1,9 +1,9 @@
 <div class="card">
-  <p-tabView>
-    <p-tabPanel header="Tổng quan">
+  <p-tabView (activeIndexChange)="handleTabChange($event)">
+    <p-tabPanel [header]="indices.get(0)">
       <app-campaign-summary></app-campaign-summary>
     </p-tabPanel>
-    <p-tabPanel header="Chi tiết">
+    <p-tabPanel [header]="indices.get(1)">
       <app-campaign-concrete></app-campaign-concrete>
     </p-tabPanel>
   </p-tabView>

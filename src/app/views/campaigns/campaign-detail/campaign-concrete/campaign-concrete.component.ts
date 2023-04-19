@@ -108,9 +108,6 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
     this.primengTableHelper.records = this.mockData;
     this.primengTableHelper.totalRecordsCount = this.mockData.length;
 
-    this.primengTableHelper.predefinedRecordsCountPerPage = [10, 50, 100, 150];
-    this.primengTableHelper.defaultRecordsCountPerPage = 100;
-
     this.loadData();
   }
 
@@ -129,7 +126,7 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
 
   showDynamicFilter() {
     const dialog = this.dialogService.open(DynamicFilterComponent, {
-      header: 'Bộ lọc liên hệ',
+      header: 'Bộ lọc lead',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
       data: { type: DynamicEntityTypeEnum.LEAD },

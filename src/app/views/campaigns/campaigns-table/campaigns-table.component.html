@@ -71,7 +71,7 @@
               <td *ngSwitchCase="'name'" [style]="campaign[col.field]?.styles || {}">
                 <p
                   class="text-blue-500 hover:underline cursor-pointer"
-                  (click)="navigate('campaigns/details', campaign.id)"
+                  (click)="navigate('campaigns/details', campaign)"
                 >{{ campaign[col.field] }}</p>
               </td>
 
@@ -95,11 +95,11 @@
                   [severity]="getColor(campaign.state)"/>
               </td>
 
-              <td *ngSwitchDefault
-                  class="truncate"
-                  [pTooltip]="campaign[col.field]"
-                  [style]="campaign[col.field]?.styles || {}">
-                {{campaign[col.field]}}
+              <td *ngSwitchDefault>
+                <app-text-truncate
+                  [text]="campaign[col.field]"
+                  [style]="campaign[col.field]?.styles"
+                ></app-text-truncate>
               </td>
             </ng-container>
           </tr>

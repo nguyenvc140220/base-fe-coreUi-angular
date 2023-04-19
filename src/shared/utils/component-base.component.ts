@@ -10,5 +10,8 @@ export abstract class ComponentBase<T> {
 
   protected constructor(injector: Injector, configService?: ConfigService) {
     this.primengTableHelper = new PrimengTableHelper();
+
+    this.primengTableHelper.predefinedRecordsCountPerPage = [10, 50, 100, 150];
+    this.primengTableHelper.defaultRecordsCountPerPage = 100;
   }
 }

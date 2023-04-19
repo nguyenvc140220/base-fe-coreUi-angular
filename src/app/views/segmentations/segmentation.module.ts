@@ -24,6 +24,7 @@ import { DatePipe, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from
 import { DialogButtonModule } from "@shared/components/dialog-button/dialog-button.module";
 import { SegmentationDeleteModalComponent } from './segmentation-delete-modal/segmentation-delete-modal.component';
 import { CoreModule } from "@shared/root.module";
+import { TextTruncateModule } from "@shared/components/text-truncate/text-truncate.module";
 
 const PRIMENG = [
   TableModule,
@@ -68,6 +69,7 @@ const SHARED_COMPONENTS = [
     OverlayPanelModule,
     DatePipe,
     CoreModule,
+    TextTruncateModule,
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],
