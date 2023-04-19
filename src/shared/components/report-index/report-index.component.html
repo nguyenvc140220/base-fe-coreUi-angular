@@ -2,6 +2,10 @@
   <p class="mb-2">
     <fa-icon [size]="size" [icon]="icon"></fa-icon>
   </p>
-  <p class="text-lg font-bold mb-2 truncate" [pTooltip]="reportIndex" style="font-size: 1.8em;"> {{ reportIndex }} </p>
-  <p class="truncate" [pTooltip]="label"> {{ label }} </p>
+  <app-text-truncate
+    class="text-lg font-bold mb-2"
+    [text]="reportIndex"
+    [tooltip]="reportIndex"
+    [style]="{fontSize: '1.8em'}"></app-text-truncate>
+  <app-text-truncate [text]="label" [tooltip]="label"></app-text-truncate>
 </p-card>

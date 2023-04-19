@@ -95,11 +95,11 @@
                   [severity]="getColor(campaign.state)"/>
               </td>
 
-              <td *ngSwitchDefault
-                  class="truncate"
-                  [pTooltip]="campaign[col.field]"
-                  [style]="campaign[col.field]?.styles || {}">
-                {{campaign[col.field]}}
+              <td *ngSwitchDefault>
+                <app-text-truncate
+                  [text]="campaign[col.field]"
+                  [style]="campaign[col.field]?.styles"
+                ></app-text-truncate>
               </td>
             </ng-container>
           </tr>

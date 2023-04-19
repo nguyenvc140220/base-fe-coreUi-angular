@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { EChartsOption } from "echarts/types/dist/echarts";
 
 
@@ -15,13 +14,8 @@ export class CampaignSummaryComponent implements OnInit {
   options_1: EChartsOption;
   options_2: EChartsOption;
 
-  constructor(route: ActivatedRoute, breadcrumbStore: BreadcrumbStore) {
-    const {queryParams} = route.snapshot;
-
-    breadcrumbStore.items = [
-      {label: 'Quản lý chiến dịch', routerLink: ['/campaigns']},
-      {label: `Tổng quan chiến dịch ${queryParams['name']}`},
-    ];
+  constructor(route: ActivatedRoute) {
+    // const {queryParams} = route.snapshot;
   }
 
   handleRefresh($event: MouseEvent) {

@@ -52,6 +52,7 @@ import {
   CustomerSegmentationComponent
 } from './campaigns-create/campaigns-contact-data/customer-segmentation/customer-segmentation.component';
 import { AccordionModule } from "primeng/accordion";
+import { TextTruncateModule } from "@shared/components/text-truncate/text-truncate.module";
 
 const PRIMENG = [
   TableModule,
@@ -117,7 +118,7 @@ const ANGULAR_COMMON = [
       echarts: () => import('echarts'),
     }),
     AccordionModule,
-    FormsModule, ReactiveFormsModule
+    FormsModule, ReactiveFormsModule, TextTruncateModule
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
   exports: [],
