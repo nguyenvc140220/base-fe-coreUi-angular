@@ -19,6 +19,7 @@ import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-prope
 import { DynamicPropertyEditComponent } from '@shared/components/dynamic-property-edit/dynamic-property-edit.component';
 import { DynamicPropertyDeleteComponent } from '@shared/components/dynamic-property-delete/dynamic-property-delete.component';
 import { DynamicPropertyHideComponent } from '../dynamic-property-hide/dynamic-property-hide.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-dynamic-property-list',
@@ -42,7 +43,8 @@ export class DynamicPropertyListComponent
     injector: Injector,
     private dynamicFieldService: DynamicFieldService,
     private destroyService: DestroyService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private messageService: MessageService
   ) {
     super(injector);
   }
@@ -104,10 +106,13 @@ export class DynamicPropertyListComponent
       header: 'Sửa tên trường thông tin',
       width: '30%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { entity: entity },
+      data: { 
+        entity: entity,
+        messageService: this.messageService
+       },
     });
     dialog.onClose.subscribe((res) => {
-      console.log(entity);
+      // console.log(entity);
       this.loadData(null);
     });
   }
@@ -119,7 +124,8 @@ export class DynamicPropertyListComponent
       data: { entity: entity },
     });
     dialog.onClose.subscribe((res) => {
-      console.log(entity);
+      // console.log(entity);
+      this.loadData(null);
     });
   }
   hideOrOpen(entity) {
@@ -131,7 +137,8 @@ export class DynamicPropertyListComponent
       data: { entity: entity },
     });
     dialog.onClose.subscribe((res) => {
-      console.log(entity);
+      // console.log(entity);
+      this.loadData(null);
     });
   }
 }

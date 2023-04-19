@@ -4,7 +4,6 @@ import { CoreModule } from '@shared/root.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DynamicPropertyEditComponent } from './dynamic-property-edit.component';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
-// import { DestroyService } from '@shared/services';
 
 @NgModule({
   declarations: [DynamicPropertyEditComponent],
@@ -14,6 +13,5 @@ import { DialogButtonModule } from '@shared/components/dialog-button/dialog-butt
     ReactiveFormsModule,
     DialogButtonModule,
   ],
-  // providers: [DestroyService]
 })
 export class DynamicPropertyEditModule { }
