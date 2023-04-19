@@ -1,18 +1,30 @@
-<div class="row text-center flex justify-center items-center">
-  <span pButton
-        class="p-button-text w-auto"
-        label="Bấm để cập nhật"
-        icon="pi pi-refresh"
-        (click)="handleRefresh($event)"></span>&nbsp;
-  <span class="w-auto">Cập nhật lần cuối lúc: {{ 0 | date:'dd/MM/yyyy HH:mm:ss' }}</span>
-</div>
-<p-divider></p-divider>
+<!--<div class="row text-center flex justify-center items-center">-->
+<!--  <span pButton-->
+<!--        class="p-button-text w-auto"-->
+<!--        label="Bấm để cập nhật"-->
+<!--        icon="pi pi-refresh"-->
+<!--        (click)="handleRefresh($event)"></span>&nbsp;-->
+<!--  <span class="w-auto">Cập nhật lần cuối lúc: {{ 0 | date:'dd/MM/yyyy HH:mm:ss' }}</span>-->
+<!--</div>-->
+<!--<p-divider></p-divider>-->
 
 <div>
   <div class="card">
     <div class="card-body">
-      <button pButton type="button" label="Thêm mới" icon="pi pi-plus" class="p-button-text"></button>
-      <button pButton type="button" label="Bộ lọc" icon="pi pi-filter" class="p-button-text"></button>
+      <button
+        pButton
+        type="button"
+        label="Làm mới"
+        icon="pi pi-refresh"
+        class="p-button-text"
+        (click)="handleRefresh($event)"></button>
+      <button
+        pButton
+        type="button"
+        label="Bộ lọc"
+        icon="pi pi-filter"
+        class="p-button-text"
+        (click)="showDynamicFilter()"></button>
     </div>
   </div>
 </div>
