@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
 import { DynamicPropertyUpdateModel } from '@shared/models/dynamic-field/dynamic-property-update.model';
-// import { takeUntil } from 'rxjs';
-// import { DestroyService } from '@shared/services';
+import { Subject, takeUntil } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-dynamic-property-edit',
@@ -14,12 +14,12 @@ import { DynamicPropertyUpdateModel } from '@shared/models/dynamic-field/dynamic
 export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
+  messageService: MessageService;
+  private unsubscribe$: Subject<void> = new Subject<void>();
   constructor(
-    injector: Injector,
     public ref: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig,
-    private dynamicFieldService: DynamicFieldService,
-    // private destroyService: DestroyService,
+    private dynamicFieldService: DynamicFieldService
   ) {
     this.formGroup = new FormGroup({});
   }
@@ -28,13 +28,22 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
       value: this.dynamicDialogConfig.data.entity?.displayName,
       disabled: false,
     },
-    {
-      validators: [Validators.required],
-    }
+      {
+        validators: [Validators.required],
+      }
     ));
+    this.messageService = this.dynamicDialogConfig.data.messageService;
   }
-  ngOnDestroy(): void { }
-
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+  showSuccess() {
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Cập nhật thành công' });
+  }
+  showError(err: any) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: err ? err : 'Cập nhật thất bại' });
+  }
   onDialogEvent(event: any) {
     switch (event) {
       case 'SAVE_BUTTON':
@@ -42,32 +51,27 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
           code: this.dynamicDialogConfig.data.entity.code,
           displayName: this.formGroup.value.displayName,
         });
-        this.dynamicFieldService.updateDynamicProperties(req)
-          // .pipe(takeUntil(this.destroyService))
+        this.dynamicFieldService.updateDynamicProperty(req)
+          .pipe(takeUntil(
+            this.unsubscribe$
+          ))
           .subscribe({
             next: (res) => {
-              console.log(res);
+              if (res.data) {
+                this.showSuccess();
+              } else {
+                this.showError(null);
+              }
               this.ref.close();
             },
             error: (err) => {
-              console.log(err);
+              this.showError(err);
             }
           });
         break;
       case 'CANCEL_BUTTON':
-        console.log('CANCEL_BUTTON');
         this.ref.close();
         break;
     }
   }
 }
-
-// if (this.dynamicDialogConfig.data.entity) {
-//   console.log('#### form data ####');
-//   console.log(this.dynamicDialogConfig.data.entity);
-//   this.formGroup.addControl('displayName', new FormControl({
-//     value: this.dynamicDialogConfig.data.entity.displayName,
-//     disabled: true,
-//   }
-//   ));
-// }
