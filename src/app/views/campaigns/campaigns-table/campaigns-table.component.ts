@@ -67,12 +67,9 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       {field: 'realStartTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
       {field: 'realEndTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
       {field: 'thoseInCharge', header: 'Người phụ trách', styles: {minWidth: '250px'}},
-      {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
+      // {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
       {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
     ];
-
-    this.primengTableHelper.predefinedRecordsCountPerPage = [10, 50, 100, 150];
-    this.primengTableHelper.defaultRecordsCountPerPage = 100;
 
     this.loadData();
   }
@@ -135,11 +132,11 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
     console.log($event);
   }
 
-  async navigate(route: string, id: string) {
-    if (!route || !id) return;
+  async navigate(route: string, campaign: CampaignListModel) {
+    if (!route || !campaign?.id) return;
 
     await this.router.navigate([route], {
-      queryParams: {id, name: 'Chào hàng 1'}
+      queryParams: campaign
     })
   }
 
