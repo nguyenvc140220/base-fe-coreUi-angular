@@ -11,17 +11,17 @@
             <div class="col-8">
               <ng-template [ngIf]="['TEXT'].includes(e.dataType)">
                 <input type="text" class="form-control" pInputText
-                       placeholder="{{e?.displayName}}" pTooltip="{{e?.displayName}}" tooltipZIndex="200005"
+                       placeholder="{{e?.hintText}}" pTooltip="{{e?.tooltip}}" tooltipZIndex="200005"
                        tooltipPosition="left" [formControlName]="e.code"/>
               </ng-template>
               <ng-template [ngIf]="['NUMBER'].includes(e.dataType)">
                 <input type="number" class="form-control" pInputText
-                       placeholder="{{e?.displayName}}" pTooltip="{{e?.displayName}}" tooltipZIndex="200005"
+                       placeholder="{{e?.hintText}}" pTooltip="{{e?.tooltip}}" tooltipZIndex="200005"
                        tooltipPosition="left" [formControlName]="e.code"/>
               </ng-template>
               <ng-template [ngIf]="['DATETIME'].includes(e.dataType)">
                 <p-calendar dateFormat="dd/mm/yy" inputId="dateformat" styleClass="d-flex" appendTo="body"
-                            placeholder="{{e?.displayName}}" pTooltip="{{e?.displayName}}" tooltipZIndex="200005" [showIcon]="true"
+                            placeholder="{{e?.hintText}}" pTooltip="{{e?.tooltip}}" tooltipZIndex="200005" [showIcon]="true"
                             tooltipPosition="left" [formControlName]="e.code" baseZIndex="20001"
                             showButtonBar="true">
                 </p-calendar>
