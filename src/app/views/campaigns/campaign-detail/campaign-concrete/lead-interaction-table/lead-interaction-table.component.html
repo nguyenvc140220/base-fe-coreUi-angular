@@ -1,0 +1,43 @@
+<p-table [scrollable]="true"
+         [tableStyle]="{'min-width': '50rem'}"
+         [value]="primengTableHelper.records"
+         [loading]="primengTableHelper.isLoading"
+         [paginator]="false"
+         [autoLayout]="true"
+         [lazy]="true"
+         scrollHeight="50vh">
+  <ng-template pTemplate="header">
+    <tr>
+      <th
+        *ngFor="let col of cols"
+        pSortableColumn="{{ col.sortable ? col.field : ''}}"
+        [ngStyle]="col.styles || { minWidth: '200px' }">
+        {{col.header}}&nbsp;<p-sortIcon *ngIf="col.sortable" field="{{col.field}}"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template let-interaction pTemplate="body">
+    <tr>
+      <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
+        <td *ngSwitchCase="'recording'" [style]="interaction[col.field]?.styles || {}">
+          <audio controls>
+            <source src="https://file-examples.com/storage/feee5c69f0643c59da6bf13/2017/11/file_example_MP3_700KB.mp3"/>
+          </audio>
+        </td>
+        <td *ngSwitchCase="'interactTime'">
+          <p>{{ interaction[col.field][0] | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+          <p>{{ interaction[col.field][1] | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+        </td>
+        <td *ngSwitchCase="'duration'">
+          <p>12:00</p>
+        </td>
+        <td *ngSwitchDefault
+            class="truncate"
+            [pTooltip]="interaction[col.field]"
+            [style]="interaction[col.field]?.styles || {}">
+          {{interaction[col.field]}}
+        </td>
+      </ng-container>
+    </tr>
+  </ng-template>
+</p-table>
