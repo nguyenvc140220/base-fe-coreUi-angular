@@ -53,6 +53,7 @@
               <i
                 class="hover:cursor-pointer pi pi-history pr-5"
                 pTooltip="Xem báo cáo"
+                (click)="navigate('campaigns/details', campaign)"
               ></i>
               <i
                 *ngIf="campaign.state === 'PENDING' || campaign.state === 'PAUSE'"

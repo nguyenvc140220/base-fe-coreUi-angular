@@ -69,7 +69,7 @@
               <td *ngSwitchCase="'phoneNumber'" [style]="contact[col.field]?.styles || {}">
                 <p
                   class="text-blue-500 hover:underline cursor-pointer"
-                  (click)="navigate('contacts/details', contact.id)">{{ contact[col.field] }}</p>
+                  (click)="showInteractionModal()">{{ contact[col.field] }}</p>
               </td>
 
               <td *ngSwitchDefault

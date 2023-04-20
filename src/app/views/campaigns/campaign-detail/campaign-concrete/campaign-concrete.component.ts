@@ -5,6 +5,7 @@ import { DynamicFilterComponent } from "@shared/components/dynamic-filter/dynami
 import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
 import { DialogService } from "primeng/dynamicdialog";
 import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
+import { LeadInteractionModalComponent } from "./lead-interaction-modal/lead-interaction-modal.component";
 
 @Component({
   selector: 'app-campaign-concrete',
@@ -139,8 +140,12 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
     });
   }
 
-  async navigate(route: string, contactId: string) {
-    // await  this.router.navigate([route, '4059cb14-3ebf-4327-9dc4-7de3bb1fcb4c']);
-   await this.router.navigate(['contacts/detail', '4059cb14-3ebf-4327-9dc4-7de3bb1fcb4c']);
+  showInteractionModal() {
+    const dialog = this.dialogService.open(LeadInteractionModalComponent, {
+      header: 'Lịch sử cuộc gọi',
+      width: '60%',
+      contentStyle: { 'max-height': '80vh', overflow: 'auto' },
+      data: { leadId: '' }
+    });
   }
 }

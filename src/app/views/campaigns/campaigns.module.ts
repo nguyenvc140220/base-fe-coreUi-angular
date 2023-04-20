@@ -53,6 +53,12 @@ import {
 } from './campaigns-create/campaigns-contact-data/customer-segmentation/customer-segmentation.component';
 import { AccordionModule } from "primeng/accordion";
 import { TextTruncateModule } from "@shared/components/text-truncate/text-truncate.module";
+import {
+  LeadInteractionModalComponent
+} from './campaign-detail/campaign-concrete/lead-interaction-modal/lead-interaction-modal.component';
+import {
+  LeadInteractionTableComponent
+} from './campaign-detail/campaign-concrete/lead-interaction-table/lead-interaction-table.component';
 
 const PRIMENG = [
   TableModule,
@@ -98,7 +104,9 @@ const ANGULAR_COMMON = [
     CampaignsContactDataComponent,
     CampaignsConfigurationComponent,
     CampaignsCompletedComponent,
-    CustomerSegmentationComponent
+    CustomerSegmentationComponent,
+    LeadInteractionModalComponent,
+    LeadInteractionTableComponent
   ],
   imports: [
     ...PRIMENG,
