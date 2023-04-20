@@ -14,6 +14,12 @@ export class CampaignSummaryComponent implements OnInit {
   options_1: EChartsOption;
   options_2: EChartsOption;
 
+  today = new Date();
+
+  summaryShow = true;
+  dailyCallShow = true;
+  callStatusShow = true;
+
   constructor(route: ActivatedRoute) {
     // const {queryParams} = route.snapshot;
   }
@@ -53,7 +59,9 @@ export class CampaignSummaryComponent implements OnInit {
     this.options_1 = {
       tooltip: {},
       legend: {
-        data: [dialed, interact]
+        data: [dialed, interact],
+        right: 'right',
+        bottom: 'center',
       },
       xAxis: {
         data: data_1.map(item => item.name),
@@ -116,7 +124,9 @@ export class CampaignSummaryComponent implements OnInit {
     this.options_2 = {
       tooltip: {},
       legend: {
-        data: ['Thất bại', 'Thành công']
+        data: ['Thất bại', 'Thành công'],
+        right: 'right',
+        bottom: 'center',
       },
       xAxis: {
         data: data_2.map(item => item.name),

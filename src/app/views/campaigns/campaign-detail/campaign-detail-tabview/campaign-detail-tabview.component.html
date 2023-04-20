@@ -1,10 +1,31 @@
 <div class="card">
-  <p-tabView (activeIndexChange)="handleTabChange($event)">
+  <p-tabView (activeIndexChange)="handleTabChange($event)" [(activeIndex)]="activeIndex">
     <p-tabPanel [header]="indices.get(0)">
-      <app-campaign-summary></app-campaign-summary>
+      <app-campaign-summary #campaignSummary></app-campaign-summary>
     </p-tabPanel>
     <p-tabPanel [header]="indices.get(1)">
-      <app-campaign-concrete></app-campaign-concrete>
+      <app-campaign-concrete #campaignConcrete></app-campaign-concrete>
     </p-tabPanel>
   </p-tabView>
+</div>
+
+<div id="button" class="hidden" #btnContainer>
+  <span style="width: 50%; height: 100%;" class="flex items-center justify-end">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-refresh"
+      class="p-button-text pl-3 pr-3 m-2 truncate"
+      label="Làm mới"
+      pTooltip="Cập nhật lần cuối lúc {{ lastRefreshTime | date: 'dd/MM/yyyy HH:mm:ss' }}"
+      (click)="handleRefresh()"></button>
+    <button
+      pButton
+      *ngIf="activeIndex === 1"
+      type="button"
+      label="Bộ lọc"
+      icon="pi pi-filter"
+      class="p-button-text pl-3 pr-3 m-2 truncate"
+    (click)="handleFilter()"></button>
+  </span>
 </div>

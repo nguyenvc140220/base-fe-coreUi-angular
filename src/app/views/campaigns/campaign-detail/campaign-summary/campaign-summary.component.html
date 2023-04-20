@@ -1,18 +1,33 @@
-<div class="row text-center flex justify-center items-center">
-  <span pButton
-        class="p-button-text w-auto"
-        label="Bấm để cập nhật"
-        icon="pi pi-refresh"
-        (click)="handleRefresh($event)"></span>&nbsp;
-  <span class="w-auto">Cập nhật lần cuối lúc: {{ 0 | date:'dd/MM/yyyy HH:mm:ss' }}</span>
-</div>
-<p-divider></p-divider>
+<!--<div class="row text-center flex justify-center items-center">-->
+<!--  <span pButton-->
+<!--        class="p-button-text w-auto"-->
+<!--        label="Bấm để cập nhật."-->
+<!--        icon="pi pi-refresh"-->
+<!--        (click)="handleRefresh($event)"></span>&nbsp;-->
+<!--  <span class="w-auto">Cập nhật lần cuối lúc: {{ 0 | date:'dd/MM/yyyy HH:mm:ss' }}</span>-->
+<!--</div>-->
+<!--<p-divider></p-divider>-->
 
 <div class="mb-2">
-  <p-panel [toggleable]="true">
+  <p-panel [toggleable]="true" (onBeforeToggle)="summaryShow = !summaryShow">
     <ng-template class="w-100" pTemplate="header">
-      <div class="flex justify-around items-center">
-        <span>Tổng quan chiến dịch</span>
+      <div class="flex w-100 justify-between items-center">
+        <div>Tổng quan chiến dịch</div>
+        <div class="pr-2">
+          <p-calendar
+            *ngIf="summaryShow"
+            selectionMode="range"
+            [dateFormat]="'dd/mm/yy'"
+            [showTime]="false"
+            [numberOfMonths]="2"
+            [appendTo]="'body'"
+            [showIcon]="true"
+            [showClear]="true"
+            [readonlyInput]="true"
+            [showButtonBar]="true"
+            placeholder="Chọn từ ngày - đến ngày"
+          ></p-calendar>
+        </div>
       </div>
     </ng-template>
 
@@ -30,13 +45,52 @@
 </div>
 
 <div class="mb-2">
-  <p-panel header="Cuộc gọi hứng thú theo ngày" [toggleable]="true">
+  <p-panel [toggleable]="true" (onBeforeToggle)="dailyCallShow = !dailyCallShow">
+    <ng-template class="w-100" pTemplate="header">
+      <div class="flex w-100 justify-between items-center">
+        <div>Cuộc gọi hứng thú theo ngày</div>
+        <div class="pr-2">
+          <p-calendar
+            *ngIf="dailyCallShow"
+            [view]="'month'"
+            [dateFormat]="'Tháng ' + 'mm/yy'"
+            [showTime]="false"
+            [appendTo]="'body'"
+            [showIcon]="true"
+            [readonlyInput]="true"
+            [hideOnDateTimeSelect]="true"
+            [(ngModel)]="today"
+          >
+          </p-calendar>
+        </div>
+      </div>
+    </ng-template>
+
     <div echarts [options]="options_1" class="chart"></div>
   </p-panel>
 </div>
 
 <div class="mb-2">
-  <p-panel header="Trạng thái cuộc gọi" [toggleable]="true">
+  <p-panel [toggleable]="true" (onBeforeToggle)="callStatusShow = !callStatusShow">
+    <ng-template class="w-100" pTemplate="header">
+      <div class="flex w-100 justify-between items-center">
+        <div>Trạng thái cuộc gọi</div>
+        <div class="pr-2">
+          <p-calendar
+            *ngIf="callStatusShow"
+            [view]="'month'"
+            [dateFormat]="'Tháng ' + 'mm/yy'"
+            [showTime]="false"
+            [appendTo]="'body'"
+            [showIcon]="true"
+            [readonlyInput]="true"
+            [(ngModel)]="today"
+            [hideOnDateTimeSelect]="true"
+          ></p-calendar>
+        </div>
+      </div>
+    </ng-template>
     <div echarts [options]="options_2" class="chart"></div>
   </p-panel>
 </div>
+
