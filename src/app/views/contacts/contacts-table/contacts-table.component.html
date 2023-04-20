@@ -51,11 +51,17 @@
             <tr>
               <ng-container *ngFor="let col of checkedCols;" [ngSwitch]="col.code">
                 <td *ngSwitchCase="'action'">
-                  <i class="pi pi-file-edit pr-5 hover:cursor-pointer" (click)="editContact(contact)" pTooltip="Sửa"></i>
+                  <i class="pi pi-file-edit pr-5 hover:cursor-pointer" (click)="editContact(contact)"
+                     pTooltip="Sửa"></i>
                   <i class="pi pi-copy pr-5 hover:cursor-pointer" pTooltip="Nhân bản"></i>
                   <i class="pi pi-sitemap pr-5 hover:cursor-pointer" pTooltip="Gộp"></i>
                 </td>
-                <td *ngSwitchCase="'phoneNumber'" class="text-blue-500" (click)="routeContactDetail(contact)">
+                <td *ngSwitchCase="'id'">
+                  <div class="w-20 truncate text-blue-500"
+                       (click)="routeContactDetail(contact)"
+                       pTooltip="{{contact[col.code]}}">{{contact[col.code]}}</div>
+                </td>
+                <td *ngSwitchCase="'phoneNumber'">
                   {{contact[col.code]}}
                 </td>
                 <td *ngSwitchCase="'dob'">

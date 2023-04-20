@@ -84,16 +84,11 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
   };
 
   showDefaultField = [
-    {field: 'fullName', label: 'Họ và tên'},
-    {field: 'email', label: 'Email'},
-    {field: 'dob', label: 'Ngày sinh'},
-    {field: 'gender', label: 'Giới tính'},
-    // {field: 'identification', label: 'Quyền'},
-    // {field: 'province', label: 'Quyền'},
-    // {field: 'district', label: 'Quyền'},
-    // {field: 'ward', label: 'Quyền'},
-    // {field: 'address', label: 'Quyền'},
-    // {field: 'createSource', label: 'Quyền'},
+    {field: 'fullName', title: 'Họ và tên', value: ""},
+    {field: 'email', title: 'Email', value: ""},
+    {field: 'dob', title: 'Ngày sinh', value: ""},
+    {field: 'gender', title: 'Giới tính', value: ""},
+    {field: 'identification', title: 'CMND/CCCD', value: ""},
   ]
 
 
@@ -143,26 +138,48 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
       })
       .subscribe((res) => {
         if (res.statusCode == 200) {
-          var properties = {};
+          var properties = {
+            // creationTime: {
+            //   displayName: 'Ngày tạo',
+            //   dataType: DynamicDataTypeEnum.DATETIME,
+            //   removable: false
+            // },
+            // lastModificationTime: {
+            //   displayName: 'Ngày cập nhật gần nhất',
+            //   dataType: DynamicDataTypeEnum.DATETIME,
+            //   removable: false
+            // },
+          };
           res.data.content.forEach((p) => {
             properties[p.code] = p;
           });
+          console.log(entity)
           console.log(properties)
           this.contactInfos = [];
           Object.keys(properties).forEach(key => {
             if (properties[key].removable == false) {
-              const found = this.showDefaultField.find(element => element.field == key);
+              let found = this.showDefaultField.find(element => element.field == key);
               const data = {
                 title: properties[key].displayName,
-                value: this.checkTypeEntity(properties[key].dataType, entity[key]),
+                value: this.checkTypeEntity(properties[key], entity[key]),
               }
-              found ? this.contactInfos.push(data) : this.contactInfosShowDefault.push(data);
+              found ? found.value = data.value : this.contactInfos.push(data);
             } else this.dynamicContactInfos.push({
               title: properties[key].displayName,
-              value: this.checkTypeEntity(properties[key].dataType, entity[key])
+              value: this.checkTypeEntity(properties[key], entity[key])
             });
           })
-          console.log(this.contactInfosShowDefault)
+
+          this.contactInfos.push(
+            {
+              title: 'Ngày tạo',
+              value: this.datePipe.transform(entity['creationTime'], 'dd/MM/yyyy')
+            },
+            {
+              title: 'Ngày cập nhật gần nhất',
+              value: this.datePipe.transform(entity['lastModificationTime'], 'dd/MM/yyyy')
+            },
+          );
         }
       });
   }
@@ -174,6 +191,7 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
   checkTypeEntity(entity: any, value) {
     if (!value) return "_"
     if (entity.dataType == DynamicDataTypeEnum.DATETIME) {
+      if (value == 0) return "_"
       return this.datePipe.transform(value, 'dd/MM/yyyy')
     } else return value
   }
