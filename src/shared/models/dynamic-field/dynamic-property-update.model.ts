@@ -5,7 +5,8 @@ import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
 export class DynamicPropertyUpdateModel {
   code: string;
   displayName: string;
-
+  editable: boolean;
+  
   constructor(data?: any) {
     if (data) {
       for (var property in data) {

@@ -42,7 +42,7 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Cập nhật thành công' });
   }
   showError(err: any) {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: err ? err : 'Cập nhật thất bại' });
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: err?.error?.msg ? err?.error?.msg : 'Cập nhật thất bại' });
   }
   onDialogEvent(event: any) {
     switch (event) {
@@ -66,6 +66,7 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
             },
             error: (err) => {
               this.showError(err);
+              this.ref.close();
             }
           });
         break;
