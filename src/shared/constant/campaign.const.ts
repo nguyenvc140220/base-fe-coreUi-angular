@@ -4,20 +4,20 @@ export const CUSTOMER_TYPE = [
 
 export const CAMPAIGN_TYPE = [
   {
-    label:"AutoCall IVR",
-    value:"AUTOCALL_IVR"
+    label: "AutoCall IVR",
+    value: "AUTOCALL_IVR"
   },
   {
-    label:"AutoCall Predict",
-    value:"AUTOCALL_PREDICT"
+    label: "AutoCall Predict",
+    value: "AUTOCALL_PREDICT"
   },
   {
-    label:"Email",
-    value:"EMAIL"
+    label: "Email",
+    value: "EMAIL"
   },
   {
-    label:"SMS",
-    value:"SMS"
+    label: "SMS",
+    value: "SMS"
   }
 ]
 

@@ -22,7 +22,6 @@ export class DynamicPropertyModel {
   isFixed?: boolean;
 
   constructor(data?: any) {
-    debugger
     if (data) {
       for (var property in data) {
         if (data.hasOwnProperty(property))

@@ -25,4 +25,12 @@
   .p-accordion .p-accordion-content {
     border: 0px solid #ffffff !important;
   }
+
+  #p-accordiontab-0-content .p-accordion-content {
+    padding-bottom: 0px !important;
+  }
+
+  #p-accordiontab-1-content .p-accordion-content {
+    padding-top: 0px !important;
+  }
 }

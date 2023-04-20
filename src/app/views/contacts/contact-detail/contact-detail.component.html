@@ -52,38 +52,38 @@
               </ng-template>
               <ng-template pTemplate="content">
                 <div class="space-y-2">
-                  <div class="flex flex-row" *ngFor="let info of contactInfos">
+                  <div class="flex flex-row" *ngFor="let info of showDefaultField">
                     <div>
                       {{info.title}} :
                       <i class="fa-solid fa-user"></i>
                     </div>
-                    <div class="ml-2 font-bold">{{info.value ? info.value : ''}}</div>
+                    <div class="ml-2 w-50 font-bold truncate" pTooltip="{{info.value}}">{{info.value}}</div>
                   </div>
+                </div>
+                <div class="space-y-2">
+                  <button class="font-bold"
+                          (click)="showOrHideAccordionTab(1, 'tapDefaultChild')">
+                    <fa-icon
+                      size="sm"
+                      [icon]="icon(tapDefaultChild === 1 ? 'faChevronDown':'faChevronRight')">
+                    </fa-icon>
+                    {{tapDefaultChild === 1 ? 'Thu gọn' : 'Mở rộng'}}
+                  </button>
                 </div>
               </ng-template>
             </p-accordionTab>
-            <div class="col-md-12 d-flex justify-content-end">
-              <button
-                style="font-size: 0.8em;" class="font-bold"
-                (click)="showOrHideAccordionTab(1, 'tapDefaultChild')">
-                <fa-icon
-                  size="sm"
-                  [icon]="icon(tapDefaultChild === 1 ? 'faChevronDown':'faChevronRight')">
-                </fa-icon>
-                {{tapDefaultChild === 1 ? 'Thu gọn' : 'Mở rộng'}}
-              </button>
-            </div>
             <p-accordionTab>
               <ng-template pTemplate="header">
               </ng-template>
               <ng-template pTemplate="content">
                 <div class="space-y-2">
-                  <div class="flex flex-row" *ngFor="let info of contactInfosShowDefault">
+                  <div class="flex flex-row" *ngFor="let info of contactInfos">
                     <div>
                       {{info.title}} :
                       <i class="fa-solid fa-user"></i>
                     </div>
-                    <div class="ml-2 font-bold">{{info.value ? info.value : ''}}</div>
+                    <div class="ml-2 w-50 font-bold truncate"
+                         pTooltip="{{info.value}}">{{info.value}}</div>
                   </div>
                 </div>
               </ng-template>
@@ -106,7 +106,7 @@
                       {{info.title}} :
                       <i class="fa-solid fa-user"></i>
                     </div>
-                    <div class="ml-2 font-bold">{{info.value ? info.value : ''}}</div>
+                    <div class="ml-2 w-50 font-bold truncate" pTooltip="{{info.value}}">{{info.value}}</div>
                   </div>
                 </div>
               </ng-template>
