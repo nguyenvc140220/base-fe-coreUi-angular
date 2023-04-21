@@ -24,6 +24,7 @@ export class CampaignService extends BaseService {
         skip: (page - 1) * pageSize,
         take: pageSize,
         keyword: searchKey,
+        orderByDesc: 'updatedAt,createdAt'
       }
     );
   }

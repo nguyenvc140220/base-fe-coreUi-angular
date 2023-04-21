@@ -151,11 +151,11 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   getStateLabel(state: string): string {
     switch (state) {
-      case 'PENDING':
+      case 'WAITING':
         return 'Đang chờ';
-      case 'RUNNING':
+      case 'HAPPENING':
         return 'Đang chạy';
-      case 'PAUSE':
+      case 'PAUSED':
         return 'Tạm dừng';
       default:
         return 'Kết thúc';
@@ -164,11 +164,11 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   getColor(state: string): string {
     switch (state) {
-      case 'PENDING':
+      case 'WAITING':
         return 'info';
-      case 'RUNNING':
+      case 'HAPPENING':
         return 'success';
-      case 'PAUSE':
+      case 'PAUSED':
         return 'Warning';
       default:
         return 'danger';
