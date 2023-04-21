@@ -1,5 +1,4 @@
-const elsaStudioRoot = document.querySelector('elsa-studio-root');
-elsaStudioRoot.addEventListener('initializing', e => {
+document.querySelector('elsa-studio-root').addEventListener('initializing', e => {
     const elsaStudio = e.detail;
     DateInputPlugin(elsaStudio);
     NumberInputPlugin(elsaStudio);

@@ -4,6 +4,8 @@ import {
   FormBuilder,
   FormGroup,
 } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { ConfigService } from "@shared/utils/config.service";
 
 @Component({
   selector: 'app-campaigns-configuration',
@@ -20,8 +22,10 @@ export class CampaignsConfigurationComponent implements OnInit {
 
   lstDayTypes: FormArray;
 
-  constructor(private fb: FormBuilder) {
-    this.loadScripts();
+  serverId = "";
+  data: SafeHtml;
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, configService: ConfigService ) {
+    this.serverId = configService.workflowManagerUrl;
   }
 
   loadScripts() {
@@ -30,10 +34,15 @@ export class CampaignsConfigurationComponent implements OnInit {
     node.src = dynamicScripts;
     node.type = 'text/javascript';
     node.async = false;
-    document.getElementsByTagName('head')[0].appendChild(node);
+    document.head.appendChild(node);
   }
 
   ngOnInit(): void {
-    console.log(this.definitionId)
+    this.data = this.sanitizer.bypassSecurityTrustHtml(`
+    <elsa-studio-root server-url="${this.serverId}" monaco-lib-path="assets/monaco" config="assets/elsa-workflows-studio/assets/designer.config.json">
+      <elsa-workflow-definition-editor-screen workflow-definition-id="${this.definitionId}">
+      </elsa-workflow-definition-editor-screen>
+    </elsa-studio-root>`);
+    this.loadScripts();
   }
 }

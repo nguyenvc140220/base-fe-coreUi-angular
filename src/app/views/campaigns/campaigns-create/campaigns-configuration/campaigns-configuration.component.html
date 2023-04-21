@@ -1,9 +1,3 @@
 <div class="w-full h-full">
-  <elsa-studio-root
-    server-url="http://172.16.88.13:5009/"
-    monaco-lib-path="assets/monaco">
-    <elsa-workflow-definition-editor-screen
-      workflow-definition-id="{{definitionId}}">
-    </elsa-workflow-definition-editor-screen>
-  </elsa-studio-root>
+  <div [innerHtml]="data"></div>
 </div>

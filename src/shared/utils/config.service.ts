@@ -34,6 +34,10 @@ export class ConfigService {
     return this.appConfig.campaignPlanningUrl;
   }
 
+  get workflowManagerUrl() {
+    return this.appConfig.workflowManagerUrl;
+  }
+
   get elasticQuery() {
     return this.appConfig.elasticQuery;
   }
