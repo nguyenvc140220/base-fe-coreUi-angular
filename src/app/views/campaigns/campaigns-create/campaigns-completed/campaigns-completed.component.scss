@@ -1,3 +1,9 @@
-p-card-content {
-  padding: 0px !important;
+:host ::ng-deep {
+  p-card-content {
+    padding: 0px !important;
+  }
+
+  p-button-icon.pi.pi-file-edit {
+    font-size: 0.75rem !important;
+  }
 }

@@ -24,6 +24,10 @@ export class CampaignsGeneralInformationComponent implements OnInit {
   };
   campaignType = CAMPAIGN_TYPE;
   searchKey: string;
+  minDate: Date;
+  maxDate: Date;
+  minHour: Date;
+  maxHour: Date;
 
   constructor(
     private usersService: UsersService,
@@ -34,6 +38,10 @@ export class CampaignsGeneralInformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.initInput();
+    this.minDate = this.campaignsGeneralForm.value.startCallTime ?? null
+    this.maxDate = this.campaignsGeneralForm.value.endCallTime ?? null
+    this.minHour = this.campaignsGeneralForm.value.timeFrom ?? new Date('05-18-2023 05:00');
+    this.maxHour = this.campaignsGeneralForm.value.timeTo ?? new Date('05-18-2023 18:00');
   }
 
   private initInput(): void {

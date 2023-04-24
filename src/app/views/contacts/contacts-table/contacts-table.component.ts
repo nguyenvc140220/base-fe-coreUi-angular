@@ -53,6 +53,10 @@ export class ContactsTableComponent
   }
 
   ngOnInit(): void {
+    if (sessionStorage.getItem('contactDynamicFormValue')) {
+      this.query.payload = this.getQuery((JSON.parse(sessionStorage.getItem('contactDynamicFormValue'))));
+      this.loadData(null);
+    }
     this.initDataTable();
   }
 
@@ -240,5 +244,24 @@ export class ContactsTableComponent
 
   routeContactDetail(contact) {
     this.router.navigate(['contacts/detail', contact['id']]);
+  }
+
+  getQuery(entities) {
+    var payload = [];
+    this.cols.forEach((e) => {
+      if (e.isDisplay && entities[e.code] && entities[e.code].trim() != '') {
+        payload.push({
+          field: e.code,
+          operator: entities[e.code + '-operator'],
+          value: entities[e.code].trim(),
+        });
+      }
+    });
+    if (payload.length > 0)
+      return {
+        type: DynamicFilterTypeEnum.AND,
+        payload: payload,
+      };
+    return {};
   }
 }
