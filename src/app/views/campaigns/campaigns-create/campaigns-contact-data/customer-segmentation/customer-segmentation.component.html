@@ -10,20 +10,21 @@
     <div class="form-group row flex">
       <div class="py-4">
         <div class="d-flex justify-content-between">
-          <div class="text-justify">
-            <label class="sm:text-sm font-normal" for="conditionalSegmentation-{{i}}">Khi khách hàng</label>
+          <div class="d-flex justify-content-between col-2">
+            <label class="sm:text-sm font-normal" style="padding: 0.5rem 0.5rem;" for="querySegmentation-{{i}}">Khi
+              khách hàng</label>
           </div>
           <div class="col-3 pr-4">
             <p-dropdown
-              id="conditionalSegmentation-{{i}}"
+              id="querySegmentation-{{i}}"
               [options]="segmentationQuery"
-              formControlName="conditional"
+              formControlName="query"
               optionLabel="label"
               optionValue="value"
               [style]="{'minWidth':'100%'}">
             </p-dropdown>
           </div>
-          <div class="col-8">
+          <div class="col-6">
             <div class="col-12">
               <p-multiSelect
                 id=""
@@ -51,6 +52,12 @@
                 <br>
               </p-chip>
             </div>
+          </div>
+          <div class="col-1">
+            <i style="font-size: 1.5rem;padding: 0.5rem 0.5rem;" aria-hidden="true"
+               class="pi pi-times-circle text-danger"
+               (click)="removeSegmentation(i)"
+               pTooltip="Xóa" tooltipPosition="top"></i>
           </div>
         </div>
       </div>

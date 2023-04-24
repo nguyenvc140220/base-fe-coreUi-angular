@@ -1,10 +1,10 @@
 <div class="container p-0">
   <form [formGroup]="form">
     <div class="row">
-      <div *ngFor="let e of entities"  [ngClass]="e?.isDisplay ? 'col-6': 'hidden'">
+      <div *ngFor="let e of entities" [ngClass]="e?.isDisplay ? 'col-6': 'hidden'">
         <div *ngIf="e.isDisplay" class="form-group">
           <div class="m-2 col-8">
-            <label class="font-bold">{{e?.displayName}}
+            <label class="font-bold truncate w-32" pTooltip="{{e?.displayName}}">{{e?.displayName}}
             </label>
           </div>
           <div class="row">
@@ -21,15 +21,16 @@
               </ng-template>
               <ng-template [ngIf]="['DATETIME'].includes(e.dataType)">
                 <p-calendar dateFormat="dd/mm/yy" inputId="dateformat" styleClass="d-flex" appendTo="body"
-                            placeholder="{{e?.hintText}}" pTooltip="{{e?.tooltip}}" tooltipZIndex="200005" [showIcon]="true"
+                            placeholder="{{e?.hintText}}" pTooltip="{{e?.tooltip}}" tooltipZIndex="200005"
+                            [showIcon]="true"
                             tooltipPosition="left" [formControlName]="e.code" baseZIndex="20001"
                             showButtonBar="true">
                 </p-calendar>
               </ng-template>
               <ng-template [ngIf]="['BOOLEAN'].includes(e.dataType)">
-                <p-radioButton  value="Nam" label="Nam" [formControlName]="e.code">
+                <p-radioButton value="Nam" label="Nam" [formControlName]="e.code">
                 </p-radioButton>
-                <p-radioButton  value="Nữ" label="Nữ" [formControlName]="e.code">
+                <p-radioButton value="Nữ" label="Nữ" [formControlName]="e.code">
                 </p-radioButton>
               </ng-template>
             </div>

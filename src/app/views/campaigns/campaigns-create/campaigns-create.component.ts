@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from "primeng/api";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
 import { Router } from "@angular/router";
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SEGMENTATION_QUERY } from "@shared/constant/campaign.const";
 import { CampaignService } from "@shared/services/campaign/campaign.service";
 import { Subject, takeUntil } from "rxjs";
 import { CreateCampaignRequestModel } from "@shared/models/campaign/create-campaign-request.model";
+import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
+import { DynamicFilterTypeEnum } from "@shared/enums/dynamic-filter-type.enum";
+import { ContactService } from "@shared/services/contacts/contact.service";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-campaigns-create',
@@ -20,12 +24,18 @@ export class CampaignsCreateComponent implements OnInit {
   campaignsGeneralForm: FormGroup;
   segmentationForm: FormGroup;
   segmentationQuery = SEGMENTATION_QUERY;
+  query: DynamicQueryModel = {
+    payload: {},
+  };
+  totalContactsCount = 0
   private unsubscribe = new Subject();
 
   constructor(
     private breadcrumbStore: BreadcrumbStore,
     private readonly messageService: MessageService,
     private readonly campaignService: CampaignService,
+    private readonly contactService: ContactService,
+    private datePipe: DatePipe,
     private router: Router
   ) {
     breadcrumbStore.items = [{
@@ -90,26 +100,41 @@ export class CampaignsCreateComponent implements OnInit {
           this.campaignsGeneralForm.value['assignedUser'].map(el => agentIds.push(el.id));
         }
         let body = new CreateCampaignRequestModel();
-        body.name = this.campaignsGeneralForm.value.campaignName
-        body.type = this.campaignsGeneralForm.value.campaignType.value
+        body.name = this.campaignsGeneralForm.value.name.trim();
+        body.type = this.campaignsGeneralForm.value.type.value;
         body.workflowId = this.definitionId;
         body.agentIds = agentIds.toString();
-        body.description = this.campaignsGeneralForm.value.description
+        body.description = this.campaignsGeneralForm.value.description?.trim()
+        body.startCallTime = this.campaignsGeneralForm.value.startCallTime
+        body.endCallTime = this.campaignsGeneralForm.value.endCallTime
+        body.timeFrom = this.datePipe.transform(this.campaignsGeneralForm.value.timeFrom, 'HH:mm');
+        body.timeTo = this.datePipe.transform(this.campaignsGeneralForm.value.timeTo, 'HH:mm');
         body.customerType = this.segmentationForm.value.dataContactType
         if (this.segmentationForm.get('segmentations').value.length > 0) {
           var payload = this.segmentationForm.get('segmentations').value.map(data => {
-            let value = [];
+            let _payload = [];
+            console.log(data.segmentationSelected)
             data.segmentationSelected.forEach(el => {
-              value.push(el.id);
+              _payload.push(el.filters);
             })
             return {
-              field: "SEGMENTATION",
-              operator: data.conditional,
-              value: value.toString(),
+              type: data.query,
+              payload: _payload,
             };
           });
-          body.segmentQuery = JSON.stringify(payload);
+          this.query.payload = {
+            type: DynamicFilterTypeEnum.AND,
+            payload: payload
+          }
+          this.query.currentPage = 1;
+          this.query.pageSize = 1;
+          body.segmentQuery = JSON.stringify(this.query);
+          console.log(this.query)
+          this.contactService.getContacts(this.query).subscribe((res) => {
+            this.totalContactsCount = res.data.totalElements;
+          });
         }
+        console.log(body, "bodyyyyyyyyyyyyyy")
         this.campaignService.createCampaign(body).pipe(takeUntil(this.unsubscribe)).subscribe({
           next: (res) => {
             this.messageService.add({
@@ -143,9 +168,13 @@ export class CampaignsCreateComponent implements OnInit {
 
   initForm() {
     this.campaignsGeneralForm = new FormGroup({
-      campaignName: new FormControl(null, [Validators.required]),
-      campaignType: new FormControl(null, [Validators.required]),
+      name: new FormControl(null, [Validators.required, validatorTrim]),
+      type: new FormControl(null, [Validators.required]),
       assignedUser: new FormControl(null),
+      startCallTime: new FormControl(null, [Validators.required]),
+      endCallTime: new FormControl(null, [Validators.required]),
+      timeFrom: new FormControl(null, [Validators.required]),
+      timeTo: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
     });
 
@@ -156,7 +185,7 @@ export class CampaignsCreateComponent implements OnInit {
         new FormGroup({
           options: new FormArray([]),
           segmentationSelected: new FormControl(null, [Validators.required]),
-          conditional: new FormControl(this.segmentationQuery[1].value)
+          query: new FormControl(this.segmentationQuery[1].value)
         })
       ]),
     });
@@ -168,4 +197,14 @@ export class CampaignsCreateComponent implements OnInit {
     steps_number[i].setAttribute('style', 'color: #1B5E20; background: #E8F5E9;');
     steps_title[i].setAttribute('style', 'color: #1B5E20;');
   }
+}
+
+function validatorTrim(control: AbstractControl): { [key: string]: any } | null {
+  if (control.value) {
+    const trimName = control.value.trim();
+    const regex = new RegExp('^[a-zA-Z0-9\/\-]*$');
+    if (control.value && !regex.test(trimName)) return {'pattern': true};
+    return null;
+  }
+  return null;
 }

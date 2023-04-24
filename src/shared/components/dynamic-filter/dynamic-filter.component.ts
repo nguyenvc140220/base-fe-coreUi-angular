@@ -10,6 +10,7 @@ import { DYNAMIC_FILTER_FORMAT } from '@shared/enums/dynamic-filter.const';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { DynamicFilterOperatorEnum } from '@shared/enums/dynamic-filter-operator.enum';
 import { DynamicFilterTypeEnum } from '@shared/enums/dynamic-filter-type.enum';
+import { DEFAULT_COL_CONTACT } from "@shared/constant/contacts.const";
 
 @Component({
   selector: 'app-dynamic-filter',
@@ -23,6 +24,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
   dynamicDataType: DynamicDataTypeEnum;
   isLoading = false;
   private unsubscribe = new Subject();
+
   constructor(
     private fb: FormBuilder,
     private dynamicFieldService: DynamicFieldService,
@@ -37,9 +39,11 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
     const filter = JSON.parse(
       sessionStorage.getItem('contactDynamicFormValue')
     );
-    const customTable = JSON.parse(
+    let customTable = JSON.parse(
       sessionStorage.getItem('contactCustomTable')
     );
+    if (!customTable)
+      customTable = DEFAULT_COL_CONTACT
     this.dynamicFieldService
       .getDynamicProperties({
         page: 1,
@@ -53,10 +57,17 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
           if (res.statusCode == 200) {
             this.entities = res.data.content
               .map((c, index) => {
-                this.form.addControl(
+
+                if (c.dataType == 'DATETIME' && filter[c.code]) {
+                  this.form.addControl(
+                    c.code,
+                    this.fb.control(new Date(filter[c.code]), [])
+                  );
+                } else this.form.addControl(
                   c.code,
                   this.fb.control(filter ? filter[c.code] : null, [])
                 );
+
                 this.form.addControl(
                   c.code + '-operator',
                   this.fb.control(
@@ -77,7 +88,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                   order:
                     customTable && customTable[c.code] != null
                       ? customTable[c.code].order
-                      : index,
+                      : c.creationTime,
                 } as DynamicPropertyModel;
               })
               .sort((a, b) => a.order - b.order);
@@ -89,10 +100,12 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
         },
       });
   }
+
   ngOnDestroy(): void {
     this.unsubscribe.next(null);
     this.unsubscribe.complete();
   }
+
   onDialogEvent(button: ButtonEnum) {
     switch (button) {
       case ButtonEnum.SAVE_BUTTON:
@@ -115,11 +128,31 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
   getQuery(formValue) {
     var payload = [];
     this.entities.forEach((e) => {
-      if (e.isDisplay && formValue[e.code] && formValue[e.code].trim() != '') {
+      let valueDate
+      if (e.isDisplay && formValue[e.code]) {
+        e.dataType == 'DATETIME'
+        switch (e.dataType) {
+          case 'DATETIME':
+            valueDate = formValue[e.code].getTime();
+            break;
+          case 'TEXT':
+            valueDate = formValue[e.code].trim();
+            break;
+          case 'NUMBER':
+            valueDate = formValue[e.code];
+          case 'BOOLEAN':
+            valueDate = formValue[e.code];
+          case 'LIST':
+            valueDate = formValue[e.code];
+            break;
+          default:
+        }
+      }
+      if (e.isDisplay && valueDate && valueDate != '') {
         payload.push({
           field: e.code,
           operator: formValue[e.code + '-operator'],
-          value: formValue[e.code].trim(),
+          value: valueDate,
         });
       }
     });
@@ -128,6 +161,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
         type: DynamicFilterTypeEnum.AND,
         payload: payload,
       };
+    console.log(payload)
     return {};
   }
 

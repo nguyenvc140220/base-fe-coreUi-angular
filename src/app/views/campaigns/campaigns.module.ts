@@ -128,7 +128,7 @@ const ANGULAR_COMMON = [
     AccordionModule,
     FormsModule, ReactiveFormsModule, TextTruncateModule
   ],
-  providers: [DialogService, DynamicDialogRef, DestroyService, MessageService],
+  providers: [DialogService, DynamicDialogRef, DestroyService, MessageService, DatePipe],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

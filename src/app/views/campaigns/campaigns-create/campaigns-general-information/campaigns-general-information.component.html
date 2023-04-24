@@ -6,25 +6,32 @@
           <label class="sm:text-sm font-normal">Tên chiến dịch
             <span class="text-danger">(*)</span>
           </label>
-          <span [ngClass]="{'text-danger': campaignsGeneralForm.get('campaignName')?.value?.length >= 100}"
+          <span [ngClass]="{'text-danger': campaignsGeneralForm.get('name')?.value?.length >= 100}"
                 class="sm:text-xs">
-            {{ 100 - campaignsGeneralForm.value?.campaignName?.length }} / 100
+            {{ 100 - campaignsGeneralForm.value?.name?.length }} / 100
           </span>
         </div>
         <input
           class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
           id="campaignName"
-          formControlName="campaignName"
+          formControlName="name"
           maxlength="100"
           type="text"
         />
         <small
           *ngIf="
-              campaignsGeneralForm.controls['campaignName']?.touched &&
-              campaignsGeneralForm.controls['campaignName']?.errors?.required
+              campaignsGeneralForm.controls['name']?.touched &&
+              campaignsGeneralForm.controls['name']?.errors?.required
             "
           class="red-text sm:text-xs text-danger"
         >Không được bỏ trống.</small>
+        <small
+          *ngIf="
+            campaignsGeneralForm.controls['name']?.touched &&
+            campaignsGeneralForm.controls['name']?.errors?.pattern
+          "
+          class="red-text sm:text-xs text-danger"
+        >Không được nhập ký tự đặc biệt.</small>
       </div>
       <div class="py-4">
         <div class="d-flex justify-content-between">
@@ -34,16 +41,16 @@
         <p-dropdown
           id="campaignType"
           [options]="campaignType"
-          formControlName="campaignType"
-          placeholder="Chọn loại chiến dịch"
+          [(ngModel)]="campaignType"
+          formControlName="type"
           optionLabel="label"
           [style]="{'minWidth':'100%'}"
         >
         </p-dropdown>
         <small
           *ngIf="
-              campaignsGeneralForm.controls['campaignType']?.touched &&
-              campaignsGeneralForm.controls['campaignType']?.errors?.required
+              campaignsGeneralForm.controls['type']?.touched &&
+              campaignsGeneralForm.controls['type']?.errors?.required
             "
           class="red-text sm:text-xs text-danger"
         >Không được bỏ trống.</small>
@@ -52,6 +59,7 @@
       <div class="py-4">
         <div class="d-flex justify-content-between">
           <label cLabel class="sm:text-sm" for="assignedUser">Người phụ trách</label>
+          <i class="pi-info-circle" style="font-size: 1rem" pTooltip="Người dùng có quyền tác động lên chiến dịch"></i>
         </div>
         <p-multiSelect
           id="assignedUser"
@@ -65,15 +73,129 @@
         </p-multiSelect>
       </div>
 
+      <div class="py-4 col-6">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="startCallTime">Ngày bắt đầu quay số <span class="text-danger">(*)</span></label>
+        </div>
+        <p-calendar
+          id="startCallTime"
+          formControlName="startCallTime"
+          [style]="{'minWidth':'100%'}"
+          [maxDate]="maxDate"
+          [(ngModel)]="minDate"
+          tooltipZIndex="200005"
+          tooltipPosition="left"
+          baseZIndex="20001"
+          rangeSeparator="rangeSeparator"
+          showButtonBar="true"
+          showIcon="true"
+          appendTo="body">
+        </p-calendar>
+        <small
+          *ngIf="
+              campaignsGeneralForm.controls['startCallTime']?.touched &&
+              campaignsGeneralForm.controls['startCallTime']?.errors?.required
+            "
+          class="red-text sm:text-xs text-danger"
+        >Không được bỏ trống.</small>
+      </div>
+
+      <div class="py-4 col-6">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="endCallTime">Ngày kết thúc quay số
+            <span class="text-danger">(*)</span></label>
+        </div>
+        <p-calendar
+          id="endCallTime"
+          formControlName="endCallTime"
+          [style]="{'minWidth':'100%'}"
+          [minDate]="minDate"
+          [(ngModel)]="maxDate"
+          tooltipZIndex="200005"
+          tooltipPosition="left"
+          baseZIndex="20001"
+          showButtonBar="true"
+          showIcon="true"
+          appendTo="body">
+        </p-calendar>
+        <small
+          *ngIf="
+              campaignsGeneralForm.controls['endCallTime']?.touched &&
+              campaignsGeneralForm.controls['endCallTime']?.errors?.required
+            "
+          class="red-text sm:text-xs text-danger"
+        >Không được bỏ trống.</small>
+      </div>
+
+      <div class="py-4 col-6">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="timeFrom">Bắt đầu từ
+            <span class="text-danger">(*)</span></label>
+        </div>
+        <p-calendar
+          [timeOnly]="true"
+          id="timeFrom"
+          formControlName="timeFrom"
+          [style]="{'minWidth':'100%'}"
+          [maxDate]="maxHour"
+          [(ngModel)]="minHour"
+          tooltipZIndex="200005"
+          tooltipPosition="left"
+          baseZIndex="20001"
+          showButtonBar="true"
+          showIcon="true"
+          appendTo="body">
+        </p-calendar>
+        <small
+          *ngIf="
+              campaignsGeneralForm.controls['timeFrom']?.touched &&
+              campaignsGeneralForm.controls['timeFrom']?.errors?.required
+            "
+          class="red-text sm:text-xs text-danger"
+        >Không được bỏ trống.</small>
+      </div>
+      <div class="py-4 col-6">
+        <div class="d-flex justify-content-between">
+          <label cLabel class="sm:text-sm" for="timeTo">Kết thúc
+            <span class="text-danger">(*)</span></label>
+        </div>
+        <p-calendar
+          [timeOnly]="true"
+          id="timeTo"
+          formControlName="timeTo"
+          [style]="{'minWidth':'100%'}"
+          [minDate]="minHour"
+          [(ngModel)]="maxHour"
+          tooltipZIndex="200005"
+          tooltipPosition="left"
+          baseZIndex="20001"
+          showButtonBar="true"
+          showIcon="true"
+          appendTo="body"
+        >
+        </p-calendar>
+        <small
+          *ngIf="
+              campaignsGeneralForm.controls['timeTo']?.touched &&
+              campaignsGeneralForm.controls['timeTo']?.errors?.required
+            "
+          class="red-text sm:text-xs text-danger"
+        >Không được bỏ trống.</small>
+      </div>
       <div class="py-4">
         <div class="d-flex justify-content-between">
           <label cLabel class="sm:text-sm" for="description">Mô tả</label>
+          <span [ngClass]="{'text-danger': campaignsGeneralForm.get('description')?.value?.length >= 500}"
+                class="sm:text-xs">
+            {{ 500 - campaignsGeneralForm.value?.description?.length }} / 500
+          </span>
         </div>
         <textarea
           id="description"
           rows="5"
           formControlName="description"
           type="text"
+          maxlength="500"
           class="form-control"
           [style]="{'minWidth':'100%'}"
           pInputTextarea>

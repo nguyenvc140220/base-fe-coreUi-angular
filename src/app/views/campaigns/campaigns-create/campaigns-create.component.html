@@ -21,6 +21,7 @@
         [label]="activeIndex != 3 ? 'Tiếp tục': 'Hoàn tất'"
         style="max-height: 70%"
         (click)="btnSaveOrNext()"
+        [disabled]="!campaignsGeneralForm.valid && !segmentationForm.valid && activeIndex == 3"
         styleClass="p-button-sm text-sm"
         class="mx-2"></button>
 
@@ -55,7 +56,7 @@
     <app-campaigns-completed
       [(activeIndex)]="activeIndex"
       [(campaignsGeneralForm)]="campaignsGeneralForm"
-      [(definitionId)]="definitionId"
+      [(totalContactsCount)]="totalContactsCount"
       [(segmentationForm)]="segmentationForm"
     >
     </app-campaigns-completed>

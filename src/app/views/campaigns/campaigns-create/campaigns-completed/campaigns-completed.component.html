@@ -1,49 +1,48 @@
 <div class="py-4">
-  <label class=" font-bold mb-2" style="font-size: 1.8em;">
+  <label class=" font-bold mb-2" style="font-size: 1em;">
     Tổng quan chiến dịch
   </label>
   <div class="row py-3">
     <p-card class="text-center px-2 col-4">
       <p class=" font-bold mb-2" style="font-size: 1em;">Tổng số khách hàng nhập vào</p>
-      <p class=" font-bold mb-2" style="font-size: 1em;">1850</p>
+      <p class=" font-bold mb-2" style="font-size: 1em;">{{totalContactsCount}}</p>
     </p-card>
-    <p-card class="text-center px-2 col-4">
-      <p class=" font-bold mb-2" style="font-size: 1em;">Số lượng sẵn sàng gọi</p>
-      <p class=" font-bold mb-2" style="font-size: 1em;">1850</p>
-    </p-card>
-    <p-card class="text-center px-2 col-4">
-      <p class=" font-bold mb-2" style="font-size: 1em;">Số lượng không được chạy</p>
-      <p class=" font-bold mb-2" style="font-size: 1em;">0</p>
-    </p-card>
+    <!--    <p-card class="text-center px-2 col-4">-->
+    <!--      <p class=" font-bold mb-2" style="font-size: 1em;"></p>-->
+    <!--      <p class=" font-bold mb-P2" style="font-size: 1em;"></p>-->
+    <!--    </p-card>-->
+    <!--    <p-card class="text-center px-2 col-4">-->
+    <!--      <p class=" font-bold mb-2" style="font-size: 1em;"></p>-->
+    <!--      <p class=" font-bold mb-2" style="font-size: 1em;"></p>-->
+    <!--    </p-card>-->
   </div>
 
   <div class="row py-3">
     <p-card class="px-2">
-      <div class="col-12  flex justify-content-end max-h-0.5">
-        <button
-          pButton
-          type="button"
-          (click)="btnEditStep(0)"
-          label="Sửa"
-          styleClass="p-button-sm"
-          style="max-height: 10%;font-size: 0.75rem;"
-          class="p-button-outlined text-sm"></button>
-      </div>
       <div class="col-12">
-        <p class=" font-bold mb-2" style="font-size: 1.2em;">Thông tin chung</p>
+        <div class="flex justify-content-between">
+          <p class=" font-bold mb-2" style="font-size: 1em;">Thông tin chung</p>
+          <button
+            pButton
+            type="button"
+            (click)="btnEditStep(0)"
+            icon="pi pi-file-edit"
+            class="p-button-outlined text-sm"
+          ></button>
+        </div>
         <div class="row">
           <p class="col-2 mb-2" style="font-size: 1em">Tên chiến dịch</p>
 
           <p style="font-size: 1em"
-             [className]="campaignsGeneralForm.value?.campaignName ? 'font-bold col-10 mb-2' : 'text-danger col-10 mb-2'">
-            {{ campaignsGeneralForm.value?.campaignName || 'Chưa điền thông tin'}}
+             [className]="campaignsGeneralForm.value?.name ? 'font-bold col-10 mb-2' : 'text-danger col-10 mb-2'">
+            {{ campaignsGeneralForm.value?.name || 'Chưa điền thông tin'}}
           </p>
         </div>
         <div class="row">
           <p class="col-2 mb-2" style="font-size: 1em">Loại chiến dịch</p>
           <p style="font-size: 1em"
-             [className]="campaignsGeneralForm.value?.campaignType?.label ? 'font-bold col-10 mb-2' : 'text-danger col-10 mb-2'">
-            {{ campaignsGeneralForm.value?.campaignType?.label || 'Chưa điền thông tin'}}
+             [className]="campaignsGeneralForm.value?.type?.label ? 'font-bold col-10 mb-2' : 'text-danger col-10 mb-2'">
+            {{ campaignsGeneralForm.value?.type?.label || 'Chưa điền thông tin'}}
           </p>
         </div>
         <div class="row">
@@ -61,17 +60,17 @@
 
   <div class="row py-3">
     <p-card class="px-2">
-      <div class="col-12  flex justify-content-end max-h-0.5">
+      <div class="flex justify-content-between">
+        <p class=" font-bold mb-2" style="font-size: 1em;">Data khách hàng</p>
         <button
           pButton
           type="button"
-          label="Sửa"
           (click)="btnEditStep(1)"
-          styleClass="p-button-sm"
-          style="max-height: 10%;font-size: 0.75rem;"
-          class="p-button-outlined text-sm"></button>
+          style="font-size: 0.75rem;"
+          icon="pi pi-file-edit"
+          class="p-button-outlined text-sm"
+        ></button>
       </div>
-      <p class=" font-bold mb-2" style="font-size: 1em;">Data khách hàng</p>
       <div class=" row" style="display: flex;font-size: 1em;">
         <div class="col-2">Loại data khách hàng</div>
         <p style="font-size: 1em"
@@ -84,17 +83,20 @@
               <div class="col-1 mb-2 text-center">{{i > 0 ? 'và' : ''}}
               </div>
               <div class="font-bold col-3 mb-2 text-center">
-                <ng-container *ngIf="segmentation.conditional == 'CONSTANT'">
+                <ng-container *ngIf="segmentation.conditional == 'Eq'">
                   Thuộc phân phúc
                 </ng-container>
-                <ng-container *ngIf="segmentation.conditional == 'NOTCONSTANT'">
+                <ng-container *ngIf="segmentation.conditional == 'Ne'">
                   Không thuộc phân phúc
                 </ng-container>
               </div>
-              <p style="font-size: 1em"
-                 [className]="segmentation.segmentationSelected?.length ?? 'text-danger col-8 mb-2'">
-                {{ segmentation.segmentationSelected?.length ?? 'Chưa điền thông tin'}}
-              </p>
+              <ng-container
+                *ngIf="segmentation.segmentationSelected == null || segmentation.segmentationSelected == []">
+                <p style="font-size: 1em"
+                   class="text-danger col-8 mb-2">
+                  Chưa điền thông tin
+                </p>
+              </ng-container>
               <div class="font-bold col-8 mb-2">
                 <ng-container *ngFor="let value of segmentation.segmentationSelected;">
                   {{value.name}}
@@ -110,17 +112,17 @@
 
   <div class="row py-3">
     <p-card class="px-2">
-      <div class="col-12  flex justify-content-end max-h-0.5">
+      <div class="flex justify-content-between">
+        <p class="font-bold mb-2" style="font-size: 1em;">Cấu hình</p>
         <button
           pButton
           type="button"
-          label="Sửa"
           (click)="btnEditStep(2)"
-          styleClass="p-button-sm"
-          style="max-height: 10%;font-size: 0.75rem;"
-          class="p-button-outlined text-sm"></button>
+          style="font-size: 0.75rem;"
+          icon="pi pi-file-edit"
+          class="p-button-outlined text-sm"
+        ></button>
       </div>
-      <p class="font-bold mb-2" style="font-size: 1em;">Cấu hình</p>
       <p class="mb-2" style="font-size: 1em;">Đầu số gọi ra</p>
       <p class="mb-2" style="font-size: 1em;">Kịch bản gọi</p>
       <p class="mb-2" style="font-size: 1em;">Số lần quay số</p>

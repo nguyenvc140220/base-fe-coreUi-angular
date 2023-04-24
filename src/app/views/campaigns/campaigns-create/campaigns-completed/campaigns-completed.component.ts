@@ -14,8 +14,8 @@ export class CampaignsCompletedComponent implements OnInit {
   @Output() campaignsGeneralFormChange = new EventEmitter<FormGroup>;
   @Input() segmentationForm: FormGroup;
   @Output() segmentationFormChange = new EventEmitter<FormGroup>;
-  @Input() definitionId: string;
-  @Output() definitionIdChange = new EventEmitter<string>();
+  @Input() totalContactsCount: any;
+  @Output() totalContactsCountChange = new EventEmitter<any>();
   campaignType = CAMPAIGN_TYPE;
   assignedUser: string;
 
@@ -25,7 +25,6 @@ export class CampaignsCompletedComponent implements OnInit {
       this.campaignsGeneralForm.value['assignedUser'].map(el => nameUser.push(el.username));
     }
     this.assignedUser = nameUser.toString();
-    console.log(this.segmentationForm.value)
   }
 
   btnEditStep(i: number) {

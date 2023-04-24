@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { takeUntil } from "rxjs";
 import { PageResponse } from "@shared/models";
 import { SegmentationListModel } from "@shared/models/segmentation/segmentation-list.model";
@@ -19,14 +19,17 @@ export class CustomerSegmentationComponent implements OnInit {
   @Input() segmentationForm: FormGroup;
   @Output() segmentationFormChange = new EventEmitter<FormGroup>;
 
-  constructor(private readonly segmentationService: SegmentationService, private destroy: DestroyService) {};
+  constructor(
+    private readonly segmentationService: SegmentationService,
+    private cdr: ChangeDetectorRef,
+    private destroy: DestroyService) {};
 
   ngOnInit(): void {
     this.segmentationService
       .getSegmentations(
         this.searchKey ?? '',
         1,
-        10
+        1000
       )
       .pipe(takeUntil(this.destroy))
       .subscribe({
@@ -37,34 +40,18 @@ export class CustomerSegmentationComponent implements OnInit {
 
   }
 
-  // loadSegmentation(event, index: number) {
-  //   let getForm = this.segmentationForm.get('segmentations') as FormArray;
-  //   let options = getForm.at(index).get('options') as FormArray;
-  //   options.clear()
-  //   options.push(new FormControl(event.value))
-  //   if (this.segmentationForm.get('segmentations').value.length > 0) {
-  //     var payload = this.segmentationForm.get('segmentations').value.map(data => {
-  //       let value = [];
-  //       // data.segmentationSelected.forEach(el => {
-  //       //   // value.push(el.id);
-  //       // })
-  //       return {
-  //         field: "SEGMENTATION",
-  //         operator: data.conditional,
-  //         value: data.segmentationSelected,
-  //       };
-  //     })
-  //     this.segmentationForm.controls['segmentQuery'].setValue(payload);
-  //   }
-  // }
-
   addSegmentation(event) {
     let getForm = this.segmentationForm.get('segmentations') as FormArray;
     let formGroupSegmentation = new FormGroup({
-      options: new FormArray([]),
       segmentationSelected: new FormControl(null, [Validators.required]),
-      conditional: new FormControl(this.segmentationQuery[1].value)
+      query: new FormControl(this.segmentationQuery[1].value)
     })
     getForm.push(formGroupSegmentation)
+  }
+
+  removeSegmentation(i) {
+    let getForm = this.segmentationForm.get('segmentations') as FormArray;
+    getForm.removeAt(i);
+    this.cdr.detectChanges();
   }
 }
