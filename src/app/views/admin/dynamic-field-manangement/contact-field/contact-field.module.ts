@@ -11,6 +11,7 @@ import { DynamicPropertyDetailModule } from '@shared/components/dynamic-property
 import { DynamicPropertyEditModule } from '@shared/components/dynamic-property-edit/dynamic-property-edit.module';
 import { DynamicPropertyDeleteModule } from '@shared/components/dynamic-property-delete/dynamic-property-delete.module';
 import { DynamicPropertyHideModule } from '@shared/components/dynamic-property-hide/dynamic-property-hide.module';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [ContactFieldListsComponent],
@@ -25,6 +26,7 @@ import { DynamicPropertyHideModule } from '@shared/components/dynamic-property-h
     DynamicPropertyEditModule,
     DynamicPropertyDeleteModule,
     DynamicPropertyHideModule,
+    FormsModule,
   ],
 })
 export class ContactFieldModule { }

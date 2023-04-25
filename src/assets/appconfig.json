@@ -1,13 +1,13 @@
 {
   "baseUrl": "http://localhost:4200",
-  "keycloakBaseUrl": "http://172.16.86.250:8181/keycloak",
-  "mktBackendUrl": "http://172.16.88.214:8089/api",
-  "campaignPlanningUrl": "http://172.16.88.217:3000",
-  "workflowManagerUrl": "http://172.16.88.219",
-  "elasticQuery": "http://172.16.88.250:8080",
-  "socketEndpoint": "http://172.16.88.247/ws",
+  "keycloakBaseUrl": "http://172.16.86.247:8181/keycloak",
+  "mktBackendUrl": "http://172.16.86.249:8089/api",
+  "campaignPlanningUrl": "http://172.16.86.230:3000",
+  "workflowManagerUrl": "http://172.16.86.239",
+  "elasticQuery": "http://172.16.86.243:8080",
+  "socketEndpoint": "http://172.16.86.231/ws",
   "socketIOConfig": {
-    "url": "http://172.16.88.247",
+    "url": "http://172.16.86.231",
     "options": {
       "path": "/ws",
       "autoConnect": false,
