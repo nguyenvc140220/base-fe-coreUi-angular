@@ -30,13 +30,20 @@ export class DynamicPropertyListComponent
   extends ComponentBase<DynamicPropertyModel>
   implements OnInit, OnDestroy {
   @Input() dynamicType = DynamicEntityTypeEnum.CONTACT;
+
+  _query = '';
+  @Input()
+  public set query(query: string) {
+      this._query = query;
+      this.loadData(null);
+  }
   cols = [
     { field: 'id', title: 'Hành động' },
     { field: 'displayName', title: 'Tên trường dữ liệu' },
-    { field: 'entityType', title: 'Kiểu dữ liệu' },
+    // { field: 'entityType', title: 'Kiểu dữ liệu' },
     { field: 'editable', title: 'Trạng thái' },
     { field: 'creationTime', title: 'Ngày tạo' },
-    { field: 'updatedTime', title: 'Ngày cập nhật gần nhất' },
+    { field: 'lastModificationTime', title: 'Ngày cập nhật gần nhất' },
   ];
   @ViewChild('paginator') paginator: Paginator;
   constructor(
@@ -51,7 +58,7 @@ export class DynamicPropertyListComponent
   ngOnDestroy(): void { }
 
   ngOnInit(): void {
-    this.loadData(null);
+    // this.loadData(null);
   }
 
   loadData(event) {
@@ -61,6 +68,7 @@ export class DynamicPropertyListComponent
         page: this.primengTableHelper.getCurrentPage(this.paginator),
         type: this.dynamicType,
         size: this.primengTableHelper.getMaxResultCount(this.paginator, event),
+        keyword: this._query
       })
       .pipe(takeUntil(this.destroyService))
       .subscribe({
@@ -78,15 +86,15 @@ export class DynamicPropertyListComponent
       });
   }
 
-  getPropertyType(entity) {
-    return (
-      DYNAMIC_DATA_TYPE.find(
-        (d) =>
-          d.value.dataType == entity.dataType &&
-          d.value.inputType == entity.inputType
-      )?.label ?? '-'
-    );
-  }
+  // getPropertyType(entity) {
+  //   return (
+  //     DYNAMIC_DATA_TYPE.find(
+  //       (d) =>
+  //         d.value.dataType == entity.dataType &&
+  //         d.value.inputType == entity.inputType
+  //     )?.label ?? '-'
+  //   );
+  // }
   paginate(event: any) {
     this.loadData(event);
   }
@@ -135,7 +143,7 @@ export class DynamicPropertyListComponent
       header: header,
       width: '30%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { 
+      data: {
         entity: entity,
         messageService: this.messageService
        },

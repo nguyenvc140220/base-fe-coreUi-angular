@@ -11,6 +11,10 @@ import { DynamicPropertyCreateComponent } from '@shared/components/dynamic-prope
 })
 export class ContactFieldListsComponent {
   dynamicType = DynamicEntityTypeEnum.CONTACT;
+  searchKey = '';
+
+  query = '';
+
   constructor(
     private breadcrumbStore: BreadcrumbStore,
     private dialogService: DialogService
@@ -29,5 +33,9 @@ export class ContactFieldListsComponent {
       if (res) {
       }
     });
+  }
+
+  searchData() {
+    this.query = this.searchKey;
   }
 }

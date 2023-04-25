@@ -14,12 +14,14 @@
             <i class="pi pi-search"></i>
             <input class="w-full p-inputtext-sm"
                    pInputText
-                   placeholder="Tìm kiếm"
-                   type="text">
+                   placeholder="Nhập tên trường dữ liệu và ấn Enter để tìm kiếm"
+                   type="text"
+                   [(ngModel)]="searchKey"
+                   (keydown.enter)="searchData()">
           </span>
         </div>
         <div class="mt-3">
-          <app-dynamic-property-list [dynamicType]="dynamicType">
+          <app-dynamic-property-list [dynamicType]="dynamicType" [query]="query">
 
           </app-dynamic-property-list>
         </div>
