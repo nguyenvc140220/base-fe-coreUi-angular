@@ -10,12 +10,12 @@ import {
 @Component({
   selector: 'app-text-truncate',
   template: `
-    <div #txt
+    <span #txt
          class="truncate {{ clazz }}"
-         [ngStyle]="style || {}"
+         [style]="style || {}"
          [pTooltip]="tooltip ?? text"
          [tooltipPosition]="tooltipPos || 'right'"
-         [tooltipDisabled]="tooltipDisabled">{{ text ?? '' }}</div>
+         [tooltipDisabled]="tooltipDisabled">{{ text ?? '' }}</span>
   `,
 })
 export class TextTruncateComponent implements AfterViewInit {

@@ -69,6 +69,12 @@
                 class="hover:cursor-pointer pi pi-check pr-5"></i>
             </td>
             <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
+              <td *ngSwitchCase="'id'" [style]="col.styles" class="text-blue-500 hover:underline cursor-pointer">
+                <app-text-truncate
+                  (click)="navigate('campaigns/details', campaign)"
+                  [text]="campaign[col.field]"
+                ></app-text-truncate>
+              </td>
               <td *ngSwitchCase="'name'" [style]="campaign[col.field]?.styles || {}">
                 <p
                   class="text-blue-500 hover:underline cursor-pointer"

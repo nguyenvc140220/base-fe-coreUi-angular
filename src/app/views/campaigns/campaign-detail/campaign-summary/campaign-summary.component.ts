@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { EChartsOption } from "echarts/types/dist/echarts";
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-campaign-summary',
@@ -15,6 +15,11 @@ export class CampaignSummaryComponent implements OnInit {
   options_2: EChartsOption;
 
   today = new Date();
+
+  summaryTimes = [
+    moment(this.today).set({ date: 1, hour: 0, minutes: 0, second: 0 }).toDate(),
+    this.today
+  ]
 
   summaryShow = true;
   dailyCallShow = true;

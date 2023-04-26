@@ -18,7 +18,17 @@ import { DestroyService } from "@shared/services";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
 import { OverlayPanelModule } from "primeng/overlaypanel";
-import { DatePipe, NgClass, NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault } from "@angular/common";
+import {
+    DatePipe,
+    JsonPipe,
+    NgClass,
+    NgForOf,
+    NgIf,
+    NgStyle,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault
+} from "@angular/common";
 import { CampaignsRoutingModule } from "./campaigns-routing.module";
 import { CampaignsTableComponent } from './campaigns-table/campaigns-table.component';
 import { StyleClassModule } from "primeng/styleclass";
@@ -108,26 +118,26 @@ const ANGULAR_COMMON = [
     LeadInteractionModalComponent,
     LeadInteractionTableComponent
   ],
-  imports: [
-    ...PRIMENG,
-    ...ANGULAR_COMMON,
-    CampaignsRoutingModule,
-    ToastModule,
-    OverlayPanelModule,
-    DatePipe,
-    StyleClassModule,
-    StepsModule,
-    PanelModule,
-    CardModule,
-    FontAwesomeModule,
-    ReportIndexModule,
-    TagModule,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
-    }),
-    AccordionModule,
-    FormsModule, ReactiveFormsModule, TextTruncateModule
-  ],
+    imports: [
+        ...PRIMENG,
+        ...ANGULAR_COMMON,
+        CampaignsRoutingModule,
+        ToastModule,
+        OverlayPanelModule,
+        DatePipe,
+        StyleClassModule,
+        StepsModule,
+        PanelModule,
+        CardModule,
+        FontAwesomeModule,
+        ReportIndexModule,
+        TagModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts'),
+        }),
+        AccordionModule,
+        FormsModule, ReactiveFormsModule, TextTruncateModule, JsonPipe
+    ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService, DatePipe],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

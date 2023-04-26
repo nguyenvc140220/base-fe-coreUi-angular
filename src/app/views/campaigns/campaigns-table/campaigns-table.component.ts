@@ -30,6 +30,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   }[];
 
   searchKey: string = '';
+  orderBy?: { field: string; direction: (1|-1) };
 
   @ViewChild('paginator') paginator: Paginator;
   definitionId = uuid.v4();
@@ -61,6 +62,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   private initDataTable() {
     this.cols = [
+      {field: 'id', header: 'ID', styles: {width: '50px'}},
       {field: 'name', header: 'Chiến dịch', styles: {minWidth: '200px'}, sortable: true},
       {field: 'campaignScriptId', header: 'Kịch bản', styles: {minWidth: '200px'}},
       {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
@@ -75,7 +77,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   }
 
   loadData(event?: any) {
-    this.primengTableHelper.isLoading = true;
+    this.primengTableHelper.showLoadingIndicator();
 
     const currentPage = !event ? 1 : this.primengTableHelper.getCurrentPage(this.paginator) ?? 1;
     const pageSize = this.primengTableHelper.getMaxResultCount(this.paginator, event)
@@ -86,7 +88,8 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       .getCampaigns(
         this.searchKey,
         currentPage,
-        pageSize
+        pageSize,
+        this.orderBy
       )
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
@@ -104,7 +107,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
           this.primengTableHelper.records = data;
         },
         error: err => {
-          this.primengTableHelper.isLoading = false;
+          this.primengTableHelper.hideLoadingIndicator();
           this.primengTableHelper.records = [];
           this.messageService.add({
             severity: 'error',
@@ -115,7 +118,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
           this.cdr.detectChanges();
         },
         complete: () => {
-          this.primengTableHelper.isLoading = false;
+          this.primengTableHelper.hideLoadingIndicator();
         }
       })
   }
@@ -129,7 +132,9 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   }
 
   handleSort($event: any) {
-    console.log($event);
+    this.orderBy = { field: $event.field, direction: $event.order };
+
+    this.loadData();
   }
 
   async navigate(route: string, campaign: CampaignListModel) {
