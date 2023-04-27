@@ -149,20 +149,20 @@ export class CampaignSummaryComponent implements OnInit {
       },
       series: [
         {
-          name: 'Thất bại',
+          name: 'Thành công',
           type: 'bar',
           stack: 'one',
-          data: data_2.map(item => item.notHandled),
+          data: data_2.map(item => item.handled),
           itemStyle: {
             color: '#BF73FB'
           },
           barMaxWidth: 24
         },
         {
-          name: 'Thành công',
+          name: 'Thất bại',
           type: 'bar',
           stack: 'one',
-          data: data_2.map(item => item.handled),
+          data: data_2.map(item => item.notHandled),
           itemStyle: {
             color: '#73CCF5'
           },
