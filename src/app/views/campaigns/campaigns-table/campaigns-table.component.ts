@@ -68,9 +68,9 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       {field: 'state', header: 'Trạng thái', styles: {minWidth: '120px'}},
       {field: 'realStartTime', header: 'Ngày bắt đầu', styles: {minWidth: '200px'}, sortable: true},
       {field: 'realEndTime', header: 'Ngày kết thúc', styles: {minWidth: '200px'}, sortable: true},
+      {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
       {field: 'thoseInCharge', header: 'Người phụ trách', styles: {minWidth: '250px'}},
       // {field: 'numOfAgents', header: 'SL agents', styles: {minWidth: '200px'}},
-      {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '200px'}, sortable: true},
     ];
 
     this.loadData();
