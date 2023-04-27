@@ -3,7 +3,6 @@ import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum'
-import { DYNAMIC_DATA_TYPE } from '@shared/enums/dynamic-data-type.const';
 import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
 import { DynamicInputTypeEnum } from '@shared/enums/dynamic-input-type.enum';
 
@@ -50,11 +49,11 @@ export class DynamicPropertyDetailComponent {
     }
     ));
     // add dataType formcontrol, value is entity.dataType and disabled is true
-    this.formGroup.addControl('dataInputType', new FormControl({
-      value: DYNAMIC_DATA_TYPE.find(x => x.value.inputType === this.entity.inputType).label,
-      disabled: true,
-    }
-    ));
+    // this.formGroup.addControl('dataInputType', new FormControl({
+    //   value: DYNAMIC_PROPERTY_TYPE.find(x => x.value.inputType === this.entity.inputType).label,
+    //   disabled: true,
+    // }
+    // ));
     // add isFixed formcontrol, value is entity.isFixed and disabled is true
     this.formGroup.addControl('editable', new FormControl({
       value: this.entity.editable,
@@ -67,7 +66,7 @@ export class DynamicPropertyDetailComponent {
       case DynamicDataTypeEnum.DATETIME:
         break;
       case DynamicDataTypeEnum.NUMBER:
-        // maxValue is entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MAX)?.validatorValue or entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MAX)?.validatorValue 
+        // maxValue is entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MAX)?.validatorValue or entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MAX)?.validatorValue
         // minValue is entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MIN)?.validatorValue or entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MIN)?.validatorValue
         // add maxValue formcontrol, value is entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MAX)?.validatorValue or entity.validators.find(x => x.type === ValidatorTypeEnum.DOUBLE_MAX)?.validatorValue and disabled is true
         const maxValue = this.entity.validators.find(x => x.type === ValidatorTypeEnum.LONG_MAX)?.validatorValue

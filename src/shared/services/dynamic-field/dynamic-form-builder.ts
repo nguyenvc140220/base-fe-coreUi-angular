@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import {
-  DynamicPropertyModel,
-  PropertyValidator,
-} from '@shared/models/dynamic-field/dynamic-property.model';
+import { DynamicPropertyModel, PropertyValidator, } from '@shared/models/dynamic-field/dynamic-property.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
+import { DynamicDataTypeEnum } from "@shared/enums/dynamic-data-type.enum";
 
 @Injectable({ providedIn: 'root' })
 export class DynamicFormBuilder {
@@ -17,7 +15,7 @@ export class DynamicFormBuilder {
       formGroup.addControl(
         p.code,
         new FormControl(
-          null,
+          this.getDefaultValue(p),
           p.validators
             ?.map((v) => {
               return this.getFormValidator(v);
@@ -27,6 +25,34 @@ export class DynamicFormBuilder {
       );
     });
     return formGroup;
+  }
+
+  getFormValue(
+    formGroup: FormGroup,
+    name: string
+  ){
+    return formGroup?.value[name];
+  }
+
+  getDefaultValue(p: DynamicPropertyModel){
+    if(p.defaultValue){
+      switch (p.dataType){
+        case DynamicDataTypeEnum.TEXT:
+          return p.defaultValue;
+        case DynamicDataTypeEnum.BOOLEAN:
+          return Boolean(p.defaultValue);
+        case DynamicDataTypeEnum.NUMBER:
+          return Number(p.defaultValue);
+        case DynamicDataTypeEnum.DATETIME:
+          return new Date(p.defaultValue);
+        case DynamicDataTypeEnum.LIST:
+          const values = JSON.parse(p.defaultValue);
+          return values && values.length > 0 ? values[0].value : null;
+        default:
+          return p.defaultValue;
+      }
+    }
+    return null;
   }
 
   getFormValidator(validator: PropertyValidator) {

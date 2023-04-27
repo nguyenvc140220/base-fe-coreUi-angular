@@ -1,81 +1,58 @@
-import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
-import { DynamicInputTypeEnum } from '@shared/enums/dynamic-input-type.enum';
+export enum DynamicTypeEnum {
+  TEXT = 'TEXT',
+  EMAIL = 'EMAIL',
+  PHONE_NUMBER = 'PHONE_NUMBER',
+  NUMBER = 'NUMBER',
+  DATE = 'DATE',
+  DATETIME = 'DATETIME',
+  TIME = 'TIME',
+  CHECKLIST = 'CHECKLIST',
+  DROPLIST = 'DROPLIST',
+  RADIO = 'RADIO',
+}
 
-export const DYNAMIC_DATA_TYPE: {
+export const DYNAMIC_PROPERTY_TYPE: {
   label: string;
-  value: {
-    dataType: DynamicDataTypeEnum;
-    inputType: DynamicInputTypeEnum;
-  };
+  value: DynamicTypeEnum;
 }[] = [
   {
     label: 'Văn bản',
-    value: {
-      dataType: DynamicDataTypeEnum.TEXT,
-      inputType: DynamicInputTypeEnum.TEXT_BOX,
-    },
+    value: DynamicTypeEnum.TEXT
   },
   {
     label: 'Email',
-    value: {
-      dataType: DynamicDataTypeEnum.TEXT,
-      inputType: DynamicInputTypeEnum.EMAIL,
-    },
+    value: DynamicTypeEnum.EMAIL
   },
   {
     label: 'Số điện thoại',
-    value: {
-      dataType: DynamicDataTypeEnum.TEXT,
-      inputType: DynamicInputTypeEnum.PHONE_NUMBER,
-    },
+    value: DynamicTypeEnum.PHONE_NUMBER
   },
   {
     label: 'Số',
-    value: {
-      dataType: DynamicDataTypeEnum.TEXT,
-      inputType: DynamicInputTypeEnum.NUMBER_BOX,
-    },
+    value: DynamicTypeEnum.NUMBER
   },
   {
     label: 'Ngày',
-    value: {
-      dataType: DynamicDataTypeEnum.DATETIME,
-      inputType: DynamicInputTypeEnum.DATE_PICKER,
-    },
+    value: DynamicTypeEnum.DATE
   },
   {
     label: 'Ngày giờ',
-    value: {
-      dataType: DynamicDataTypeEnum.DATETIME,
-      inputType: DynamicInputTypeEnum.DATETIME_PICKER,
-    },
+    value: DynamicTypeEnum.DATETIME
   },
   {
     label: 'Giờ',
-    value: {
-      dataType: DynamicDataTypeEnum.DATETIME,
-      inputType: DynamicInputTypeEnum.TIME_PICKER,
-    },
+    value: DynamicTypeEnum.TIME
   },
   {
     label: 'Ô chọn (checklist)',
-    value: {
-      dataType: DynamicDataTypeEnum.LIST,
-      inputType: DynamicInputTypeEnum.CHECK_LIST,
-    },
+    value: DynamicTypeEnum.CHECKLIST
   },
   {
     label: 'Danh sách chọn (droplist)',
-    value: {
-      dataType: DynamicDataTypeEnum.LIST,
-      inputType: DynamicInputTypeEnum.SINGLE_SELECT,
-    },
+    value: DynamicTypeEnum.DROPLIST
   },
   {
     label: 'Nút radio',
-    value: {
-      dataType: DynamicDataTypeEnum.LIST,
-      inputType: DynamicInputTypeEnum.RADIO,
-    },
+    value:DynamicTypeEnum.RADIO
   },
 ];
