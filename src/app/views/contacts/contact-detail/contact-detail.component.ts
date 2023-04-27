@@ -10,6 +10,7 @@ import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
 import { DatePipe } from '@angular/common';
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import * as faIcons from '@fortawesome/free-solid-svg-icons';
+import { DynamicInputTypeEnum } from "@shared/enums/dynamic-input-type.enum";
 
 @Component({
   selector: 'app-contact-detail',
@@ -192,7 +193,10 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
     if (!value) return "_"
     if (entity.dataType == DynamicDataTypeEnum.DATETIME) {
       if (value == 0) return "_"
-      return this.datePipe.transform(value, 'dd/MM/yyyy')
+      const format = entity.inputType == DynamicInputTypeEnum.DATE_PICKER ? 'dd/MM/yyyy' : (
+        entity.inputType == DynamicInputTypeEnum.TIME_PICKER ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss'
+      )
+      return this.datePipe.transform(value, format)
     } else return value
   }
 

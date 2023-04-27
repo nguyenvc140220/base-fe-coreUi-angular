@@ -17,6 +17,7 @@ import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
 import { MessageService } from 'primeng/api';
 import { DEFAULT_COL_CONTACT } from "@shared/constant/contacts.const";
 import { DynamicInputTypeEnum } from "@shared/enums/dynamic-input-type.enum";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-contacts-table',
@@ -41,7 +42,8 @@ export class ContactsTableComponent
     private router: Router,
     private breadcrumbStore: BreadcrumbStore,
     private contactService: ContactService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private datePipe: DatePipe
   ) {
     super(injector);
     this.breadcrumbStore.items = [{label: 'Danh sách liên hệ'}];
@@ -55,6 +57,21 @@ export class ContactsTableComponent
 
   routeContactImport() {
     this.router.navigate(['contacts/importing']);
+  }
+
+  getDisplayValue(contact, code){
+    const property = this.cols.find(p => p.code === code);
+    if(property){
+      if (contact[code] != null) {
+        if (property.dataType === DynamicDataTypeEnum.DATETIME) {
+          const format = property.inputType == DynamicInputTypeEnum.DATE_PICKER ? 'dd/MM/yyyy' : (
+            property.inputType == DynamicInputTypeEnum.TIME_PICKER ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss'
+          )
+          return this.datePipe.transform(contact[code], format)
+        }
+      }
+    }
+    return contact[code] ?? "-";
   }
 
   private async initDataTable() {
@@ -98,9 +115,6 @@ export class ContactsTableComponent
             }
 
           ];
-
-          console.log(res.data.content)
-          console.log()
           this.cols.push(
             ...res.data.content.map((p, index) => {
               return {

@@ -100,7 +100,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
       case DynamicTypeEnum.EMAIL:
         dynamicCreateRequest.dataType = DynamicDataTypeEnum.TEXT;
         dynamicCreateRequest.inputType = DynamicInputTypeEnum.EMAIL;
-        dynamicCreateRequest.validators = `[{"type":"string_pattern","validatorValue":"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"}]`;
+        dynamicCreateRequest.validators = `[{"type":"string_pattern","validatorValue":"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$"}]`;
         break;
       case DynamicTypeEnum.PHONE_NUMBER:
         dynamicCreateRequest.dataType = DynamicDataTypeEnum.TEXT;
@@ -110,6 +110,18 @@ export class DynamicPropertyCreateComponent implements OnInit {
       case DynamicTypeEnum.NUMBER:
         dynamicCreateRequest.dataType = DynamicDataTypeEnum.NUMBER;
         dynamicCreateRequest.inputType = DynamicInputTypeEnum.NUMBER_BOX;
+        const validators = [];
+        const minValue = this.dynamicFormBuilder.getFormValue(this.formGroup, 'minValue');
+        if(minValue)
+          validators.push({"type":"double_min","validatorValue":`${minValue}`});
+        const maxValue = this.dynamicFormBuilder.getFormValue(this.formGroup, 'maxValue');
+        if(maxValue)
+          validators.push({"type":"double_max","validatorValue":`${maxValue}`});
+        const floatingPoint = this.dynamicFormBuilder.getFormValue(this.formGroup, 'floatingPoint');
+        if(floatingPoint)
+          validators.push({"type":"floating_point","validatorValue":`${floatingPoint}`});
+        if(validators.length)
+          dynamicCreateRequest.validators = JSON.stringify(validators);
         break;
       case DynamicTypeEnum.DATE:
         dynamicCreateRequest.dataType = DynamicDataTypeEnum.DATETIME;
