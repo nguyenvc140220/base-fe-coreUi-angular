@@ -58,7 +58,7 @@ export class CampaignSummaryComponent implements OnInit {
 
 
 
-    const dialed = `Đã gọi`;
+    const dialed = `Gọi thành công`;
     const interact = `Hứng thú`;
 
     this.options_1 = {
@@ -129,7 +129,7 @@ export class CampaignSummaryComponent implements OnInit {
     this.options_2 = {
       tooltip: {},
       legend: {
-        data: ['Thất bại', 'Thành công'],
+        data: ['Thành công', 'Thất bại'],
         right: 'right',
         bottom: 'center',
       },
@@ -167,7 +167,7 @@ export class CampaignSummaryComponent implements OnInit {
             color: '#73CCF5'
           },
           barMaxWidth: 24
-        }
+        },
       ]
     }
   }
