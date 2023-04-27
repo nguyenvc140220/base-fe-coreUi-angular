@@ -1,5 +1,5 @@
 import {
-  Component,
+  Component, EventEmitter,
   Injector,
   Input,
   OnDestroy,
@@ -10,7 +10,7 @@ import { ComponentBase } from '@shared/utils/component-base.component';
 import { Paginator } from 'primeng/paginator';
 import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-field.service';
 import { DestroyService } from '@shared/services';
-import { takeUntil } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DynamicPropertyDetailComponent } from '@shared/components/dynamic-property-detail/dynamic-property-detail.component';
@@ -29,6 +29,13 @@ import { Table } from 'primeng/table';
 export class DynamicPropertyListComponent
   extends ComponentBase<DynamicPropertyModel>
   implements OnInit, OnDestroy {
+  @Input()
+  public set onReloadList(onReloadList: EventEmitter<boolean>) {
+    onReloadList?.subscribe((reload)=> {
+      if(reload)
+        this.goFistAndReload()
+    });
+  }
   @Input() dynamicType = DynamicEntityTypeEnum.CONTACT;
 
   _query = '';
