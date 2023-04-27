@@ -17,15 +17,28 @@ export class CampaignService extends BaseService {
     super(http, configService);
   }
 
-  getCampaigns(searchKey: string, page: number, pageSize: number | null) {
-    return this.defaultGet<BaseResponse<CampaignListModel>>(
-      `${this.configService.campaignPlanningUrl}/campaign`,
-      {
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-        keyword: searchKey,
-        orderByDesc: 'updatedAt,createdAt'
+  getCampaigns(searchKey: string,
+               page: number,
+               pageSize: number | null,
+               orderBy = { field: 'updatedAt,createdAt', direction: -1 }) {
+    const params = {
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      keyword: searchKey,
+    };
+
+    if (orderBy) {
+      if (orderBy.direction === 1) {
+        params['orderByAsc'] = orderBy.field;
+      } else if (orderBy.direction === -1) {
+        params['orderByDesc'] = orderBy.field;
+      } else {
+        params['orderByDesc'] = 'updatedAt,createdAt';
       }
+    }
+
+    return this.defaultGet<BaseResponse<CampaignListModel>>(
+      `${this.configService.campaignPlanningUrl}/campaign`, params
     );
   }
 

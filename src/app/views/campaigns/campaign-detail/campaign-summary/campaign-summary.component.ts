@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { EChartsOption } from "echarts/types/dist/echarts";
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-campaign-summary',
@@ -15,6 +15,11 @@ export class CampaignSummaryComponent implements OnInit {
   options_2: EChartsOption;
 
   today = new Date();
+
+  summaryTimes = [
+    moment(this.today).set({ date: 1, hour: 0, minutes: 0, second: 0 }).toDate(),
+    this.today
+  ]
 
   summaryShow = true;
   dailyCallShow = true;
@@ -53,7 +58,7 @@ export class CampaignSummaryComponent implements OnInit {
 
 
 
-    const dialed = `Đã gọi`;
+    const dialed = `Gọi thành công`;
     const interact = `Hứng thú`;
 
     this.options_1 = {
@@ -124,7 +129,7 @@ export class CampaignSummaryComponent implements OnInit {
     this.options_2 = {
       tooltip: {},
       legend: {
-        data: ['Thất bại', 'Thành công'],
+        data: ['Thành công', 'Thất bại'],
         right: 'right',
         bottom: 'center',
       },
@@ -162,7 +167,7 @@ export class CampaignSummaryComponent implements OnInit {
             color: '#73CCF5'
           },
           barMaxWidth: 24
-        }
+        },
       ]
     }
   }
