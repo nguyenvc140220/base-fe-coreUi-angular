@@ -1,5 +1,5 @@
 <div>
-  <p-table [autoLayout]="true" [lazy]="true" [loading]="primengTableHelper.isLoading" [paginator]="false"
+  <p-table #listTable [autoLayout]="true" [lazy]="true" [loading]="primengTableHelper.isLoading" [paginator]="false"
     [scrollable]="true" [tableStyle]="{'min-width': '50rem'}" [value]="primengTableHelper.records" scrollHeight="400px">
     <ng-template pTemplate="header">
       <tr>

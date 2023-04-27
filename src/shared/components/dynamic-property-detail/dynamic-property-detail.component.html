@@ -26,10 +26,14 @@
             <span class="ml-2">Có thể sửa</span>
         </div>
     </div>
-    <div class="mt4" *ngIf="entity.dataType === DynamicDataTypeEnum.TEXT">
-        <label for="max-length" class="text-sm font-medium">Độ dài tối đa</label>
-        <input id="max-length" formControlName="maxLength" type="number"
-            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+    <div class="flex-auto" *ngIf="entity.dataType === DynamicDataTypeEnum.TEXT">
+        <label for="max-length" class="mb-2 block text-sm font-medium">Độ dài tối đa</label>
+        <p-inputNumber inputId="max-length" formControlName="maxLength" 
+            showButtons="true" 
+            buttonLayout="stacked"
+            stypeClass="w-full"
+            mode="decimal"
+             />
     </div>
     <div *ngIf="entity.dataType === DynamicDataTypeEnum.NUMBER">
         <div class="mt-4">
