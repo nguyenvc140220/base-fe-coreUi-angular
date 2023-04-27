@@ -131,6 +131,7 @@ export class DynamicCreateComponent
                 },
               });
           } else {
+            this.form.value['creationSource'] = 'Thủ công';
             this.dynamicFieldService
               .createDynamicEntity({
                 code: this.dynamicType,
@@ -143,7 +144,7 @@ export class DynamicCreateComponent
                     this.messageService.add({
                       severity: 'success',
                       summary: 'Success',
-                      detail: `Chỉnh sửa ${this.dynamicType} thành công`,
+                      detail: `Tạo mới ${this.dynamicType} thành công`,
                     });
                     return this.router.navigate(['contacts']);
                   }

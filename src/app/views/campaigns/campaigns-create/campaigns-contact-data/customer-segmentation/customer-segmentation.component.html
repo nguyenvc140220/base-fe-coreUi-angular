@@ -46,9 +46,13 @@
             </div>
             <div class="flex align-items-center gap-2 flex-wrap py-2"
                  style="display: flex">
-              <p-chip *ngFor="let value of segmentItem.value?.segmentationSelected"
+              <p-chip *ngFor="let value of segmentItem.value?.segmentationSelected;let s=index"
                       class="" [style]="{'background-color': '#D9ECD9', 'color': '#328F1A'}">
                 {{value.name}}
+                <i style="font-size: 1rem;padding: 0.5rem 0.5rem;" aria-hidden="true"
+                   class="pi pi-times-circle"
+                   (click)="removeSegmentationSelected(i,s)"
+                   pTooltip="Xóa" tooltipPosition="top"></i>
                 <br>
               </p-chip>
             </div>

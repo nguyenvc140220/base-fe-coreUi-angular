@@ -77,6 +77,10 @@ export class CampaignsCreateComponent implements OnInit {
         label: 'Hoàn tất',
         command: () => {
           this.activeIndex = 3;
+          this.query = {};
+          if (this.segmentationForm.valid) {
+            this.handlFromSegment()
+          }
         },
       }
     ];
@@ -93,6 +97,10 @@ export class CampaignsCreateComponent implements OnInit {
     }
 
     if (this.activeIndex == 3) {
+      this.query = {};
+      if (this.segmentationForm.valid) {
+        this.handlFromSegment()
+      }
       // save data
       if (this.campaignsGeneralForm.valid && this.segmentationForm.valid) {
         let agentIds = []
@@ -110,31 +118,7 @@ export class CampaignsCreateComponent implements OnInit {
         body.timeFrom = this.datePipe.transform(this.campaignsGeneralForm.value.timeFrom, 'HH:mm');
         body.timeTo = this.datePipe.transform(this.campaignsGeneralForm.value.timeTo, 'HH:mm');
         body.customerType = this.segmentationForm.value.dataContactType
-        if (this.segmentationForm.get('segmentations').value.length > 0) {
-          var payload = this.segmentationForm.get('segmentations').value.map(data => {
-            let _payload = [];
-            console.log(data.segmentationSelected)
-            data.segmentationSelected.forEach(el => {
-              _payload.push(el.filters);
-            })
-            return {
-              type: data.query,
-              payload: _payload,
-            };
-          });
-          this.query.payload = {
-            type: DynamicFilterTypeEnum.AND,
-            payload: payload
-          }
-          this.query.currentPage = 1;
-          this.query.pageSize = 1;
-          body.segmentQuery = JSON.stringify(this.query);
-          console.log(this.query)
-          this.contactService.getContacts(this.query).subscribe((res) => {
-            this.totalContactsCount = res.data.totalElements;
-          });
-        }
-        console.log(body, "bodyyyyyyyyyyyyyy")
+        body.segmentQuery = JSON.stringify(this.query);
         this.campaignService.createCampaign(body).pipe(takeUntil(this.unsubscribe)).subscribe({
           next: (res) => {
             this.messageService.add({
@@ -145,6 +129,7 @@ export class CampaignsCreateComponent implements OnInit {
             return this.router.navigate(['campaigns']);
           }
         });
+
       }
     } else {
       // next step
@@ -197,12 +182,36 @@ export class CampaignsCreateComponent implements OnInit {
     steps_number[i].setAttribute('style', 'color: #1B5E20; background: #E8F5E9;');
     steps_title[i].setAttribute('style', 'color: #1B5E20;');
   }
+
+  handlFromSegment() {
+    var payload = this.segmentationForm.get('segmentations').value.map(data => {
+      let _payload = [];
+      console.log(data.segmentationSelected)
+      data.segmentationSelected.forEach(el => {
+        _payload.push(el.filters[0]);
+      })
+      return {
+        type: data.query,
+        payload: _payload,
+      };
+    });
+    this.query.payload = {
+      type: DynamicFilterTypeEnum.AND,
+      payload: payload
+    }
+    this.query.currentPage = 1;
+    this.query.pageSize = 1;
+    this.contactService.getContacts(this.query).subscribe((res) => {
+      this.totalContactsCount = res.data.totalElements;
+    });
+  }
 }
 
 function validatorTrim(control: AbstractControl): { [key: string]: any } | null {
   if (control.value) {
     const trimName = control.value.trim();
-    const regex = new RegExp('^[a-zA-Z0-9\/\-]*$');
+    if (trimName == "") return {'required': true};
+    const regex = new RegExp('^[a-zA-Z0-9\/\-\/\-\\s]*$');
     if (control.value && !regex.test(trimName)) return {'pattern': true};
     return null;
   }

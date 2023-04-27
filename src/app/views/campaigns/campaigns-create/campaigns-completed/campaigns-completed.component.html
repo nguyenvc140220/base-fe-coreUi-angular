@@ -54,6 +54,60 @@
           <strong class=" col-10 mb-2"
                   style="font-size: 1em">{{campaignsGeneralForm.value?.description}}</strong>
         </div>
+        <div class="row">
+          <div class="col-6 flex">
+            <p class="col-4 mb-2" style="font-size: 1em">Ngày bắt đầu quay số</p>
+            <ng-container *ngIf="!campaignsGeneralForm.value?.startCallTime">
+              <p style="font-size: 1em"
+                 class="text-danger col-8 mb-'">
+                Chưa điền thông tin
+              </p>
+            </ng-container>
+            <p style="font-size: 1em"
+               class="font-bold col-8 mb-2">
+              {{ campaignsGeneralForm.value?.startCallTime | date: 'dd/MM/yyyy'}}
+            </p>
+          </div>
+          <div class="col-6 flex">
+            <p class="col-4 mb-2" style="font-size: 1em">Ngày kết thúc quay số</p>
+            <ng-container *ngIf="!campaignsGeneralForm.value?.endCallTime">
+              <p style="font-size: 1em"
+                 class="text-danger col-8 mb-'">
+                Chưa điền thông tin
+              </p>
+            </ng-container>
+            <p style="font-size: 1em"
+               class="font-bold col-8 mb-2">
+              {{ campaignsGeneralForm.value?.endCallTime | date: 'dd/MM/yyyy'}}
+            </p>
+          </div>
+          <div class="col-6 flex">
+            <p class="col-4 mb-2" style="font-size: 1em">Bắt đầu từ</p>
+            <ng-container *ngIf="!campaignsGeneralForm.value?.timeFrom">
+              <p style="font-size: 1em"
+                 class="text-danger col-8 mb-'">
+                Chưa điền thông tin
+              </p>
+            </ng-container>
+            <p style="font-size: 1em"
+               class="font-bold col-8 mb-2">
+              {{ campaignsGeneralForm.value?.timeFrom | date: 'HH:mm'}}
+            </p>
+          </div>
+          <div class="col-6 flex">
+            <p class="col-4 mb-2" style="font-size: 1em">Kết thúc</p>
+            <ng-container *ngIf="!campaignsGeneralForm.value?.timeTo">
+              <p style="font-size: 1em"
+                 class="text-danger col-8 mb-'">
+                Chưa điền thông tin
+              </p>
+            </ng-container>
+            <p style="font-size: 1em"
+               class="font-bold col-8 mb-2">
+              {{ campaignsGeneralForm.value?.timeTo | date: 'HH:mm'}}
+            </p>
+          </div>
+        </div>
       </div>
     </p-card>
   </div>

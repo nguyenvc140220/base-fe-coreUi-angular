@@ -36,6 +36,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
       confirmButtonText: 'Hủy',
     }).then((result) => {
       if (result.dismiss === Swal.DismissReason.cancel) {
+        sessionStorage.clear()
         this.authenticationService.logout();
         this.router.navigate(['/login']);
       }
