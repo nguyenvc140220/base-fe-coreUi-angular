@@ -12,7 +12,6 @@ import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-fiel
 import { DestroyService } from '@shared/services';
 import { takeUntil } from 'rxjs';
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
-import { DYNAMIC_DATA_TYPE } from '@shared/enums/dynamic-data-type.const';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DynamicPropertyDetailComponent } from '@shared/components/dynamic-property-detail/dynamic-property-detail.component';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';

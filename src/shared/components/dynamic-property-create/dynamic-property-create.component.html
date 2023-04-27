@@ -1,12 +1,55 @@
 <div class="container p-0">
   <app-dynamic-form
     [formGroup]="formGroup"
-    [properties]="properties">
+    [properties]="properties"
+    [gridLayout]="'col-12'">
   </app-dynamic-form>
+  <form [formGroup]="formArray" *ngIf="listOptions?.controls">
+    <div class="row">
+      <div class="d-flex mb-2">
+        <label class="font-normal mr-2 justify-center">
+          Các lựa chọn
+        </label>
+        <button pButton pRipple type="button" icon="pi pi-plus" pTooltip="Thêm lựa chọn" tooltipPosition="right"
+                tooltipZIndex="20001"
+                class="p-button-rounded p-button-info p-button-text"
+                (click)="addOptions()"></button>
+      </div>
+      <div *ngFor="let optionForm of listOptions?.controls, let i = index" class="mb-2" formArrayName="listOptions">
+        <div class="d-flex" [formGroup]="optionForm">
+          <input
+            type="text"
+            id="option_{{i}}"
+            class="form-control mr-2"
+            pInputText
+            maxLength="200"
+            formControlName="value"
+            [class.ng-invalid]="showError(i)"
+            [class.ng-dirty]="showError(i)"
+            placeholder="Nhập lựa chọn (tối đa 200 ký tự)..."/>
+          <button pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-times"
+                  pTooltip="Xóa lựa chọn"
+                  tooltipPosition="right"
+                  tooltipZIndex="20001"
+                  class="p-button-rounded p-button-danger p-button-text"
+                  (click)="removeOption(i)"></button>
+        </div>
+        <small class="form-text text-danger" *ngIf="showError(i)">{{showError(i)}}</small>
+      </div>
+      <p-checkbox
+        [binary]="true"
+        label="Cho phép thêm dữ liệu"
+        formControlName="allowAddData">
+      </p-checkbox>
+    </div>
+  </form>
 </div>
 <div class="row mt-4">
   <app-dialog-button
-    [status]="formGroup.invalid | getButtonStatus: isLoading"
+    [status]="(formArray.invalid || formGroup.invalid) | getButtonStatus: isLoading"
     (event)="onDialogEvent($event)"
     class="w-100"
   ></app-dialog-button>

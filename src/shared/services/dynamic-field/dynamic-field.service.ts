@@ -13,6 +13,8 @@ import { DynamicEntityEditModel } from "@shared/models/dynamic-field/dynamic-ent
 import { DynamicPropertyUpdateModel } from '@shared/models/dynamic-field/dynamic-property-update.model';
 import { BaseResponse } from '@shared/models';
 import { DynamicPropertyDeleteModel } from '@shared/models/dynamic-field/dynamic-property-delete.model';
+import { DynamicPropertyCreateModel } from "@shared/models/dynamic-field/dynamic-property-create.model";
+import { DynamicPropertyAddToEntityModel } from "@shared/models/dynamic-field/dynamic-property-add-to-entity.model";
 
 @Injectable({providedIn: 'root'})
 export class DynamicFieldService extends BaseService {
@@ -54,5 +56,17 @@ export class DynamicFieldService extends BaseService {
     return this.defaultPut<
       BackendBaseResponse<DynamicBaseResponseModel<DynamicEntityModel>>
     >(`${this.configService.mktBackendUrl}/v1.0/entity/update`, request);
+  }
+
+  createDynamicProperty(request: DynamicPropertyCreateModel) {
+    return this.defaultPost<
+      BackendBaseResponse<DynamicBaseResponseModel<DynamicEntityModel>>
+    >(`${this.configService.mktBackendUrl}/v1.0/property`, request);
+  }
+
+  addPropertyToDynamicType(request: DynamicPropertyAddToEntityModel) {
+    return this.defaultPost<
+      BackendBaseResponse<DynamicBaseResponseModel<DynamicEntityModel>>
+    >(`${this.configService.mktBackendUrl}/v1.0/entity-type/add-property`, request);
   }
 }

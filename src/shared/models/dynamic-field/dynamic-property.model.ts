@@ -21,6 +21,8 @@ export class DynamicPropertyModel {
   order?: number;
   isFixed?: boolean;
 
+  hidden?: boolean;
+
   constructor(data?: any) {
     if (data) {
       for (var property in data) {
@@ -29,6 +31,8 @@ export class DynamicPropertyModel {
       }
     }
   }
+  onDataChange?: Function;
+  tag?: string;
 }
 
 export class PropertyValidator {

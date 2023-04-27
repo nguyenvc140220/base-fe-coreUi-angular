@@ -13,6 +13,7 @@ import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
 export class DynamicFormComponent {
   @Input() formGroup: FormGroup;
   @Input() properties: DynamicPropertyModel[];
+  @Input() gridLayout = 'col-6';
   DATA_TYPE = DynamicDataTypeEnum;
   INPUT_TYPE = DynamicInputTypeEnum;
 
@@ -39,6 +40,11 @@ export class DynamicFormComponent {
       return 'has error!';
     }
     return null;
+  }
+
+  onChange(property: DynamicPropertyModel, value){
+    if(property?.onDataChange)
+      property.onDataChange(value);
   }
 
   isRequired(property: DynamicPropertyModel) {
