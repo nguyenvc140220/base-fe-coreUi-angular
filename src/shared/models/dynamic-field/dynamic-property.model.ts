@@ -7,7 +7,7 @@ export class DynamicPropertyModel {
   displayName: string;
   description?: string;
   editable?: boolean;
-  removeable?: boolean;
+  removable?: boolean;
   id?: string;
   dataType?: DynamicDataTypeEnum;
   inputType?: DynamicInputTypeEnum;
@@ -21,6 +21,8 @@ export class DynamicPropertyModel {
   order?: number;
   isFixed?: boolean;
 
+  visible?: boolean;
+  disabled?: boolean;
   hidden?: boolean;
 
   constructor(data?: any) {

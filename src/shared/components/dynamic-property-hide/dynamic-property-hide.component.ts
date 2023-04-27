@@ -46,7 +46,7 @@ export class DynamicPropertyHideComponent implements OnInit, OnDestroy {
       case 'SAVE_BUTTON':
         const req = new DynamicPropertyUpdateModel({
           code: this.entity.code,
-          editable: !this.entity.editable,
+          visible: !this.entity.visible,
         });
         this.dynamicFieldService.updateDynamicProperty(req)
           .pipe(takeUntil(
@@ -66,7 +66,7 @@ export class DynamicPropertyHideComponent implements OnInit, OnDestroy {
               this.showError(err);
               this.ref.close();
             },
-          });        
+          });
         break;
       case 'CANCEL_BUTTON':
         this.ref.close();

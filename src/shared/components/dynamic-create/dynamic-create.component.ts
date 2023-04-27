@@ -86,10 +86,10 @@ export class DynamicCreateComponent
               this.form.patchValue(this.entity);
             }
             this.defaultProperties = this.properties.filter(
-              (el) => !el.editable
+              (el) => el.visible && !el.removable
             );
             this.dynamicProperties = this.properties.filter(
-              (el) => el.editable
+              (el) => el.visible && el.removable
             );
           }
         },

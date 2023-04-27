@@ -12,7 +12,7 @@
       <tr>
         <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field">
           <td *ngSwitchCase="'id'">
-            <i class="pi {{property.editable?'pi-lock-open':'pi-lock'}} pr-5 hover:cursor-pointer" pTooltip="{{property.editable?'Hiển thị':'Ẩn'}}"
+            <i class="pi {{!property.visible?'pi-lock-open':'pi-lock'}} pr-5 hover:cursor-pointer" pTooltip="{{!property.visible?'Hiển thị':'Ẩn'}}"
               (click)="hideOrOpen(property)"></i>
             <i class="pi pi-file-edit pr-5 hover:cursor-pointer" pTooltip="Sửa" (click)="edit(property)"></i>
             <i class="pi pi-trash pr-5 hover:cursor-pointer" pTooltip="Xóa" (click)="delete(property)"></i>
@@ -22,9 +22,9 @@
 <!--          <td *ngSwitchCase="'entityType'">-->
 <!--            {{getPropertyType(property)}}-->
 <!--          </td>-->
-          <td *ngSwitchCase="'editable'">
-            <p-chip [label]="!property[col.field] ? 'Hiển thị' : 'Ẩn'"
-              [style]="!property[col.field] ? {'background-color': '#D9ECD9', 'color': '#328F1A'} : {'background-color': '#FFE6E9', 'color': '#D9001B'}">
+          <td *ngSwitchCase="'visible'">
+            <p-chip [label]="property[col.field] ? 'Hiển thị' : 'Ẩn'"
+              [style]="property[col.field] ? {'background-color': '#D9ECD9', 'color': '#328F1A'} : {'background-color': '#FFE6E9', 'color': '#D9001B'}">
             </p-chip>
           </td>
           <td *ngSwitchCase="'creationTime'">

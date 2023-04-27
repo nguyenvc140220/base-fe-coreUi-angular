@@ -33,7 +33,7 @@
                   [class.ng-invalid]="showError(e?.code)"
                   [class.ng-dirty]="showError(e?.code)"
                   (ngModelChange)="onChange(e, $event)"
-                  [readonly]="e.editable==false">
+                  [readonly]="e.disabled==true">
                 </textarea>
               </div>
               <div *ngSwitchCase="INPUT_TYPE.EMAIL">
@@ -50,7 +50,7 @@
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
                        (ngModelChange)="onChange(e, $event)"
-                       [readonly]="e.editable==false"/>
+                       [readonly]="e.disabled==true"/>
               </div>
               <div *ngSwitchCase="INPUT_TYPE.PHONE_NUMBER">
                 <input type="text"
@@ -66,7 +66,7 @@
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
                        (ngModelChange)="onChange(e, $event)"
-                       [readonly]="e.editable==false"/>
+                       [readonly]="e.disabled==true"/>
               </div>
               <div *ngSwitchDefault>
                 <input type="text"
@@ -82,7 +82,7 @@
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
                        (ngModelChange)="onChange(e, $event)"
-                       [readonly]="e.editable==false"/>
+                       [readonly]="e.disabled==true"/>
               </div>
             </div>
           </ng-template>
@@ -104,7 +104,7 @@
                            [class.ng-invalid]="showError(e?.code)"
                            [class.ng-dirty]="showError(e?.code)"
                            (ngModelChange)="onChange(e, $event)"
-                           [readonly]="e.editable==false">
+                           [readonly]="e.disabled==true">
             </p-inputNumber>
           </ng-template>
 
@@ -128,7 +128,7 @@
                         [class.ng-invalid]="showError(e?.code)"
                         [class.ng-dirty]="showError(e?.code)"
                         (ngModelChange)="onChange(e, $event)"
-                        [disabled]="e.editable==false">
+                        [disabled]="e.disabled==true">
             </p-calendar>
           </ng-template>
 
@@ -138,7 +138,7 @@
               [formControlName]="e.code"
               label="{{e.hintText}}"
               (ngModelChange)="onChange(e, $event)"
-              [readonly]="e.editable==false">
+              [readonly]="e.disabled==true">
             </p-checkbox>
           </ng-template>
 
@@ -183,7 +183,7 @@
                   [class.ng-invalid]="showError(e?.code)"
                   [class.ng-dirty]="showError(e?.code)"
                   (onChange)="onChange(e, $event.value)"
-                  [readonly]="e.editable==false">
+                  [readonly]="e.disabled==true">
                 </p-multiSelect>
               </div>
 
@@ -205,7 +205,7 @@
                   [class.ng-invalid]="showError(e?.code)"
                   [class.ng-dirty]="showError(e?.code)"
                   (onChange)="onChange(e, $event.value)"
-                  [readonly]="e.editable==false">
+                  [readonly]="e.disabled==true">
                 </p-dropdown>
               </div>
             </div>
