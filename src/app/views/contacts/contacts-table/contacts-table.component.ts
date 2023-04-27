@@ -98,9 +98,6 @@ export class ContactsTableComponent
             }
 
           ];
-
-          console.log(res.data.content)
-          console.log()
           this.cols.push(
             ...res.data.content.map((p, index) => {
               return {

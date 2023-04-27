@@ -71,7 +71,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                 this.form.addControl(
                   c.code + '-operator',
                   this.fb.control(
-                    customTable ? customTable[c.code + '-operator'] : null,
+                    filter ? filter[c.code + '-operator'] : null,
                     []
                   )
                 );
@@ -79,8 +79,8 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                   code: c.code,
                   displayName: c.displayName,
                   dataType: c.dataType,
-                  hintText: c.hintText ?? c.displayName,
-                  tooltip: c.tooltip ?? c.displayName,
+                  hintText: c.hintText ?? "",
+                  tooltip: c.tooltip ?? "",
                   isDisplay:
                     customTable && customTable[c.code] != null
                       ? customTable[c.code].isDisplay
