@@ -32,6 +32,22 @@
                 <p-radioButton value="Nữ" label="Nữ" [formControlName]="e.code">
                 </p-radioButton>
               </ng-template>
+              <ng-template [ngIf]="['LIST'].includes(e.dataType)">
+                <p-multiSelect
+                  optionLabel="label"
+                  optionValue="value"
+                  [options]="getBindableValues(e)"
+                  showClear="true"
+                  pTooltip="{{e?.tooltip}}"
+                  tooltipZIndex="200005"
+                  tooltipPosition="left"
+                  filter="true"
+                  styleClass="d-flex"
+                  placeholder="{{e?.hintText}}"
+                  appendTo="body"
+                  [formControlName]="e?.code">
+                </p-multiSelect>
+              </ng-template>
             </div>
             <div class="col-4">
               <p-dropdown optionLabel="label" optionValue="value" [options]="getOption(e)"
