@@ -64,6 +64,7 @@ export class ContactsTableComponent
     if(property){
       if (contact[code] != null) {
         if (property.dataType === DynamicDataTypeEnum.DATETIME) {
+          if(isNaN(contact[code])) return "-";
           const format = property.inputType == DynamicInputTypeEnum.DATE_PICKER ? 'dd/MM/yyyy' : (
             property.inputType == DynamicInputTypeEnum.TIME_PICKER ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss'
           )

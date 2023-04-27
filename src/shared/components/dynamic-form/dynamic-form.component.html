@@ -32,8 +32,7 @@
                   [formControlName]="e?.code"
                   [class.ng-invalid]="showError(e?.code)"
                   [class.ng-dirty]="showError(e?.code)"
-                  (ngModelChange)="onChange(e, $event)"
-                  [readonly]="e.disabled==true">
+                  (ngModelChange)="onChange(e, $event)">
                 </textarea>
               </div>
               <div *ngSwitchCase="INPUT_TYPE.EMAIL">
@@ -49,8 +48,7 @@
                        [formControlName]="e?.code"
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
-                       (ngModelChange)="onChange(e, $event)"
-                       [readonly]="e.disabled==true"/>
+                       (ngModelChange)="onChange(e, $event)"/>
               </div>
               <div *ngSwitchCase="INPUT_TYPE.PHONE_NUMBER">
                 <input type="text"
@@ -65,8 +63,7 @@
                        [formControlName]="e?.code"
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
-                       (ngModelChange)="onChange(e, $event)"
-                       [readonly]="e.disabled==true"/>
+                       (ngModelChange)="onChange(e, $event)"/>
               </div>
               <div *ngSwitchDefault>
                 <input type="text"
@@ -81,8 +78,7 @@
                        [formControlName]="e?.code"
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
-                       (ngModelChange)="onChange(e, $event)"
-                       [readonly]="e.disabled==true"/>
+                       (ngModelChange)="onChange(e, $event)"/>
               </div>
             </div>
           </ng-template>
@@ -103,8 +99,7 @@
                            [maxFractionDigits]="floatingPoint(e) ? floatingPoint(e) : 0"
                            [class.ng-invalid]="showError(e?.code)"
                            [class.ng-dirty]="showError(e?.code)"
-                           (ngModelChange)="onChange(e, $event)"
-                           [readonly]="e.disabled==true">
+                           (ngModelChange)="onChange(e, $event)">
             </p-inputNumber>
           </ng-template>
 
@@ -127,8 +122,7 @@
                         showIcon="true"
                         [class.ng-invalid]="showError(e?.code)"
                         [class.ng-dirty]="showError(e?.code)"
-                        (ngModelChange)="onChange(e, $event)"
-                        [disabled]="e.disabled==true">
+                        (ngModelChange)="onChange(e, $event)">
             </p-calendar>
           </ng-template>
 
@@ -137,8 +131,7 @@
               [binary]="true"
               [formControlName]="e.code"
               label="{{e.hintText}}"
-              (ngModelChange)="onChange(e, $event)"
-              [readonly]="e.disabled==true">
+              (ngModelChange)="onChange(e, $event)">
             </p-checkbox>
           </ng-template>
 
@@ -182,8 +175,7 @@
                   (onPanelShow)="onShowDropdown('.p-multiselect-open', '.p-multiselect-panel')"
                   [class.ng-invalid]="showError(e?.code)"
                   [class.ng-dirty]="showError(e?.code)"
-                  (onChange)="onChange(e, $event.value)"
-                  [readonly]="e.disabled==true">
+                  (onChange)="onChange(e, $event.value)">
                 </p-multiSelect>
               </div>
 
@@ -204,8 +196,7 @@
                   (onShow)="onShowDropdown('.p-dropdown-open', '.p-dropdown-panel')"
                   [class.ng-invalid]="showError(e?.code)"
                   [class.ng-dirty]="showError(e?.code)"
-                  (onChange)="onChange(e, $event.value)"
-                  [readonly]="e.disabled==true">
+                  (onChange)="onChange(e, $event.value)">
                 </p-dropdown>
               </div>
             </div>
