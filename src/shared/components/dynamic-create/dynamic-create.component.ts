@@ -14,6 +14,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from "@angular/common";
+import { DynamicDataTypeEnum } from "@shared/enums/dynamic-data-type.enum";
+import { DynamicInputTypeEnum } from "@shared/enums/dynamic-input-type.enum";
 
 @Component({
   selector: 'app-dynamic-create',
@@ -82,7 +84,16 @@ export class DynamicCreateComponent
               this.properties
             );
             if (this.dynamicMode == DynamicModeEnum.EDIT) {
-              this.entity['dob'] = this.datePipe.transform(this.entity['dob'], 'dd/MM/yyyy')
+              this.properties.filter(p => p.dataType === DynamicDataTypeEnum.DATETIME).forEach(
+                p => {
+                  if (this.entity[p.code] != null){
+                    const format = p.inputType == DynamicInputTypeEnum.DATE_PICKER ? 'dd/MM/yyyy' : (
+                      p.inputType == DynamicInputTypeEnum.TIME_PICKER ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss'
+                    )
+                    this.entity[p.code] = this.datePipe.transform(this.entity[p.code], format)
+                  }
+                });
+
               this.form.patchValue(this.entity);
             }
             this.defaultProperties = this.properties.filter(
@@ -105,8 +116,11 @@ export class DynamicCreateComponent
       case ButtonEnum.SAVE_BUTTON:
         if (this.form.valid) {
           this.isLoading = true;
-          if (this.form.value['dob'] != null)
-            this.form.value['dob'] = new Date(this.form.value['dob']).getTime().toString();
+          this.properties.filter(p => p.dataType === DynamicDataTypeEnum.DATETIME).forEach(
+            p => {
+              if (this.form.value[p.code] != null)
+                this.form.value[p.code] = new Date(this.form.value[p.code]).getTime().toString();
+            });
           if (this.dynamicMode == DynamicModeEnum.EDIT) {
             this.dynamicFieldService
               .updateDynamicEntity({

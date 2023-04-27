@@ -61,14 +61,8 @@
                        (click)="routeContactDetail(contact)"
                        pTooltip="{{contact[col.code]}}">{{contact[col.code]}}</div>
                 </td>
-                <td *ngSwitchCase="'phoneNumber'">
-                  {{contact[col.code]}}
-                </td>
-                <td *ngSwitchCase="'dob'">
-                  {{contact[col.code] | date:'dd/MM/yyyy'}}
-                </td>
                 <td *ngSwitchDefault>
-                  {{contact[col.code] ?? '-'}}
+                  {{getDisplayValue(contact, col.code)}}
                 </td>
               </ng-container>
             </tr>
