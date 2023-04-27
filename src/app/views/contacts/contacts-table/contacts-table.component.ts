@@ -1,10 +1,4 @@
-import {
-  Component,
-  Injector,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, ViewChild, } from '@angular/core';
 import { ComponentBase } from '@shared/utils/component-base.component';
 import { Paginator } from 'primeng/paginator';
 import { Router } from '@angular/router';
@@ -22,6 +16,7 @@ import { DynamicModeEnum } from '@shared/enums/dynamic-mode.enum';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
 import { MessageService } from 'primeng/api';
 import { DEFAULT_COL_CONTACT } from "@shared/constant/contacts.const";
+import { DynamicInputTypeEnum } from "@shared/enums/dynamic-input-type.enum";
 
 @Component({
   selector: 'app-contacts-table',
@@ -89,8 +84,27 @@ export class ContactsTableComponent
               isDisplay: true,
               isFixed: true,
             }),
+            {
+              code: 'creationTime',
+              displayName: 'Ngày tạo',
+              dataType: DynamicDataTypeEnum.DATETIME,
+              inputType: DynamicInputTypeEnum.DATE_PICKER,
+              isDisplay: true,
+              order: 13
+            },
+            {
+              code: 'lastModificationTime',
+              displayName: 'Ngày cập nhật gần nhất',
+              dataType: DynamicDataTypeEnum.DATETIME,
+              inputType: DynamicInputTypeEnum.DATE_PICKER,
+              isDisplay: true,
+              order: 14
+            }
 
           ];
+
+          console.log(res.data.content)
+          console.log()
           this.cols.push(
             ...res.data.content.map((p, index) => {
               return {
@@ -110,6 +124,7 @@ export class ContactsTableComponent
               } as DynamicPropertyModel;
             })
           );
+
           this.cols = this.cols.sort((a, b) => a.order - b.order);
           this.checkedCols = this.cols
             .filter((c) => c.isDisplay)

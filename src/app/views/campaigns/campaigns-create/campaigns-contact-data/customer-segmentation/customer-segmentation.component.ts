@@ -15,6 +15,7 @@ import { SEGMENTATION_QUERY } from "@shared/constant/campaign.const";
 export class CustomerSegmentationComponent implements OnInit {
   segmentationQuery = SEGMENTATION_QUERY;
   segmentations: any[];
+  segmentationList: SegmentationListModel[]
   searchKey: string;
   @Input() segmentationForm: FormGroup;
   @Output() segmentationFormChange = new EventEmitter<FormGroup>;
@@ -52,6 +53,14 @@ export class CustomerSegmentationComponent implements OnInit {
   removeSegmentation(i) {
     let getForm = this.segmentationForm.get('segmentations') as FormArray;
     getForm.removeAt(i);
+    this.cdr.detectChanges();
+  }
+
+  removeSegmentationSelected(i, s) {
+    let getForm = this.segmentationForm.get('segmentations') as FormArray;
+    let selected = getForm.at(i).get('segmentationSelected') as FormControl
+    selected.value.splice(s, 1)
+    selected.patchValue(selected.value);
     this.cdr.detectChanges();
   }
 }

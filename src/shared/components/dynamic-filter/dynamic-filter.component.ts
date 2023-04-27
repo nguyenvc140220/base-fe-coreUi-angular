@@ -58,7 +58,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
             this.entities = res.data.content
               .map((c, index) => {
 
-                if (c.dataType == 'DATETIME' && filter[c.code]) {
+                if (c.dataType == 'DATETIME' && filter && filter[c.code]) {
                   this.form.addControl(
                     c.code,
                     this.fb.control(new Date(filter[c.code]), [])
@@ -71,7 +71,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                 this.form.addControl(
                   c.code + '-operator',
                   this.fb.control(
-                    filter ? filter[c.code + '-operator'] : null,
+                    customTable ? customTable[c.code + '-operator'] : null,
                     []
                   )
                 );
@@ -92,6 +92,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                 } as DynamicPropertyModel;
               })
               .sort((a, b) => a.order - b.order);
+            console.log(this.entities);
           }
         },
         error: (err) => {
