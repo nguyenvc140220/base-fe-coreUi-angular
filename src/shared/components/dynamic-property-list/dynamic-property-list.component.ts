@@ -20,6 +20,7 @@ import { DynamicPropertyEditComponent } from '@shared/components/dynamic-propert
 import { DynamicPropertyDeleteComponent } from '@shared/components/dynamic-property-delete/dynamic-property-delete.component';
 import { DynamicPropertyHideComponent } from '../dynamic-property-hide/dynamic-property-hide.component';
 import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-dynamic-property-list',
@@ -46,6 +47,7 @@ export class DynamicPropertyListComponent
     { field: 'lastModificationTime', title: 'Ngày cập nhật gần nhất' },
   ];
   @ViewChild('paginator') paginator: Paginator;
+  @ViewChild('listTable') listTable: Table;
   constructor(
     injector: Injector,
     private dynamicFieldService: DynamicFieldService,
@@ -120,9 +122,18 @@ export class DynamicPropertyListComponent
       },
     });
     dialog.onClose.subscribe((res) => {
-      this.loadData(null);
+      this.goFistAndReload();
     });
   }
+  private goFistAndReload() {
+    this.paginator.changePage(0);
+    this.loadData(null);
+    this.listTable.scrollTo({
+      top: 0,
+      left: 0,
+    });
+  }
+
   delete(entity) {
     const dialog = this.dialogService.open(DynamicPropertyDeleteComponent, {
       header: 'Xóa trường thông tin',
@@ -149,7 +160,7 @@ export class DynamicPropertyListComponent
        },
     });
     dialog.onClose.subscribe((res) => {
-      this.loadData(null);
+      this.goFistAndReload();
     });
   }
 }
