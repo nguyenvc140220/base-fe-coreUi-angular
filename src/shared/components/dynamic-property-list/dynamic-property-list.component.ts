@@ -38,10 +38,10 @@ export class DynamicPropertyListComponent
       this.loadData(null);
   }
   cols = [
-    { field: 'id', title: 'Hành động' },
+    { field: 'id', title: 'Thao tác' },
     { field: 'displayName', title: 'Tên trường dữ liệu' },
     // { field: 'entityType', title: 'Kiểu dữ liệu' },
-    { field: 'editable', title: 'Trạng thái' },
+    { field: 'visible', title: 'Trạng thái' },
     { field: 'creationTime', title: 'Ngày tạo' },
     { field: 'lastModificationTime', title: 'Ngày cập nhật gần nhất' },
   ];
@@ -148,7 +148,7 @@ export class DynamicPropertyListComponent
     });
   }
   hideOrOpen(entity) {
-    const header = entity.editable ? 'Hiển thị trường thông tin' : 'Ẩn trường thông tin';
+    const header = !entity.visible ? 'Hiển thị trường thông tin' : 'Ẩn trường thông tin';
     const dialog = this.dialogService.open(DynamicPropertyHideComponent, {
       header: header,
       width: '30%',

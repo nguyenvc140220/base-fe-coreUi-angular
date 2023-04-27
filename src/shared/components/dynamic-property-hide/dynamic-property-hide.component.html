@@ -1,6 +1,6 @@
 <form [formGroup]="formGroup">
     <div class="mt4">
-        <p class="text-sm">Trường thông tin {{entity.displayName}} sẽ {{entity.editable? 'được hiển thị':'bị ẩn'}}
+        <p class="text-sm">Trường thông tin {{entity.displayName}} sẽ {{!entity.visible? 'được hiển thị':'bị ẩn'}}
             tại module liên hệ</p>
     </div>
 </form>
