@@ -48,10 +48,6 @@ export class ContactsTableComponent
   }
 
   ngOnInit(): void {
-    if (sessionStorage.getItem('contactDynamicFormValue')) {
-      this.query.payload = this.getQuery((JSON.parse(sessionStorage.getItem('contactDynamicFormValue'))));
-      this.loadData(null);
-    }
     this.initDataTable();
   }
 
@@ -61,7 +57,7 @@ export class ContactsTableComponent
     this.router.navigate(['contacts/importing']);
   }
 
-  private initDataTable() {
+  private async initDataTable() {
     this.contactService
       .getContactProperties({page: 1, size: 100})
       .subscribe((res) => {
@@ -129,7 +125,10 @@ export class ContactsTableComponent
           this.checkedCols = this.cols
             .filter((c) => c.isDisplay)
             .sort((a, b) => a.order - b.order);
-          console.log(this.checkedCols)
+          if (sessionStorage.getItem('contactDynamicFormValue')) {
+            this.query.payload = this.getQuery((JSON.parse(sessionStorage.getItem('contactDynamicFormValue'))));
+            this.loadData(null);
+          }
         }
       });
 
