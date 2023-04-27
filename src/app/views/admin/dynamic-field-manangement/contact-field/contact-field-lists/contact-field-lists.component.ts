@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
@@ -10,6 +10,7 @@ import { DynamicPropertyCreateComponent } from '@shared/components/dynamic-prope
   styleUrls: ['./contact-field-lists.component.scss'],
 })
 export class ContactFieldListsComponent {
+  onReloadList =  new EventEmitter<boolean>();
   dynamicType = DynamicEntityTypeEnum.CONTACT;
   searchKey = '';
 
@@ -30,8 +31,7 @@ export class ContactFieldListsComponent {
       data: { type: DynamicEntityTypeEnum.CONTACT },
     });
     dialog.onClose.subscribe((res) => {
-      if (res) {
-      }
+      this.onReloadList.emit(res);
     });
   }
 

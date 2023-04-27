@@ -3,7 +3,7 @@
     [scrollable]="true" [tableStyle]="{'min-width': '50rem'}" [value]="primengTableHelper.records" scrollHeight="400px">
     <ng-template pTemplate="header">
       <tr>
-        <th *ngFor="let col of cols" style="min-width:200px">
+        <th *ngFor="let col of cols" style="min-width:100px" class="text-center">
           {{col.title}}
         </th>
       </tr>
@@ -11,7 +11,7 @@
     <ng-template let-property pTemplate="body">
       <tr>
         <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field">
-          <td *ngSwitchCase="'id'">
+          <td *ngSwitchCase="'id'" class="text-center">
             <i class="pi {{!property.visible?'pi-lock-open':'pi-lock'}} pr-5 hover:cursor-pointer" pTooltip="{{!property.visible?'Hiển thị':'Ẩn'}}"
               (click)="hideOrOpen(property)"></i>
             <i class="pi pi-file-edit pr-5 hover:cursor-pointer" pTooltip="Sửa" (click)="edit(property)"></i>
@@ -22,18 +22,18 @@
 <!--          <td *ngSwitchCase="'entityType'">-->
 <!--            {{getPropertyType(property)}}-->
 <!--          </td>-->
-          <td *ngSwitchCase="'visible'">
+          <td *ngSwitchCase="'visible'" class="text-center">
             <p-chip [label]="property[col.field] ? 'Hiển thị' : 'Ẩn'"
               [style]="property[col.field] ? {'background-color': '#D9ECD9', 'color': '#328F1A'} : {'background-color': '#FFE6E9', 'color': '#D9001B'}">
             </p-chip>
           </td>
-          <td *ngSwitchCase="'creationTime'">
+          <td *ngSwitchCase="'creationTime'" class="text-center">
             {{(property[col.field] | date: 'dd/MM/yyyy HH:mm:ss') ?? "-" }}
           </td>
-          <td *ngSwitchCase="'lastModificationTime'">
+          <td *ngSwitchCase="'lastModificationTime'" class="text-center">
             {{(property[col.field] | date: 'dd/MM/yyyy HH:mm:ss') ?? "-" }}
           </td>
-          <td *ngSwitchDefault>
+          <td *ngSwitchDefault class="text-center">
             {{property[col.field] ?? '-'}}
           </td>
         </ng-container>
