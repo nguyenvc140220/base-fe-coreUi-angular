@@ -9,6 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { MultiSelectModule } from "primeng/multiselect";
 
 @NgModule({
   declarations: [DynamicFilterComponent],
@@ -22,6 +23,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     CheckboxModule,
     DropdownModule,
     RadioButtonModule,
+    MultiSelectModule,
   ],
 })
 export class DynamicFilterModule {}

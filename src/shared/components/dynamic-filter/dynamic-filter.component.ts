@@ -71,7 +71,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                 this.form.addControl(
                   c.code + '-operator',
                   this.fb.control(
-                    customTable ? customTable[c.code + '-operator'] : null,
+                    filter ? filter[c.code + '-operator'] : this.getOption(c)[0].value,
                     []
                   )
                 );
@@ -79,8 +79,9 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                   code: c.code,
                   displayName: c.displayName,
                   dataType: c.dataType,
-                  hintText: c.hintText ?? c.displayName,
-                  tooltip: c.tooltip ?? c.displayName,
+                  hintText: c.hintText,
+                  tooltip: c.tooltip,
+                  defaultValue: c.defaultValue,
                   isDisplay:
                     customTable && customTable[c.code] != null
                       ? customTable[c.code].isDisplay
@@ -92,7 +93,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
                 } as DynamicPropertyModel;
               })
               .sort((a, b) => a.order - b.order);
-            console.log(this.entities);
+            // console.log(this.entities);
           }
         },
         error: (err) => {
@@ -114,7 +115,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
           'contactDynamicFormValue',
           JSON.stringify(this.form.value)
         );
-        // console.log(this.getQuery(this.form.value));
+        console.log(this.getQuery(this.form.value));
         this.ref.close(this.getQuery(this.form.value));
         break;
       case ButtonEnum.RESET_BUTTON:
@@ -140,13 +141,12 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
             valueDate = formValue[e.code].trim();
             break;
           case 'NUMBER':
-            valueDate = formValue[e.code];
           case 'BOOLEAN':
             valueDate = formValue[e.code];
+            break;
           case 'LIST':
             valueDate = formValue[e.code];
             break;
-          default:
         }
       }
       if (e.isDisplay && valueDate && valueDate != '') {
@@ -164,6 +164,10 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
       };
     console.log(payload)
     return {};
+  }
+
+  getBindableValues(property: DynamicPropertyModel) {
+    return property.defaultValue ? JSON.parse(property.defaultValue) : [];
   }
 
   getOption(e: DynamicPropertyModel) {
@@ -201,8 +205,8 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
         return op.filter((x) =>
           [DynamicFilterOperatorEnum.EQ].includes(x.value)
         );
-      // case default:
-      //   return op.filter((x) => [Operator.In, Operator.Nin].includes(x.value));
+      default:
+        return op.filter((x) => [DynamicFilterOperatorEnum.IN, DynamicFilterOperatorEnum.NIN].includes(x.value));
     }
     return op;
   }
