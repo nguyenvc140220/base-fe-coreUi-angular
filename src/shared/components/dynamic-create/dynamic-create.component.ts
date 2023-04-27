@@ -86,7 +86,7 @@ export class DynamicCreateComponent
             if (this.dynamicMode == DynamicModeEnum.EDIT) {
               this.properties.filter(p => p.dataType === DynamicDataTypeEnum.DATETIME).forEach(
                 p => {
-                  if (this.entity[p.code] != null){
+                  if (this.entity[p.code] != null && !isNaN(this.entity[p.code])){
                     const format = p.inputType == DynamicInputTypeEnum.DATE_PICKER ? 'dd/MM/yyyy' : (
                       p.inputType == DynamicInputTypeEnum.TIME_PICKER ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss'
                     )
@@ -94,6 +94,15 @@ export class DynamicCreateComponent
                   }
                 });
 
+              this.properties.filter(p => p.dataType === DynamicDataTypeEnum.LIST &&
+                (p.inputType === DynamicInputTypeEnum.MULTI_SELECT || p.inputType === DynamicInputTypeEnum.CHECK_LIST)
+              ).forEach(
+                p =>{
+                  if (this.entity[p.code] != null){
+                    this.entity[p.code] = this.entity[p.code].toString().split(",");
+                  }
+                }
+                );
               this.form.patchValue(this.entity);
             }
             this.defaultProperties = this.properties.filter(

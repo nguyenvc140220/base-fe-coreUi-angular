@@ -154,8 +154,6 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
           res.data.content.forEach((p) => {
             properties[p.code] = p;
           });
-          console.log(entity)
-          console.log(properties)
           this.contactInfos = [];
           Object.keys(properties).forEach(key => {
             if (properties[key].removable == false) {
@@ -192,7 +190,7 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
   checkTypeEntity(entity: any, value) {
     if (!value) return "_"
     if (entity.dataType == DynamicDataTypeEnum.DATETIME) {
-      if (value == 0) return "_"
+      if (value == 0 || isNaN(value)) return "_"
       const format = entity.inputType == DynamicInputTypeEnum.DATE_PICKER ? 'dd/MM/yyyy' : (
         entity.inputType == DynamicInputTypeEnum.TIME_PICKER ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss'
       )
