@@ -219,19 +219,27 @@ export class DynamicPropertyCreateComponent implements OnInit {
         displayName: 'Tên trường thông tin',
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập tên trường thông tin ...',
-        validators: [{ type: 'required', validatorValue: '1' }]
+        validators: [{ type: 'required', validatorValue: '1' },
+          { type: 'string_length_max', validatorValue: '50' },
+          { type: 'string_length_min', validatorValue: '2' }]
       }),
       new DynamicPropertyModel({
         code: 'tooltip',
         displayName: 'Tooltip',
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập tooltip ...',
+        validators: [
+          { type: 'string_length_max', validatorValue: '100' }
+        ]
       }),
       new DynamicPropertyModel({
         code: 'hintText',
         displayName: 'PlaceHolder',
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập Placeholder ...',
+        validators: [
+          { type: 'string_length_max', validatorValue: '50' }
+        ]
       }),
       new DynamicPropertyModel({
         code: 'dataType',
@@ -249,16 +257,18 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dataType: DynamicDataTypeEnum.BOOLEAN,
         inputType: DynamicInputTypeEnum.CHECKBOX,
         hintText: 'Có thể sửa',
+        defaultValue: 'true'
       }),
       new DynamicPropertyModel({
         code: 'maxLength',
-        displayName: 'Độ dài tối đa [250]',
+        displayName: 'Độ dài tối đa (250)',
         dataType: DynamicDataTypeEnum.NUMBER,
         inputType: DynamicInputTypeEnum.NUMBER_BOX,
         validators: [
           { type: 'double_min', validatorValue: '1' },
           { type: 'double_max', validatorValue: '250' }
         ],
+        defaultValue: '250',
         tag: 'TEXT',
       }),
       new DynamicPropertyModel({

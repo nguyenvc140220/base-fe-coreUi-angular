@@ -278,11 +278,11 @@ export class ContactsTableComponent
   getQuery(entities) {
     var payload = [];
     this.cols.forEach((e) => {
-      if (e.isDisplay && entities[e.code] && entities[e.code].trim() != '') {
+      if (e.isDisplay && entities[e.code] && (Array.isArray( entities[e.code]) || entities[e.code].trim() != '')) {
         payload.push({
           field: e.code,
           operator: entities[e.code + '-operator'],
-          value: entities[e.code].trim(),
+          value: Array.isArray( entities[e.code]) ? entities[e.code] : entities[e.code].trim(),
         });
       }
     });

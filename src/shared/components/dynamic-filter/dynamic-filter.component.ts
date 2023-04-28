@@ -115,7 +115,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
           'contactDynamicFormValue',
           JSON.stringify(this.form.value)
         );
-        console.log(this.getQuery(this.form.value));
+        // console.log(this.getQuery(this.form.value));
         this.ref.close(this.getQuery(this.form.value));
         break;
       case ButtonEnum.RESET_BUTTON:
@@ -162,7 +162,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
         type: DynamicFilterTypeEnum.AND,
         payload: payload,
       };
-    console.log(payload)
+    // console.log(payload)
     return {};
   }
 

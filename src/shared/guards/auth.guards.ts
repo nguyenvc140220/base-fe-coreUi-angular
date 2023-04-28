@@ -9,6 +9,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services';
+import { environment } from "@env/environment";
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
@@ -20,6 +21,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   // canActivate
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this._authenticationService.currentUserValue;
+    if (!environment.production)
+      return true;
     if (currentUser) {
       this._authenticationService.refreshtoken().subscribe();
       // authorised so return true
