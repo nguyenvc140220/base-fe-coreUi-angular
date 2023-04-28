@@ -3,14 +3,19 @@
     <div *ngFor="let e of properties" class="{{gridLayout}}">
       <div class="mt-2 mb-2" *ngIf="!e.hidden">
         <div class="d-flex justify-content-between mb-2">
-          <label class="font-normal">{{e?.displayName}}
-            <span *ngIf="isRequired(e)" class="text-danger">(*)</span>
-          </label>
+          <div class="d-flex w-10/12">
+            <label class="font-normal truncate"
+                   pTooltip="{{e?.tooltip}}"
+                   tooltipZIndex="200005"
+                   tooltipPosition="left">{{e?.displayName}}</label>
+            <label *ngIf="isRequired(e)" class=" font-normal text-danger">(*)</label>
+          </div>
+
           <label class="sm:text-xs font-normal"
                  *ngIf="e?.dataType === DATA_TYPE.TEXT && maxLength(e)"
                  [ngClass]="{'text-danger': formGroup.get(e?.code)?.value?.length === maxLength(e)}">
-            <span class="sm:text-xs font-medium">{{maxLength(e) - formGroup.get(e?.code)?.value?.length}}</span> /
-            <span class="sm:text-xs font-medium">{{maxLength(e)}}</span>
+            <span class="sm:text-xs font-normal">{{maxLength(e) - formGroup.get(e?.code)?.value?.length}}</span> /
+            <span class="sm:text-xs font-normal">{{maxLength(e)}}</span>
           </label>
         </div>
 
@@ -26,9 +31,6 @@
                   [maxLength]="maxLength(e) ? maxLength(e) : 4000"
                   [minlength]="minLength(e)"
                   placeholder="{{e?.hintText}}"
-                  pTooltip="{{e?.tooltip}}"
-                  tooltipZIndex="200005"
-                  tooltipPosition="left"
                   [formControlName]="e?.code"
                   [class.ng-invalid]="showError(e?.code)"
                   [class.ng-dirty]="showError(e?.code)"
@@ -42,9 +44,6 @@
                        [maxLength]="maxLength(e) ? maxLength(e) : 4000"
                        [minlength]="minLength(e)"
                        placeholder="{{e?.hintText}}"
-                       pTooltip="{{e?.tooltip}}"
-                       tooltipZIndex="200005"
-                       tooltipPosition="left"
                        [formControlName]="e?.code"
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
@@ -57,9 +56,6 @@
                        [maxLength]="maxLength(e) ? maxLength(e) : 4000"
                        [minlength]="minLength(e)"
                        placeholder="{{e?.hintText}}"
-                       pTooltip="{{e?.tooltip}}"
-                       tooltipZIndex="200005"
-                       tooltipPosition="left"
                        [formControlName]="e?.code"
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
@@ -72,9 +68,6 @@
                        [maxLength]="maxLength(e) ? maxLength(e) : 4000"
                        [minlength]="minLength(e)"
                        placeholder="{{e?.hintText}}"
-                       pTooltip="{{e?.tooltip}}"
-                       tooltipZIndex="200005"
-                       tooltipPosition="left"
                        [formControlName]="e?.code"
                        [class.ng-invalid]="showError(e?.code)"
                        [class.ng-dirty]="showError(e?.code)"
@@ -87,11 +80,8 @@
             <p-inputNumber inputId="minmaxfraction"
                            [min]="minValue(e)"
                            [max]="maxValue(e)"
-                           styleClass="d-flex"
+                           styleClass="d-flex w-full"
                            placeholder="{{e?.hintText}}"
-                           pTooltip="{{e?.tooltip}}"
-                           tooltipZIndex="200005"
-                           tooltipPosition="left"
                            [formControlName]="e?.code"
                            [showButtons]="true"
                            mode="decimal"
@@ -113,9 +103,6 @@
                         styleClass="d-flex"
                         appendTo="body"
                         placeholder="{{e?.hintText}}"
-                        pTooltip="{{e?.tooltip}}"
-                        tooltipZIndex="200005"
-                        tooltipPosition="left"
                         [formControlName]="e?.code"
                         baseZIndex="20001"
                         showButtonBar="true"
@@ -163,9 +150,6 @@
                   optionValue="value"
                   [options]="getBindableValues(e)"
                   showClear="true"
-                  pTooltip="{{e?.tooltip}}"
-                  tooltipZIndex="200005"
-                  tooltipPosition="left"
                   filter="true"
                   styleClass="d-flex"
                   placeholder="{{e?.hintText}}"
@@ -185,9 +169,6 @@
                   optionValue="value"
                   [options]="getBindableValues(e)"
                   showClear="true"
-                  pTooltip="{{e?.tooltip}}"
-                  tooltipZIndex="200005"
-                  tooltipPosition="left"
                   filter="true"
                   styleClass="d-flex"
                   placeholder="{{e?.hintText}}"

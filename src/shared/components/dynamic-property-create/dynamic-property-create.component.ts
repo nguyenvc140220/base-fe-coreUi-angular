@@ -12,6 +12,8 @@ import { DynamicFieldService } from "@shared/services/dynamic-field/dynamic-fiel
 import { DynamicPropertyCreateModel } from "@shared/models/dynamic-field/dynamic-property-create.model";
 import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
 import { DynamicPropertyAddToEntityModel } from "@shared/models/dynamic-field/dynamic-property-add-to-entity.model";
+import { removeNullValue } from "@shared/utils/object.utils";
+import { nullOrEmptyValidator } from "@shared/validators/check-pecial-characters-validators";
 
 @Component({
   selector: 'app-dynamic-property-create',
@@ -43,7 +45,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
   }
   addOptions(){
     const option = this.fb.group({
-      value: [null, [Validators.required]],
+      value: [null, [Validators.required, nullOrEmptyValidator]],
     });
 
     this.listOptions.push(option);
@@ -55,7 +57,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
   showError(index){
     let control = this.listOptions?.controls[index]?.get('value');
     if (control && control.invalid && control.touched) {
-      if (control?.errors?.required) return 'Không được bỏ trống!';
+      if (control?.errors?.required || control?.errors?.nullOrEmpty) return 'Không được bỏ trống!';
     }
     return null;
   }
@@ -93,7 +95,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
       case DynamicTypeEnum.TEXT:
         dynamicCreateRequest.dataType = DynamicDataTypeEnum.TEXT;
         dynamicCreateRequest.inputType = DynamicInputTypeEnum.TEXT_BOX;
-        const max_length = this.dynamicFormBuilder.getFormValue(this.formGroup, 'maxLength');
+        const max_length = this.dynamicFormBuilder.getFormValue(this.formGroup, 'maxLength') ?? 250;
         if(max_length)
           dynamicCreateRequest.validators = `[{"type":"string_length_max","validatorValue":"${max_length}"}]`;
         break;
@@ -111,14 +113,14 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dynamicCreateRequest.dataType = DynamicDataTypeEnum.NUMBER;
         dynamicCreateRequest.inputType = DynamicInputTypeEnum.NUMBER_BOX;
         const validators = [];
-        const minValue = this.dynamicFormBuilder.getFormValue(this.formGroup, 'minValue');
+        const minValue = this.dynamicFormBuilder.getFormValue(this.formGroup, 'minValue') ?? "-999999999999999";
         if(minValue)
           validators.push({"type":"double_min","validatorValue":`${minValue}`});
-        const maxValue = this.dynamicFormBuilder.getFormValue(this.formGroup, 'maxValue');
+        const maxValue = this.dynamicFormBuilder.getFormValue(this.formGroup, 'maxValue') ?? "999999999999999";
         if(maxValue)
           validators.push({"type":"double_max","validatorValue":`${maxValue}`});
-        const floatingPoint = this.dynamicFormBuilder.getFormValue(this.formGroup, 'floatingPoint');
-        if(floatingPoint)
+        const floatingPoint = this.dynamicFormBuilder.getFormValue(this.formGroup, 'floatingPoint') ?? '0';
+        if(floatingPoint !== undefined)
           validators.push({"type":"floating_point","validatorValue":`${floatingPoint}`});
         if(validators.length)
           dynamicCreateRequest.validators = JSON.stringify(validators);
@@ -166,7 +168,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
           this.isLoading = true;
           const request = this.createDynamicPropertyCreateRequest();
           this.dynamicFieldService.createDynamicProperty(
-            request
+            removeNullValue(request)
           ).subscribe({
             next: (res)=>{
               if(res.statusCode === 200)
@@ -219,7 +221,9 @@ export class DynamicPropertyCreateComponent implements OnInit {
         displayName: 'Tên trường thông tin',
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập tên trường thông tin ...',
-        validators: [{ type: 'required', validatorValue: '1' },
+        validators: [
+          { type: 'required', validatorValue: '1' },
+          { type: 'not_null', validatorValue: '1' },
           { type: 'string_length_max', validatorValue: '50' },
           { type: 'string_length_min', validatorValue: '2' }]
       }),
