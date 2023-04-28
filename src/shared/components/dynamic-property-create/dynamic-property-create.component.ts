@@ -280,6 +280,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
           { type: 'double_min', validatorValue: '-999999999999999' },
           { type: 'double_max', validatorValue: '999999999999999' }
         ],
+        defaultValue: '-999999999999999',
         tag: 'NUMBER',
         hidden: true
       }),
@@ -292,6 +293,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
           { type: 'double_min', validatorValue: '-999999999999999' },
           { type: 'double_max', validatorValue: '999999999999999' }
         ],
+        defaultValue: '999999999999999',
         tag: 'NUMBER',
         hidden: true
       }),
@@ -310,7 +312,10 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập đơn vị ...',
         tag: 'NUMBER',
-        hidden: true
+        hidden: true,
+        validators: [
+          { type: 'string_length_max', validatorValue: '10' }
+        ]
       }),
       new DynamicPropertyModel({
         code: 'selectType',
