@@ -29,10 +29,19 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
       disabled: false,
     },
       {
-        validators: [Validators.required],
+        validators: [Validators.required, this.trimValidator],
       }
     ));
     this.messageService = this.dynamicDialogConfig.data.messageService;
+  }
+  trimValidator(control: FormControl): { [key: string]: boolean } | null {
+    console.log("debug " + control.value);
+    const trimmedValue = control.value?.trim();
+    if (!trimmedValue) {
+      return { "required": true };
+    }
+    // control.setValue(trimmedValue);
+    return null;
   }
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -47,28 +56,31 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
   onDialogEvent(event: any) {
     switch (event) {
       case 'SAVE_BUTTON':
-        const req = new DynamicPropertyUpdateModel({
-          code: this.dynamicDialogConfig.data.entity.code,
-          displayName: this.formGroup.value.displayName,
-        });
-        this.dynamicFieldService.updateDynamicProperty(req)
-          .pipe(takeUntil(
-            this.unsubscribe$
-          ))
-          .subscribe({
-            next: (res) => {
-              if (res.data) {
-                this.showSuccess();
-              } else {
-                this.showError(null);
-              }
-              this.ref.close();
-            },
-            error: (err) => {
-              this.showError(err);
-              this.ref.close();
-            }
+        //check if this.form is valid
+        if (this.formGroup.valid) {
+          const req = new DynamicPropertyUpdateModel({
+            code: this.dynamicDialogConfig.data.entity.code,
+            displayName: this.formGroup.value.displayName.trim(),
           });
+          this.dynamicFieldService.updateDynamicProperty(req)
+            .pipe(takeUntil(
+              this.unsubscribe$
+            ))
+            .subscribe({
+              next: (res) => {
+                if (res.data) {
+                  this.showSuccess();
+                } else {
+                  this.showError(null);
+                }
+                this.ref.close();
+              },
+              error: (err) => {
+                this.showError(err);
+                this.ref.close();
+              }
+            });
+        }
         break;
       case 'CANCEL_BUTTON':
         this.ref.close();
