@@ -16,6 +16,7 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   messageService: MessageService;
   private unsubscribe$: Subject<void> = new Subject<void>();
+  maxLength: number = 50;
   constructor(
     public ref: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig,
@@ -33,6 +34,9 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
       }
     ));
     this.messageService = this.dynamicDialogConfig.data.messageService;
+  }
+  get remainingChars() {
+    return this.maxLength - this.formGroup.value.displayName.trim().length;
   }
   trimValidator(control: FormControl): { [key: string]: boolean } | null {
     console.log("debug " + control.value);
