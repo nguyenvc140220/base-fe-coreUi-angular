@@ -28,6 +28,7 @@ export class DynamicFormComponent {
     let control = this.formGroup?.get(name);
     if (control && control.invalid && control.touched) {
       if (control?.errors?.required) return 'Đây là trường bắt buộc!';
+      if (control?.errors?.nullOrEmpty) return 'Không được bỏ trống!';
       if (control?.errors?.minlength)
         return `Độ dài tối thiểu là ${control?.errors?.minlength?.requiredLength}`;
       if (control?.errors?.maxlength)

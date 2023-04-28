@@ -3,6 +3,7 @@ import { DynamicPropertyModel, PropertyValidator, } from '@shared/models/dynamic
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
 import { DynamicDataTypeEnum } from "@shared/enums/dynamic-data-type.enum";
+import { nullOrEmptyValidator } from "@shared/validators/check-pecial-characters-validators";
 
 @Injectable({ providedIn: 'root' })
 export class DynamicFormBuilder {
@@ -61,6 +62,8 @@ export class DynamicFormBuilder {
       switch (validator.type) {
         case ValidatorTypeEnum.REQUIRED:
           return isNaN(value) || value < 1 ? null : Validators.required;
+        case ValidatorTypeEnum.NOT_NULL:
+          return isNaN(value) || value < 1 ? null : nullOrEmptyValidator;
         case ValidatorTypeEnum.STRING_LENGTH_MAX:
           return isNaN(value) ? null : Validators.maxLength(value);
         case ValidatorTypeEnum.STRING_LENGTH_MIN:

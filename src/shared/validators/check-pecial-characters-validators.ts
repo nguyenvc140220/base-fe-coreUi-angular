@@ -20,3 +20,15 @@ export function specialNonAlphabetCharactersValidator(control: AbstractControl):
   }
   return null;
 }
+
+
+export function nullOrEmptyValidator(control: AbstractControl): { [key: string]: any } | null {
+  if (control.value !== undefined){
+    if(typeof control.value == 'string' && !control.value.trim()){
+      return {'nullOrEmpty': true};
+    } else if(Array.isArray(control.value) && control.value.length === 0){
+      return {'nullOrEmpty': true};
+    }
+  }
+  return null;
+}

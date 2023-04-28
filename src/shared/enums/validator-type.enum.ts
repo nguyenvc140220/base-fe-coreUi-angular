@@ -1,5 +1,6 @@
 export enum ValidatorTypeEnum {
   REQUIRED = 'required',
+  NOT_NULL = 'not_null',
   STRING_LENGTH_MIN = 'string_length_min',
   STRING_PATTERN = 'string_pattern',
   STRING_LENGTH_MAX = 'string_length_max',
