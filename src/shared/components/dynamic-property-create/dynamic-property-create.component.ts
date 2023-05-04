@@ -13,7 +13,12 @@ import { DynamicPropertyCreateModel } from "@shared/models/dynamic-field/dynamic
 import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
 import { DynamicPropertyAddToEntityModel } from "@shared/models/dynamic-field/dynamic-property-add-to-entity.model";
 import { removeNullValue } from "@shared/utils/object.utils";
-import { nullOrEmptyValidator } from "@shared/validators/check-pecial-characters-validators";
+import {
+  duplicateValidator,
+  greaterThanValidator,
+  lessThanValidator,
+  nullOrEmptyValidator
+} from "@shared/validators/check-pecial-characters-validators";
 
 @Component({
   selector: 'app-dynamic-property-create',
@@ -45,7 +50,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
   }
   addOptions(){
     const option = this.fb.group({
-      value: [null, [Validators.required, nullOrEmptyValidator]],
+      value: [null, [Validators.required, nullOrEmptyValidator, duplicateValidator]],
     });
 
     this.listOptions.push(option);
@@ -58,6 +63,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
     let control = this.listOptions?.controls[index]?.get('value');
     if (control && control.invalid && control.touched) {
       if (control?.errors?.required || control?.errors?.nullOrEmpty) return 'Không được bỏ trống!';
+      if (control?.errors?.duplicate) return 'Lựa chọn đã tồn tại!';
     }
     return null;
   }
@@ -221,6 +227,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         displayName: 'Tên trường thông tin',
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập tên trường thông tin ...',
+        tooltip: 'Nhập tên trường thông tin ...',
         validators: [
           { type: 'required', validatorValue: '1' },
           { type: 'not_null', validatorValue: '1' },
@@ -232,6 +239,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         displayName: 'Tooltip',
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập tooltip ...',
+        tooltip: 'Nhập tooltip ...',
         validators: [
           { type: 'string_length_max', validatorValue: '100' }
         ]
@@ -241,6 +249,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         displayName: 'PlaceHolder',
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập Placeholder ...',
+        tooltip: 'Nhập Placeholder ...',
         validators: [
           { type: 'string_length_max', validatorValue: '50' }
         ]
@@ -252,6 +261,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         inputType: DynamicInputTypeEnum.SINGLE_SELECT,
         defaultValue: JSON.stringify(DYNAMIC_PROPERTY_TYPE),
         hintText: 'Chọn kiểu dữ liệu',
+        tooltip: 'Chọn kiểu dữ liệu',
         validators: [{ type: 'required', validatorValue: '1' }],
         onDataChange: (data) => this.eventEmiter.emit(data)
       }),
@@ -261,11 +271,14 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dataType: DynamicDataTypeEnum.BOOLEAN,
         inputType: DynamicInputTypeEnum.CHECKBOX,
         hintText: 'Có thể sửa',
+        tooltip: 'Có thể sửa?',
         defaultValue: 'true'
       }),
       new DynamicPropertyModel({
         code: 'maxLength',
         displayName: 'Độ dài tối đa (250)',
+        hintText: 'Nhập độ dài tối đa',
+        tooltip: 'Nhập độ dài tối đa',
         dataType: DynamicDataTypeEnum.NUMBER,
         inputType: DynamicInputTypeEnum.NUMBER_BOX,
         validators: [
@@ -285,6 +298,8 @@ export class DynamicPropertyCreateComponent implements OnInit {
           { type: 'double_max', validatorValue: '999999999999999' }
         ],
         defaultValue: '-999999999999999',
+        hintText: 'Nhập giá trị tối thiểu',
+        tooltip: 'Nhập giá trị tối thiểu',
         tag: 'NUMBER',
         hidden: true
       }),
@@ -295,9 +310,12 @@ export class DynamicPropertyCreateComponent implements OnInit {
         inputType: DynamicInputTypeEnum.NUMBER_BOX,
         validators: [
           { type: 'double_min', validatorValue: '-999999999999999' },
-          { type: 'double_max', validatorValue: '999999999999999' }
+          { type: 'double_max', validatorValue: '999999999999999' },
+          // { type: 'greater_than', validatorValue: 'maxValue,minValue' }
         ],
         defaultValue: '999999999999999',
+        hintText: 'Nhập giá trị tối đa',
+        tooltip: 'Nhập giá trị tối đa',
         tag: 'NUMBER',
         hidden: true
       }),
@@ -307,6 +325,8 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dataType: DynamicDataTypeEnum.LIST,
         inputType: DynamicInputTypeEnum.SINGLE_SELECT,
         defaultValue: JSON.stringify(this.generateNumberValue()),
+        hintText: 'Chọn giá trị làm tròn đến số thập phân',
+        tooltip: 'Chọn giá trị làm tròn đến số thập phân',
         tag: 'NUMBER',
         hidden: true
       }),
@@ -315,6 +335,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         displayName: 'Đơn vị',
         dataType: DynamicDataTypeEnum.TEXT,
         hintText: 'Nhập đơn vị ...',
+        tooltip: 'Nhập đơn vị ...',
         tag: 'NUMBER',
         hidden: true,
         validators: [
@@ -324,6 +345,8 @@ export class DynamicPropertyCreateComponent implements OnInit {
       new DynamicPropertyModel({
         code: 'selectType',
         displayName: 'Cấu hình trường chọn',
+        hintText: 'Chọn cấu hình trường chọn',
+        tooltip: 'Chọn cấu hình trường chọn',
         dataType: DynamicDataTypeEnum.LIST,
         inputType: DynamicInputTypeEnum.RADIO,
         defaultValue: JSON.stringify([
@@ -344,7 +367,10 @@ export class DynamicPropertyCreateComponent implements OnInit {
     this.eventEmiter.subscribe((e)=>this.onDataChange(e));
     this.formGroup = this.dynamicFormBuilder.generateFormGroup(
       this.formGroup,
-      this.properties
+      this.properties,
+      [
+        // greaterThanValidator('maxValue','minValue'),
+        lessThanValidator('minValue','maxValue')]
     );
   }
 

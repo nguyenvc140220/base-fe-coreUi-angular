@@ -30,6 +30,8 @@ export class DynamicFormComponent {
     if (control && control.invalid && control.touched) {
       if (control?.errors?.required) return 'Đây là trường bắt buộc!';
       if (control?.errors?.nullOrEmpty) return 'Không được bỏ trống!';
+      if (control?.errors?.greaterThan) return 'Giá trị tối đa cần lớn hơn giá trị tối thiểu!'
+      if (control?.errors?.lessThan) return 'Giá trị tối thiểu cần nhỏ hơn giá trị tối đa!';
       if (control?.errors?.minlength)
         return `Độ dài tối thiểu là ${control?.errors?.minlength?.requiredLength}`;
       if (control?.errors?.maxlength)
@@ -39,7 +41,7 @@ export class DynamicFormComponent {
       if (control?.errors?.max)
         return `Giá trị tối đa là ${control?.errors?.max?.max}`;
       if (control?.errors?.pattern) return `Không đúng định dạng!`;
-      return 'has error!';
+      // return 'has error!';
     }
     return null;
   }

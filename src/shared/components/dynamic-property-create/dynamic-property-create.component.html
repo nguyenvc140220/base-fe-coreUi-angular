@@ -7,7 +7,8 @@
   <form [formGroup]="formArray" *ngIf="listOptions?.controls">
     <div class="row">
       <div class="d-flex mb-2">
-        <label class="font-normal mr-2 justify-center">
+        <label class="font-normal mr-2 justify-center" pTooltip="Thêm các lựa chọn" tooltipPosition="right"
+               tooltipZIndex="20001">
           Các lựa chọn
         </label>
         <button pButton pRipple type="button" icon="pi pi-plus" pTooltip="Thêm lựa chọn" tooltipPosition="right"
