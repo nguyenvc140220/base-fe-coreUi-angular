@@ -38,80 +38,79 @@
           </p-tabPanel>
         </p-tabView>
         <div class="col-md-4">
-          <p-accordion [multiple]="true" [activeIndex]="[tapDefault,tapDefaultChild, tapDynamic]">
-            <!-- Thông tin chung -->
-            <p class="accordion-header font-bold" style="font-size: 1em;">
-              <fa-icon size="lg"
-                       (click)="showOrHideAccordionTab(0,'tapDefault')"
-                       [icon]="icon(tapDefault === 0 ? 'faSquareCaretDown':'faSquareCaretRight')">
-              </fa-icon>
-              Thông tin chung
-            </p>
-            <p-accordionTab>
-              <ng-template pTemplate="header">
-              </ng-template>
-              <ng-template pTemplate="content">
-                <div class="space-y-2">
-                  <div class="flex flex-row" *ngFor="let info of showDefaultField">
-                    <div>
-                      {{info.title}} :
-                      <i class="fa-solid fa-user"></i>
+          <p-scrollPanel [style]="{ width: '100%', height: '70vh' }" styleClass="custombar2">
+            <p-accordion [multiple]="true" [activeIndex]="[tapDefault,tapDefaultChild, tapDynamic]">
+              <!-- Thông tin chung -->
+              <p class="accordion-header font-bold" style="font-size: 1em;">
+                <fa-icon size="lg"
+                         (click)="showOrHideAccordionTab(0,'tapDefault')"
+                         [icon]="icon(tapDefault === 0 ? 'faSquareCaretDown':'faSquareCaretRight')">
+                </fa-icon>
+                Thông tin chung
+              </p>
+              <p-accordionTab>
+                <ng-template pTemplate="header">
+                </ng-template>
+                <ng-template pTemplate="content">
+                  <div class="space-y-2">
+                    <div *ngFor="let info of showDefaultField">
+                      <div class="w-90 font-bold truncate" pTooltip="{{info.title}}">
+                        {{info.title}} :
+                      </div>
+                      <div class="w-90 truncate" pTooltip="{{info.value}}">{{info.value}}</div>
                     </div>
-                    <div class="ml-2 w-50 font-bold truncate" pTooltip="{{info.value}}">{{info.value}}</div>
                   </div>
-                </div>
-                <div class="space-y-2">
-                  <button class="font-bold"
-                          (click)="showOrHideAccordionTab(1, 'tapDefaultChild')">
-                    <fa-icon
-                      size="sm"
-                      [icon]="icon(tapDefaultChild === 1 ? 'faChevronDown':'faChevronRight')">
-                    </fa-icon>
-                    {{tapDefaultChild === 1 ? 'Thu gọn' : 'Mở rộng'}}
-                  </button>
-                </div>
-              </ng-template>
-            </p-accordionTab>
-            <p-accordionTab>
-              <ng-template pTemplate="header">
-              </ng-template>
-              <ng-template pTemplate="content">
-                <div class="space-y-2">
-                  <div class="flex flex-row" *ngFor="let info of contactInfos">
-                    <div>
-                      {{info.title}} :
-                      <i class="fa-solid fa-user"></i>
+                  <div class="space-y-2">
+                    <button class="font-bold"
+                            (click)="showOrHideAccordionTab(1, 'tapDefaultChild')">
+                      <fa-icon
+                        size="sm"
+                        [icon]="icon(tapDefaultChild === 1 ? 'faChevronDown':'faChevronRight')">
+                      </fa-icon>
+                      {{tapDefaultChild === 1 ? 'Thu gọn' : 'Mở rộng'}}
+                    </button>
+                  </div>
+                </ng-template>
+              </p-accordionTab>
+              <p-accordionTab>
+                <ng-template pTemplate="header">
+                </ng-template>
+                <ng-template pTemplate="content">
+                  <div class="space-y-2">
+                    <div *ngFor="let info of contactInfos">
+                      <div class="w-90 font-bold truncate" pTooltip="{{info.title}}">
+                        {{info.title}} :
+                      </div>
+                      <div class="w-90 truncate"
+                           pTooltip="{{info.value}}">{{info.value}}</div>
                     </div>
-                    <div class="ml-2 w-50 font-bold truncate"
-                         pTooltip="{{info.value}}">{{info.value}}</div>
                   </div>
-                </div>
-              </ng-template>
-            </p-accordionTab>
-            <!-- Thông tin động -->
-            <p class="accordion-header font-bold" style="font-size: 1em;">
-              <fa-icon size="lg"
-                       (click)="showOrHideAccordionTab(2, 'tapDynamic')"
-                       [icon]="icon(tapDynamic === 2 ? 'faSquareCaretDown':'faSquareCaretRight')">
-              </fa-icon>
-              Thông tin động
-            </p>
-            <p-accordionTab>
-              <ng-template pTemplate="header">
-              </ng-template>
-              <ng-template pTemplate="content">
-                <div class="space-y-2">
-                  <div class="flex flex-row" *ngFor="let info of dynamicContactInfos">
-                    <div>
-                      {{info.title}} :
-                      <i class="fa-solid fa-user"></i>
+                </ng-template>
+              </p-accordionTab>
+              <!-- Thông tin động -->
+              <p class="accordion-header font-bold" style="font-size: 1em;">
+                <fa-icon size="lg"
+                         (click)="showOrHideAccordionTab(2, 'tapDynamic')"
+                         [icon]="icon(tapDynamic === 2 ? 'faSquareCaretDown':'faSquareCaretRight')">
+                </fa-icon>
+                Thông tin động
+              </p>
+              <p-accordionTab>
+                <ng-template pTemplate="header">
+                </ng-template>
+                <ng-template pTemplate="content">
+                  <div class="space-y-2">
+                    <div *ngFor="let info of dynamicContactInfos">
+                      <div class="w-90 font-bold truncate" pTooltip="{{info.title}}">
+                        {{info.title}} :
+                      </div>
+                      <div class="w-90 truncate" pTooltip="{{info.value}}">{{info.value}}</div>
                     </div>
-                    <div class="ml-2 w-50 font-bold truncate" pTooltip="{{info.value}}">{{info.value}}</div>
                   </div>
-                </div>
-              </ng-template>
-            </p-accordionTab>
-          </p-accordion>
+                </ng-template>
+              </p-accordionTab>
+            </p-accordion>
+          </p-scrollPanel>
         </div>
       </div>
 

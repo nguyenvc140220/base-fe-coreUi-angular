@@ -88,13 +88,8 @@ export class CampaignsCreateComponent implements OnInit {
   }
 
   btnSaveOrNext() {
-
-    if (this.campaignsGeneralForm.valid) {
-      this.checkValidStepSuccess(0);
-    }
-    if (this.segmentationForm.valid) {
-      this.checkValidStepSuccess(1);
-    }
+    this.campaignsGeneralForm.valid ? this.checkValidStepSuccess(0) : this.checkValidStepFailed(0);
+    this.segmentationForm.valid ? this.checkValidStepSuccess(1) : this.checkValidStepFailed(1);
 
     if (this.activeIndex == 3) {
       this.query = {};
@@ -120,7 +115,7 @@ export class CampaignsCreateComponent implements OnInit {
         body.customerType = this.segmentationForm.value.dataContactType
         body.segmentQuery = JSON.stringify(this.query);
         this.campaignService.createCampaign(body).pipe(takeUntil(this.unsubscribe)).subscribe({
-          next: (res) => {
+          next: () => {
             this.messageService.add({
               severity: 'success',
               summary: 'Thành công',
@@ -141,14 +136,9 @@ export class CampaignsCreateComponent implements OnInit {
     this.router.navigate(['campaigns']);
   }
 
-  onActiveIndexChange(e) {
-    if (this.campaignsGeneralForm.valid) {
-      this.checkValidStepSuccess(0);
-    }
-
-    if (this.segmentationForm.valid) {
-      return this.checkValidStepSuccess(1);
-    }
+  onActiveIndexChange() {
+    this.campaignsGeneralForm.valid ? this.checkValidStepSuccess(0) : this.checkValidStepFailed(0);
+    this.segmentationForm.valid ? this.checkValidStepSuccess(1) : this.checkValidStepFailed(1);
   }
 
   initForm() {
@@ -156,8 +146,8 @@ export class CampaignsCreateComponent implements OnInit {
       name: new FormControl(null, [Validators.required, validatorTrim]),
       type: new FormControl(null, [Validators.required]),
       assignedUser: new FormControl(null),
-      startCallTime: new FormControl(null, [Validators.required]),
-      endCallTime: new FormControl(null, [Validators.required]),
+      startCallTime: new FormControl(new Date(), [Validators.required]),
+      endCallTime: new FormControl(new Date(), [Validators.required]),
       timeFrom: new FormControl(null, [Validators.required]),
       timeTo: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
@@ -181,6 +171,13 @@ export class CampaignsCreateComponent implements OnInit {
     const steps_title = document.getElementsByClassName('p-steps-title ');
     steps_number[i].setAttribute('style', 'color: #1B5E20; background: #E8F5E9;');
     steps_title[i].setAttribute('style', 'color: #1B5E20;');
+  }
+
+  checkValidStepFailed(i) {
+    const steps_number = document.getElementsByClassName('p-steps-number');
+    const steps_title = document.getElementsByClassName('p-steps-title ');
+    steps_number[i].setAttribute('style', 'color: #495057; background: #ffffff;');
+    steps_title[i].setAttribute('style', 'color: #6c757d;');
   }
 
   handlFromSegment() {

@@ -16,6 +16,7 @@ import { MessageService } from 'primeng/api';
 import { DatePipe } from "@angular/common";
 import { DynamicDataTypeEnum } from "@shared/enums/dynamic-data-type.enum";
 import { DynamicInputTypeEnum } from "@shared/enums/dynamic-input-type.enum";
+import { DEFAULT_COL_CONTACT } from "@shared/constant/contacts.const";
 
 @Component({
   selector: 'app-dynamic-create',
@@ -78,7 +79,15 @@ export class DynamicCreateComponent
         next: (res) => {
           this.isLoading = false;
           if (res.statusCode == 200) {
-            this.properties = res.data.content;
+            this.properties = res.data.content.map((p) => {
+              return {
+                ...p,
+                order:
+                  DEFAULT_COL_CONTACT[p.code] != null
+                    ? DEFAULT_COL_CONTACT[p.code].order
+                    : p.creationTime,
+              } as DynamicPropertyModel;
+            });
             this.form = this.dynamicFormBuilder.generateFormGroup(
               this.form,
               this.properties
@@ -86,7 +95,7 @@ export class DynamicCreateComponent
             if (this.dynamicMode == DynamicModeEnum.EDIT) {
               this.properties.filter(p => p.dataType === DynamicDataTypeEnum.DATETIME).forEach(
                 p => {
-                  if (this.entity[p.code] != null && !isNaN(this.entity[p.code])){
+                  if (this.entity[p.code] != null && !isNaN(this.entity[p.code])) {
                     const format = p.inputType == DynamicInputTypeEnum.DATE_PICKER ? 'dd/MM/yyyy' : (
                       p.inputType == DynamicInputTypeEnum.TIME_PICKER ? 'HH:mm:ss' : 'dd/MM/yyyy HH:mm:ss'
                     )
@@ -97,20 +106,21 @@ export class DynamicCreateComponent
               this.properties.filter(p => p.dataType === DynamicDataTypeEnum.LIST &&
                 (p.inputType === DynamicInputTypeEnum.MULTI_SELECT || p.inputType === DynamicInputTypeEnum.CHECK_LIST)
               ).forEach(
-                p =>{
-                  if (this.entity[p.code] != null){
+                p => {
+                  if (this.entity[p.code] != null) {
                     this.entity[p.code] = this.entity[p.code].toString().split(",");
                   }
                 }
-                );
+              );
               this.form.patchValue(this.entity);
             }
+
             this.defaultProperties = this.properties.filter(
-              (el) => el.visible && !el.removable
-            );
+              (el) => el.visible && !el.removable && el.code != "creationSource"
+            ).sort((a, b) => a.order - b.order);
             this.dynamicProperties = this.properties.filter(
-              (el) => el.visible && el.removable
-            );
+              (el) => el.visible && el.removable && el.code != "creationSource"
+            ).sort((a, b) => a.order - b.order);
           }
         },
         error: (err) => {
@@ -181,7 +191,7 @@ export class DynamicCreateComponent
         break;
 
       case ButtonEnum.CANCEL_BUTTON:
-        return this.router.navigate(['contacts']);
+        this.router.navigate(['contacts']);
         break;
       default:
         break;

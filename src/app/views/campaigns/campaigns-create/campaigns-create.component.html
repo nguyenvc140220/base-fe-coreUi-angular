@@ -1,31 +1,38 @@
 <div class="card px-4">
   <div class="border-b-1 py-2 row p-d-flex">
-    <div class="col-9">
+    <div class="col-10">
       <p-toast></p-toast>
       <p-steps [model]="items"
-               (activeIndexChange)="onActiveIndexChange($event)"
+               (activeIndexChange)="onActiveIndexChange()"
                [readonly]="false"
                [(activeIndex)]="activeIndex"></p-steps>
     </div>
-    <div class="col-3  flex justify-content-center">
+    <div class="col-2  flex justify-content-end">
       <button
         pButton
         type="button"
-        label="Huỷ"
         styleClass="p-button-sm"
         style="max-height: 70%"
         (click)="btnCancel()"
-        class="p-button-outlined mx-2 text-sm"></button>
+        class="p-button-outlined mx-2 text-sm">
+        <span class="p-button-label" pTooltip="Huỷ">
+          Huỷ
+        </span>
+      </button>
       <button
         pButton
-        [label]="activeIndex != 3 ? 'Tiếp tục': 'Hoàn tất'"
         style="max-height: 70%"
         (click)="btnSaveOrNext()"
-        [disabled]="!campaignsGeneralForm.valid && !segmentationForm.valid && activeIndex == 3"
+        [disabled]="(!campaignsGeneralForm.valid || !segmentationForm.valid) && activeIndex == 3"
         styleClass="p-button-sm text-sm"
-        class="mx-2"></button>
-
+        class="mx-2">
+        <span class="p-button-label"
+              pTooltip="{{activeIndex != 3 ? 'Tiếp tục' : 'Hoàn tất'}}">
+          {{activeIndex != 3 ? 'Tiếp tục' : 'Hoàn tất'}}
+        </span>
+      </button>
     </div>
+    <p-divider></p-divider>
   </div>
 
   <ng-template [ngIf]="activeIndex === 0">
