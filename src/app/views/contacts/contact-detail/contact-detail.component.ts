@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import * as faIcons from '@fortawesome/free-solid-svg-icons';
 import { DynamicInputTypeEnum } from "@shared/enums/dynamic-input-type.enum";
+import { DynamicModeEnum } from "@shared/enums/dynamic-mode.enum";
 
 @Component({
   selector: 'app-contact-detail',
@@ -20,18 +21,27 @@ import { DynamicInputTypeEnum } from "@shared/enums/dynamic-input-type.enum";
 export class ContactDetailComponent extends DestroyService implements OnInit {
   isLoading = false;
   contactInfos = [];
-  contactInfosShowDefault = [];
   dynamicContactInfos = [];
   contactId = '';
   tapDefault = 0;
   tapDynamic = 2;
-  tapDefaultChild = null
+  tapDefaultChild = null;
+  contact: any
   extendItems = [
     {
       label: 'Sửa',
       icon: 'pi pi-pencil',
       command: () => {
-        console.log('Sửa');
+        this.router.navigate(
+          [
+            'contacts/edit',
+            {
+              type: DynamicEntityTypeEnum.CONTACT,
+              mode: DynamicModeEnum.EDIT,
+            },
+          ],
+          {state: {entity: this.contact}}
+        );
       },
     },
     {
@@ -123,6 +133,7 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
       .pipe(takeUntil(this))
       .subscribe((res) => {
         if (res.statusCode == 200 && res.data && res.data.totalElements > 0) {
+          this.contact = res.data.content[0]
           this.printEntityDetail(res.data.content[0]);
         } else {
           this.router.navigate(['/contacts']);
@@ -139,31 +150,20 @@ export class ContactDetailComponent extends DestroyService implements OnInit {
       })
       .subscribe((res) => {
         if (res.statusCode == 200) {
-          var properties = {
-            // creationTime: {
-            //   displayName: 'Ngày tạo',
-            //   dataType: DynamicDataTypeEnum.DATETIME,
-            //   removable: false
-            // },
-            // lastModificationTime: {
-            //   displayName: 'Ngày cập nhật gần nhất',
-            //   dataType: DynamicDataTypeEnum.DATETIME,
-            //   removable: false
-            // },
-          };
+          var properties = {};
           res.data.content.forEach((p) => {
             properties[p.code] = p;
           });
           this.contactInfos = [];
           Object.keys(properties).forEach(key => {
-            if (properties[key].removable == false) {
+            if (properties[key].removable == false && properties[key].visible) {
               let found = this.showDefaultField.find(element => element.field == key);
               const data = {
                 title: properties[key].displayName,
                 value: this.checkTypeEntity(properties[key], entity[key]),
               }
               found ? found.value = data.value : this.contactInfos.push(data);
-            } else this.dynamicContactInfos.push({
+            } else if (properties[key].removable == true && properties[key].visible) this.dynamicContactInfos.push({
               title: properties[key].displayName,
               value: this.checkTypeEntity(properties[key], entity[key])
             });

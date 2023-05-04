@@ -137,10 +137,10 @@
               <div class="col-1 mb-2 text-center">{{i > 0 ? 'và' : ''}}
               </div>
               <div class="font-bold col-3 mb-2 text-center">
-                <ng-container *ngIf="segmentation.conditional == 'Eq'">
+                <ng-container *ngIf="segmentation.query == 'AND'">
                   Thuộc phân phúc
                 </ng-container>
-                <ng-container *ngIf="segmentation.conditional == 'Ne'">
+                <ng-container *ngIf="segmentation.query == 'NOT'">
                   Không thuộc phân phúc
                 </ng-container>
               </div>

@@ -16,6 +16,7 @@ export class DynamicFormComponent {
   @Input() gridLayout = 'col-6';
   DATA_TYPE = DynamicDataTypeEnum;
   INPUT_TYPE = DynamicInputTypeEnum;
+  maxDob = new Date();
 
   onShowDropdown(main: string, overlay: string): void {
     const dropdown = document.querySelector(main) as HTMLElement;
@@ -43,8 +44,8 @@ export class DynamicFormComponent {
     return null;
   }
 
-  onChange(property: DynamicPropertyModel, value){
-    if(property?.onDataChange)
+  onChange(property: DynamicPropertyModel, value) {
+    if (property?.onDataChange)
       property.onDataChange(value);
   }
 

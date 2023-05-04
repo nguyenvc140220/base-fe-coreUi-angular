@@ -2,6 +2,7 @@
   <button pButton
           type="button"
           label="Tải file mẫu"
+          (click)="downloadTemplate()"
           class="accept-btn"></button>
 </div>
 <div class="mx-3">
@@ -11,13 +12,13 @@
                 showCancelButton="false"
                 invalidFileSizeMessageSummary="Thất bại."
                 invalidFileSizeMessageDetail="Dung lượng file tải lên không được quá {0}"
-                maxFileSize="50000000">
+                maxFileSize="52428800">
     <ng-template pTemplate="content"
                  let-files>
       <div class="d-flex justify-content-center align-items-center">
         <i class="pi pi-cloud-upload"
            style="margin-right: 5px;"></i>
-        <span style="font-size: 13px; height: 20px;">Kéo và thả file để tải lên hoặc
+        <span style="font-size: 1rem;">Kéo và thả file để tải lên hoặc
           <span style="color: dodgerblue; cursor: pointer;" (click)="chooseFile()">
             Duyệt từ máy tính</span>
         </span>
@@ -27,17 +28,15 @@
   <div class="col-sm-12 mb-2"
        *ngFor="let file of fileUpload.files; let i = index"
        style="background-clip: content-box; background-color: rgba(0, 140, 255, 0.19);padding-left: 0; padding-right: 0; margin-top: 1rem;">
-    <div class="row"
-         style="height: 38px;">
+    <div class="row">
       <div class="col-md-1 d-flex align-items-center justify-content-center">
         <i class="pi pi-file"
-           style="font-size: 2rem;"></i>
+           style="font-size: 1rem;"></i>
       </div>
       <div class="col-md-10">
-        <div class="row"
-             style="font-size: 13px; line-height: 38px;">
+        <div class="row my-1">
           <div class="col-md-8">
-            <span>{{file?.name}}</span>
+            <span style="font-size: 1rem;">{{file?.name}}</span>
           </div>
           <div class="col-md-4 d-flex justify-content-end">
             <span>{{ file?.size / 1024 / 1024 | number:'.2' }} MB</span>
@@ -47,7 +46,7 @@
       <div class="col-md-1 d-flex justify-content-center align-items-center">
         <i class="pi pi-times"
            (click)="clearFile(i)"
-           style="font-size: 2rem;cursor: pointer;"></i>
+           style="font-size: 1rem;cursor: pointer;"></i>
       </div>
     </div>
   </div>
@@ -65,6 +64,7 @@
     class="p-button-outlined p-button-info mx-2"
     icon="pi pi-check"
     label="Hủy"
+    (click)="backStepEnd()"
   ></button>
   <p-button
     class="mx-2"

@@ -52,6 +52,7 @@ import { CoreModule } from '@shared/root.module';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AccordionModule } from 'primeng/accordion';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ScrollPanelModule } from "primeng/scrollpanel";
 
 const PRIMENG = [
   TableModule,
@@ -107,6 +108,7 @@ const PRIMENG = [
     }),
     AccordionModule,
     FontAwesomeModule,
+    ScrollPanelModule,
   ],
   providers: [
     DialogService,

@@ -107,6 +107,7 @@
                         baseZIndex="20001"
                         showButtonBar="true"
                         showIcon="true"
+                        [maxDate]="e?.code == 'dob' ? maxDob :null"
                         [class.ng-invalid]="showError(e?.code)"
                         [class.ng-dirty]="showError(e?.code)"
                         (ngModelChange)="onChange(e, $event)">

@@ -5,6 +5,7 @@ import { DynamicEntityTypeEnum } from '@shared/enums/dynamic-entity-type.enum';
 import { Subject, takeUntil } from 'rxjs';
 import { ButtonEnum } from '@shared/enums/button-status.enum';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
+import { DEFAULT_COL_CONTACT } from "@shared/constant/contacts.const";
 
 @Component({
   selector: 'app-custom-table',
@@ -14,7 +15,7 @@ import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-prope
 export class CustomTableComponent implements OnInit, OnDestroy {
   columnTable: DynamicPropertyModel[] = [];
   cols: DynamicPropertyModel[] = [
-    new DynamicPropertyModel({ code: 'header', displayName: 'Chọn tất cả' }),
+    new DynamicPropertyModel({code: 'header', displayName: 'Chọn tất cả'}),
   ];
   selectedCols: DynamicPropertyModel[] = [];
 
@@ -32,10 +33,12 @@ export class CustomTableComponent implements OnInit, OnDestroy {
       this.columnTable = JSON.parse(config.data['columns']);
     }
   }
+
   ngOnDestroy(): void {
     this.unsubscribe.next(null);
     this.unsubscribe.complete();
   }
+
   ngOnInit() {
     if (this.columnTable.length == 0) {
       this.isLoading = true;
@@ -58,7 +61,6 @@ export class CustomTableComponent implements OnInit, OnDestroy {
                   index: index,
                 });
               });
-              this.selectedCols = this.columnTable;
             }
           },
           error: (err) => {
@@ -74,9 +76,11 @@ export class CustomTableComponent implements OnInit, OnDestroy {
   onRowSelect(event) {
     event.data.isDisplay = true;
   }
+
   onRowUnselect(event) {
     event.data.isDisplay = false;
   }
+
   checkboxToggle(event) {
     this.columnTable
       .filter((c) => !c.isFixed)
@@ -93,8 +97,15 @@ export class CustomTableComponent implements OnInit, OnDestroy {
         this.ref.close(this.columnTable);
         break;
       case ButtonEnum.RESET_BUTTON:
-        this.columnTable.forEach((c) => (c.isDisplay = true));
+        this.columnTable.forEach((c) => {
+            return (
+              c.isDisplay = true, c.order = DEFAULT_COL_CONTACT[c.code] != null
+                ? DEFAULT_COL_CONTACT[c.code].order
+                : c.creationTime);
+          }
+        );
         this.selectedCols = this.columnTable;
+        this.selectedCols = this.columnTable.sort((a, b) => a.order - b.order);
         break;
       default:
         break;
