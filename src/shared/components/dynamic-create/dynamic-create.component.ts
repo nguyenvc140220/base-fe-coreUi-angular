@@ -113,6 +113,9 @@ export class DynamicCreateComponent
                 }
               );
               this.form.patchValue(this.entity);
+              this.properties.filter(p => p.editable == false)?.forEach(
+                p => this.form.get(p.code).disable()
+              )
             }
 
             this.defaultProperties = this.properties.filter(
