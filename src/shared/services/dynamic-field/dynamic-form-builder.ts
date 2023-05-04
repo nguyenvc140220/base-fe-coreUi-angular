@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { DynamicPropertyModel, PropertyValidator, } from '@shared/models/dynamic-field/dynamic-property.model';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
 import { DynamicDataTypeEnum } from "@shared/enums/dynamic-data-type.enum";
-import { nullOrEmptyValidator } from "@shared/validators/check-pecial-characters-validators";
+import { greaterThanValidator, nullOrEmptyValidator } from "@shared/validators/check-pecial-characters-validators";
 
 @Injectable({ providedIn: 'root' })
 export class DynamicFormBuilder {
   constructor() {}
   generateFormGroup(
     formGroup: FormGroup,
-    properties: DynamicPropertyModel[]
+    properties: DynamicPropertyModel[],
+    validators: ValidatorFn[] = []
   ): FormGroup {
     properties.forEach((p) => {
       formGroup.addControl(
@@ -25,6 +26,7 @@ export class DynamicFormBuilder {
         )
       );
     });
+    formGroup.addValidators(validators);
     return formGroup;
   }
 

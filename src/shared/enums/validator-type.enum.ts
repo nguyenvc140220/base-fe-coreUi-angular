@@ -15,4 +15,5 @@ export enum ValidatorTypeEnum {
   DATETIME_MAX = 'datetime_max',
   LIST_SIZE = 'list_size',
   LIST_MAX_CHOICE = 'max_choice',
+  GREATER_THAN = 'greater_than',
 }
