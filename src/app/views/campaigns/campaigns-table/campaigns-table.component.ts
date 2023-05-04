@@ -199,4 +199,8 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
         return 'danger';
     }
   }
+
+  getStatus(campaign: CampaignListModel) {
+    return campaign.campaignStatus;
+  }
 }
