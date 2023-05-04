@@ -56,17 +56,17 @@
                 (click)="navigate('campaigns/details', campaign)"
               ></i>
               <i
-                *ngIf="campaign.campaignStatus === 'WAITING' || campaign.campaignStatus === 'PAUSED'"
-                [pTooltip]="campaign.campaignStatus === 'WAITING' ? 'Bắt đầu' : 'Tiếp tục'"
+                *ngIf="getStatus(campaign) === 'WAITING' || getStatus(campaign) === 'PAUSED'"
+                [pTooltip]="getStatus(campaign) === 'WAITING' ? 'Bắt đầu' : 'Tiếp tục'"
                 (click)="handleStateChange(campaign, 'HAPPENING')"
                 class="hover:cursor-pointer pi pi-play pr-5"></i>
               <i
-                *ngIf="campaign.campaignStatus === 'HAPPENING'"
+                *ngIf="getStatus(campaign) === 'HAPPENING'"
                 (click)="handleStateChange(campaign, 'PAUSED')"
                 pTooltip="Tạm dừng"
                 class="hover:cursor-pointer pi pi-pause pr-5"></i>
               <i
-                *ngIf="campaign.campaignStatus === 'HAPPENING'"
+                *ngIf="getStatus(campaign) === 'HAPPENING'"
                 (click)="handleStateChange(campaign, 'CLOSED')"
                 pTooltip="Kết thúc"
                 class="hover:cursor-pointer pi pi-check pr-5"></i>
@@ -100,9 +100,9 @@
               <td *ngSwitchCase="'state'" [style]="campaign[col.field]?.styles || {}" class="text-center">
                 <p-tag
                   [styleClass]="'w-100'"
-                  [value]="getStateLabel(campaign.campaignStatus)"
-                  [pTooltip]="getStateLabel(campaign.campaignStatus)"
-                  [severity]="getColor(campaign.campaignStatus)"/>
+                  [value]="getStateLabel(getStatus(campaign))"
+                  [pTooltip]="getStateLabel(getStatus(campaign))"
+                  [severity]="getColor(getStatus(campaign))"/>
               </td>
 
               <td *ngSwitchDefault>
