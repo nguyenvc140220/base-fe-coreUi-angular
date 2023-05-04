@@ -58,13 +58,16 @@
               <i
                 *ngIf="campaign.campaignStatus === 'WAITING' || campaign.campaignStatus === 'PAUSED'"
                 [pTooltip]="campaign.campaignStatus === 'WAITING' ? 'Bắt đầu' : 'Tiếp tục'"
+                (click)="handleStateChange(campaign, 'HAPPENING')"
                 class="hover:cursor-pointer pi pi-play pr-5"></i>
               <i
                 *ngIf="campaign.campaignStatus === 'HAPPENING'"
+                (click)="handleStateChange(campaign, 'PAUSED')"
                 pTooltip="Tạm dừng"
                 class="hover:cursor-pointer pi pi-pause pr-5"></i>
               <i
                 *ngIf="campaign.campaignStatus === 'HAPPENING'"
+                (click)="handleStateChange(campaign, 'CLOSED')"
                 pTooltip="Kết thúc"
                 class="hover:cursor-pointer pi pi-check pr-5"></i>
             </td>

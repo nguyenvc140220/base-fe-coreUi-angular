@@ -47,4 +47,10 @@ export class CampaignService extends BaseService {
       `${this.configService.campaignPlanningUrl}/campaign`, body
     );
   }
+
+  changeStatus(campaignId: string, status: string) {
+    return this.defaultPut<{ success: boolean; message?: string }>(
+      `${this.configService.campaignPlanningUrl}/campaign/status`, { campaignId, status }
+    );
+  }
 }

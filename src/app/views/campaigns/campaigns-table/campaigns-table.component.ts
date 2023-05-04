@@ -123,8 +123,28 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
       })
   }
 
-  handleStateChange($event, campaign) {
-    console.log($event, campaign)
+  handleStateChange(campaign: CampaignListModel, status) {
+    if (!campaign || !status || campaign.campaignStatus === status) {
+      return;
+    }
+
+    this.primengTableHelper.showLoadingIndicator();
+    this.campaignService.changeStatus(campaign.id, status)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        next: val => {
+          if (val.success) {
+            campaign.campaignStatus = status;
+          }
+        },
+        error: err => {
+          this.primengTableHelper.hideLoadingIndicator();
+          console.error(`Cannot change campaign ${campaign.id}`);
+        },
+        complete: () => {
+          this.primengTableHelper.hideLoadingIndicator();
+        }
+      });
   }
 
   handleRemove(campaign: any) {
