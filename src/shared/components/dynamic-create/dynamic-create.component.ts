@@ -158,8 +158,10 @@ export class DynamicCreateComponent
                       severity: 'success',
                       summary: 'Success',
                       detail: `Chỉnh sửa ${this.dynamicType} thành công`,
-                    });
-                    return this.router.navigate(['contacts']);
+                    },);
+                    setTimeout(() => {
+                      return this.router.navigate(['contacts']);
+                    }, 1500);
                   }
                 },
                 error: () => {
@@ -182,7 +184,14 @@ export class DynamicCreateComponent
                       summary: 'Success',
                       detail: `Tạo mới ${this.dynamicType} thành công`,
                     });
-                    return this.router.navigate(['contacts']);
+                    this.messageService.add({
+                      severity: 'success',
+                      summary: 'Success',
+                      detail: `Chỉnh sửa ${this.dynamicType} thành công`,
+                    },);
+                    setTimeout(() => {
+                      return this.router.navigate(['contacts']);
+                    }, 1500);
                   }
                 },
                 error: () => {

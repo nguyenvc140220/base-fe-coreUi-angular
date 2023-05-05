@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule, FormModule, TableModule } from '@coreui/angular';
 import { CardModule } from 'primeng/card';
 import { DialogButtonModule } from '@shared/components/dialog-button/dialog-button.module';
-import { ContactsModule } from '../contacts/contacts.module';
 import { CalendarModule } from 'primeng/calendar';
 import { ChipModule } from 'primeng/chip';
 import { DividerModule } from 'primeng/divider';
@@ -40,6 +39,7 @@ const PRIMENG = [
   TabViewModule,
   PasswordModule,
 ];
+
 @NgModule({
   declarations: [ChangePasswordComponent],
   imports: [
@@ -50,7 +50,6 @@ const PRIMENG = [
     ReactiveFormsModule,
     CardModule,
     DialogButtonModule,
-    ContactsModule,
     ...PRIMENG,
     CoreModule,
   ],

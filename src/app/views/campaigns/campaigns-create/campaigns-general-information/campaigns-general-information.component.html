@@ -2,7 +2,7 @@
   <div class=" form-group  row flex">
     <div class="col-8 row flex">
       <div class="py-4">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between  mb-2">
           <label class="sm:text-sm font-normal">Tên chiến dịch
             <span class="text-danger">(*)</span>
           </label>
@@ -34,7 +34,7 @@
         >Không được nhập ký tự đặc biệt.</small>
       </div>
       <div class="py-4">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
           <label cLabel class="sm:text-sm" for="campaignType">Loại chiến dịch
             <span class="text-danger">(*)</span></label>
         </div>
@@ -57,7 +57,7 @@
       </div>
 
       <div class="py-4">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
           <label cLabel class="sm:text-sm" for="assignedUser">Người phụ trách
             <i class="pi pi-info-circle" style="font-size: 0.75rem"
                pTooltip="Người dùng có quyền tác động lên chiến dịch"></i></label>
@@ -75,7 +75,7 @@
       </div>
 
       <div class="py-4 col-6">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
           <label cLabel class="sm:text-sm" for="startCallTime">Ngày bắt đầu quay số <span class="text-danger">(*)</span></label>
         </div>
         <p-calendar
@@ -102,7 +102,7 @@
       </div>
 
       <div class="py-4 col-6">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
           <label cLabel class="sm:text-sm" for="endCallTime">Ngày kết thúc quay số
             <span class="text-danger">(*)</span></label>
         </div>
@@ -129,7 +129,7 @@
       </div>
 
       <div class="py-4 col-6">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
           <label cLabel class="sm:text-sm" for="timeFrom">Bắt đầu từ
             <span class="text-danger">(*)</span></label>
         </div>
@@ -156,7 +156,7 @@
         >Không được bỏ trống.</small>
       </div>
       <div class="py-4 col-6">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
           <label cLabel class="sm:text-sm" for="timeTo">Kết thúc
             <span class="text-danger">(*)</span></label>
         </div>
@@ -184,7 +184,7 @@
         >Không được bỏ trống.</small>
       </div>
       <div class="py-4">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
           <label cLabel class="sm:text-sm" for="description">Mô tả</label>
           <span [ngClass]="{'text-danger': campaignsGeneralForm.get('description')?.value?.length >= 500}"
                 class="sm:text-xs">
