@@ -157,7 +157,7 @@ export class DynamicCreateComponent
                     this.messageService.add({
                       severity: 'success',
                       summary: 'Success',
-                      detail: `Chỉnh sửa ${this.dynamicType} thành công`,
+                      detail: `Chỉnh sửa Contact thành công`,
                     },);
                     setTimeout(() => {
                       return this.router.navigate(['contacts']);
@@ -182,12 +182,7 @@ export class DynamicCreateComponent
                     this.messageService.add({
                       severity: 'success',
                       summary: 'Success',
-                      detail: `Tạo mới ${this.dynamicType} thành công`,
-                    });
-                    this.messageService.add({
-                      severity: 'success',
-                      summary: 'Success',
-                      detail: `Chỉnh sửa ${this.dynamicType} thành công`,
+                      detail: `Tạo mới Contact thành công`,
                     },);
                     setTimeout(() => {
                       return this.router.navigate(['contacts']);
