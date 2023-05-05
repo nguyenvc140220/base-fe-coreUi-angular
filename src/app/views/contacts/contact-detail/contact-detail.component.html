@@ -54,10 +54,10 @@
                 <ng-template pTemplate="content">
                   <div class="space-y-2">
                     <div *ngFor="let info of showDefaultField">
-                      <div class="w-90 font-bold truncate" pTooltip="{{info.title}}">
+                      <div class="w-90 font-bold truncate" tooltipPosition="bottom" pTooltip="{{info.title}}">
                         {{info.title}} :
                       </div>
-                      <div class="w-90 truncate" pTooltip="{{info.value}}">{{info.value}}</div>
+                      <div class="w-90 truncate" tooltipPosition="bottom" pTooltip="{{info.value}}">{{info.value}}</div>
                     </div>
                   </div>
                   <div class="space-y-2">
@@ -78,10 +78,10 @@
                 <ng-template pTemplate="content">
                   <div class="space-y-2">
                     <div *ngFor="let info of contactInfos">
-                      <div class="w-90 font-bold truncate" pTooltip="{{info.title}}">
+                      <div class="w-90 font-bold truncate" tooltipPosition="bottom" pTooltip="{{info.title}}">
                         {{info.title}} :
                       </div>
-                      <div class="w-90 truncate"
+                      <div class="w-90 truncate" tooltipPosition="bottom"
                            pTooltip="{{info.value}}">{{info.value}}</div>
                     </div>
                   </div>
@@ -101,10 +101,10 @@
                 <ng-template pTemplate="content">
                   <div class="space-y-2">
                     <div *ngFor="let info of dynamicContactInfos">
-                      <div class="w-90 font-bold truncate" pTooltip="{{info.title}}">
+                      <div class="w-90 font-bold truncate" tooltipPosition="bottom" pTooltip="{{info.title}}">
                         {{info.title}} :
                       </div>
-                      <div class="w-90 truncate" pTooltip="{{info.value}}">{{info.value}}</div>
+                      <div class="w-90 truncate" tooltipPosition="bottom" pTooltip="{{info.value}}">{{info.value}}</div>
                     </div>
                   </div>
                 </ng-template>
