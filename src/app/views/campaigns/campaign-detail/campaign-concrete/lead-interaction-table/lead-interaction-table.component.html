@@ -20,7 +20,7 @@
   <ng-template let-interaction pTemplate="body">
     <tr>
       <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field">
-        <td *ngSwitchCase="'recording'" [style]="interaction[col.field]?.styles || {}" class="text-center">
+        <td *ngSwitchCase="'recording'" [style]="interaction[col.field]?.styles || {}" class="flex justify-center">
           <audio controls>
             <source src="https://file-examples.com/storage/feee5c69f0643c59da6bf13/2017/11/file_example_MP3_700KB.mp3"/>
           </audio>
