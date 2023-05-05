@@ -58,7 +58,6 @@ const PRIMENG = [
     UsersRoutingModule,
     ...PRIMENG,
     DialogButtonModule,
-    ContactsModule,
     SplitButtonModule,
     SpeedDialModule,
     OverlayPanelModule,
