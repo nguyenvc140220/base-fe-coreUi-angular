@@ -27,7 +27,7 @@ export class LeadInteractionTableComponent extends ComponentBase<any> implements
   mockData = [
     {
       id: 'id1',
-      callStatus: 'Thành công',
+      callStatus: 'Nghe máy',
       selection: 'Phím 1',
       interactTime: [1618834120000, 1618834840000],
       duration: 1618834840000 - 1618834120000,
@@ -35,14 +35,14 @@ export class LeadInteractionTableComponent extends ComponentBase<any> implements
     },
     {
       id: 'id1',
-      callStatus: 'Thành công',
+      callStatus: 'Nghe máy',
       selection: 'Phím 1',
       interactTime: [1618834120000, 1618834840000],
       duration: 1618834840000 - 1618834120000,
       recording: ''
     },{
       id: 'id1',
-      callStatus: 'Thành công',
+      callStatus: 'Nghe máy',
       selection: 'Phím 1',
       interactTime: [1618834120000, 1618834840000],
       duration: 1618834840000 - 1618834120000,
@@ -50,7 +50,7 @@ export class LeadInteractionTableComponent extends ComponentBase<any> implements
     }
     ,{
       id: 'id1',
-      callStatus: 'Thành công',
+      callStatus: 'Nghe máy',
       selection: 'Phím 1',
       interactTime: [1618834120000, 1618834840000],
       duration: 1618834840000 - 1618834120000,
@@ -58,7 +58,7 @@ export class LeadInteractionTableComponent extends ComponentBase<any> implements
     },
     {
       id: 'id1',
-      callStatus: 'Thành công',
+      callStatus: 'Nghe máy',
       selection: 'Phím 1',
       interactTime: [1618834120000, 1618834840000],
       duration: 1618834840000 - 1618834120000,
