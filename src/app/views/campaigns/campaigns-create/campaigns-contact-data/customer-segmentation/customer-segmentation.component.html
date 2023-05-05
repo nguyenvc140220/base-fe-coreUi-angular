@@ -9,40 +9,48 @@
     </ng-template>
     <div class="form-group row flex">
       <div class="py-4">
+        <div class="d-flex justify-content-start mb-2">
+          <label class="sm:text-sm font-normal py-1" for="querySegmentation-{{i}}">Khi
+            khách hàng</label>
+        </div>
         <div class="d-flex justify-content-between">
-          <div class="d-flex justify-content-between col-2">
-            <label class="sm:text-sm font-normal" style="padding: 0.5rem 0.5rem;" for="querySegmentation-{{i}}">Khi
-              khách hàng</label>
-          </div>
-          <div class="col-3 pr-4">
+          <div class="col-5 pr-4">
             <p-dropdown
               id="querySegmentation-{{i}}"
               [options]="segmentationQuery"
               formControlName="query"
               optionLabel="label"
               optionValue="value"
-              [style]="{'minWidth':'100%'}">
+              [style]="{'minWidth':'100%'}"
+            >
             </p-dropdown>
           </div>
-          <div class="col-6">
-            <div class="col-12">
-              <p-multiSelect
-                id=""
-                [options]="segmentations"
-                placeholder="Chọn phân khúc"
-                optionLabel="name"
-                formControlName="segmentationSelected"
-                [maxSelectedLabels]="1"
-                [selectedItemsLabel]="'Đã chọn {0} phân khúc'"
-                [style]="{'minWidth':'100%'}">
-              </p-multiSelect>
-              <small
-                *ngIf="
+          <div class="col-7">
+            <div class="col-12 flex">
+              <div class="col-11">
+                <p-multiSelect
+                  id=""
+                  [options]="segmentations"
+                  placeholder="Chọn phân khúc"
+                  optionLabel="name"
+                  formControlName="segmentationSelected"
+                  [maxSelectedLabels]="1"
+                  [selectedItemsLabel]="'Đã chọn {0} phân khúc'"
+                  [style]="{'minWidth':'100%'}">
+                </p-multiSelect>
+                <small
+                  *ngIf="
                   segmentItem.controls['segmentationSelected']?.touched &&
                   segmentItem.controls['segmentationSelected']?.errors?.required
                 "
-                class="red-text sm:text-xs text-danger"
-              >Không được bỏ trống.</small>
+                  class="red-text sm:text-xs text-danger"
+                >Không được bỏ trống.</small>
+              </div>
+              <div class="col-1 d-flex justify-content-end">
+                <i style="font-size: 1.5rem;padding: 0.5rem 0.5rem;" aria-hidden="true"
+                   class="pi pi-times-circle text-danger"
+                   (click)="removeSegmentation(i)"
+                   pTooltip="Xóa" tooltipPosition="top"></i></div>
             </div>
             <div class="flex align-items-center gap-2 flex-wrap py-2"
                  style="display: flex">
@@ -56,12 +64,6 @@
                 <br>
               </p-chip>
             </div>
-          </div>
-          <div class="col-1">
-            <i style="font-size: 1.5rem;padding: 0.5rem 0.5rem;" aria-hidden="true"
-               class="pi pi-times-circle text-danger"
-               (click)="removeSegmentation(i)"
-               pTooltip="Xóa" tooltipPosition="top"></i>
           </div>
         </div>
       </div>
