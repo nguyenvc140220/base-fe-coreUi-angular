@@ -144,7 +144,6 @@ export class CampaignsCreateComponent implements OnInit {
   initForm() {
     this.campaignsGeneralForm = new FormGroup({
       name: new FormControl(null, [Validators.required, validatorTrim]),
-      type: new FormControl(null, [Validators.required]),
       assignedUser: new FormControl(null),
       startCallTime: new FormControl(new Date(), [Validators.required]),
       endCallTime: new FormControl(new Date(), [Validators.required]),

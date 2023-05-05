@@ -39,13 +39,6 @@
           </p>
         </div>
         <div class="row">
-          <p class="col-2 mb-2" style="font-size: 1em">Loại chiến dịch</p>
-          <p style="font-size: 1em"
-             [className]="campaignsGeneralForm.value?.type?.label ? 'font-bold col-10 mb-2' : 'text-danger col-10 mb-2'">
-            {{ campaignsGeneralForm.value?.type?.label || 'Chưa điền thông tin'}}
-          </p>
-        </div>
-        <div class="row">
           <p class="col-2 mb-2" style="font-size: 1em">Người phụ trách</p>
           <strong class=" col-10 mb-2" style="font-size: 1em">{{assignedUser}}</strong>
         </div>
