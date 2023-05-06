@@ -13,6 +13,10 @@ export class CampaignSummaryComponent implements OnInit {
   data: any;
   options_1: EChartsOption;
   options_2: EChartsOption;
+  options_3: EChartsOption;
+  options_4: EChartsOption;
+  options_5: EChartsOption;
+  options_6: EChartsOption;
 
   today = new Date();
 
@@ -24,6 +28,10 @@ export class CampaignSummaryComponent implements OnInit {
   summaryShow = true;
   dailyCallShow = true;
   callStatusShow = true;
+  emailStatusShow = true;
+  smsStatusShow = true;
+  chart5Show = true;
+  chart6Show = true;
 
   constructor(route: ActivatedRoute) {
     // const {queryParams} = route.snapshot;
@@ -170,5 +178,178 @@ export class CampaignSummaryComponent implements OnInit {
         },
       ]
     }
+
+
+    const data_3 = [
+      { name: '10/03', emails: 200 },
+      { name: '11/03', emails: 70 },
+      { name: '12/03', emails: 1000 },
+      { name: '13/03', emails: 200 },
+      { name: '14/03', emails: 500 },
+      { name: '15/03', emails: 1450 },
+      { name: '16/03', emails: 2690 },
+      { name: '17/03', emails: 100 },
+      { name: '18/03', emails: 311 },
+      { name: '19/03', emails: 200 },
+      { name: '20/03', emails: 1245 },
+      { name: '21/03', emails: 342 },
+      { name: '22/03', emails: 786 },
+      { name: '23/03', emails: 875 },
+      { name: '24/03', emails: 887 },
+      { name: '25/03', emails: 2145 },
+      { name: '26/03', emails: 574 },
+      { name: '27/03', emails: 357 },
+      { name: '28/03', emails: 1355 },
+    ];
+
+
+    this.options_3 = {
+      xAxis: {
+        type: 'category',
+        data: data_3.map(x => x.name),
+      },
+      yAxis: {
+        type: 'value'
+      },
+      legend: {
+        data: ['Email đã gửi'],
+        right: 'right',
+        bottom: 'center',
+      },
+      series: [
+        {
+          data: data_3.map(x => x.emails),
+          type: 'line',
+          smooth: true
+        }
+      ]
+    }
+
+    this.options_4 = {
+      xAxis: {
+        type: 'category',
+        data: data_3.map(x => x.name)
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: data_3.map(x => x.emails),
+          type: 'bar'
+        }
+      ]
+    };
+
+    this.options_5 = {
+      grid: {
+        right: '15%'
+      },
+      legend: {
+        data: ['Cuộc gọi', 'Hứng thú'],
+        right: 'right',
+        bottom: 'center',
+      },
+      xAxis: [
+        {
+          type: 'category',
+          axisTick: {
+            alignWithLabel: true
+          },
+          data: data_3.map(x => x.name)
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          name: 'Hứng thú',
+          position: 'right',
+          alignTicks: true,
+          // offset: 80,
+          axisLine: {
+            show: true,
+            lineStyle: {
+              // color: 'green'
+            }
+          },
+          // axisLabel: {
+          //   formatter: '{value} VND',
+          //   color: undefined
+          // }
+        },
+        {
+          type: 'value',
+          name: 'Cuộc gọi',
+          position: 'left',
+          alignTicks: true,
+          axisLine: {
+            show: true,
+            lineStyle: {
+              // color: 'red'
+            }
+          },
+          axisLabel: {
+            // formatter: '{value} cuộc',
+            // color: undefined
+          }
+        }
+      ],
+      series: [
+        {
+          name: 'Cuộc gọi',
+          type: 'bar',
+          yAxisIndex: 1,
+          data: data_3.map(x => x.emails)
+        },
+        {
+          name: 'Hứng thú',
+          type: 'line',
+          yAxisIndex: 0,
+          data: data_3.map(x => x.emails * 0.011396948)
+        },
+      ]
+    };
+
+    this.options_6 = {
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['Tổng cuộc gọi', 'Tổng hứng thú'],
+        right: 'right',
+        bottom: 'center',
+      },
+      grid: {
+        right: '15%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: data_3.map(x => x.name)
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: 'Tổng cuộc gọi',
+          type: 'line',
+          stack: 'Total',
+          data: data_3.map(x => x.emails)
+        },
+        {
+          name: 'Tổng hứng thú',
+          type: 'line',
+          stack: 'Total',
+          data: data_3.map(x => x.emails * 0.13133345379)
+        },
+      ]
+    };
   }
 }
