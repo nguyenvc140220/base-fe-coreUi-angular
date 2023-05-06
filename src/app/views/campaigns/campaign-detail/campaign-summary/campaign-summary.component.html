@@ -95,3 +95,100 @@
   </p-panel>
 </div>
 
+<div class="mb-2">
+  <p-panel [toggleable]="true" (onBeforeToggle)="emailStatusShow = !emailStatusShow">
+    <ng-template class="w-100" pTemplate="header">
+      <div class="flex w-100 justify-between items-center">
+        <div>Số lượng email đã gửi trong ngày</div>
+        <div class="pr-2">
+          <p-calendar
+            *ngIf="emailStatusShow"
+            [view]="'month'"
+            [dateFormat]="'Tháng ' + 'mm/yy'"
+            [showTime]="false"
+            [appendTo]="'body'"
+            [showIcon]="true"
+            [readonlyInput]="true"
+            [(ngModel)]="today"
+            [hideOnDateTimeSelect]="true"
+          ></p-calendar>
+        </div>
+      </div>
+    </ng-template>
+    <div echarts [options]="options_3" class="chart"></div>
+  </p-panel>
+</div>
+
+<div class="mb-2">
+  <p-panel [toggleable]="true" (onBeforeToggle)="smsStatusShow = !smsStatusShow">
+    <ng-template class="w-100" pTemplate="header">
+      <div class="flex w-100 justify-between items-center">
+        <div>Số lượng sms đã gửi trong ngày</div>
+        <div class="pr-2">
+          <p-calendar
+            *ngIf="smsStatusShow"
+            [view]="'month'"
+            [dateFormat]="'Tháng ' + 'mm/yy'"
+            [showTime]="false"
+            [appendTo]="'body'"
+            [showIcon]="true"
+            [readonlyInput]="true"
+            [(ngModel)]="today"
+            [hideOnDateTimeSelect]="true"
+          ></p-calendar>
+        </div>
+      </div>
+    </ng-template>
+    <div echarts [options]="options_4" class="chart"></div>
+  </p-panel>
+</div>
+
+
+<div class="mb-2">
+  <p-panel [toggleable]="true" (onBeforeToggle)="chart5Show = !chart5Show">
+    <ng-template class="w-100" pTemplate="header">
+      <div class="flex w-100 justify-between items-center">
+        <div>Tương quan tổng cuộc gọi và tổng chi phí</div>
+        <div class="pr-2">
+          <p-calendar
+            *ngIf="chart5Show"
+            [view]="'month'"
+            [dateFormat]="'Tháng ' + 'mm/yy'"
+            [showTime]="false"
+            [appendTo]="'body'"
+            [showIcon]="true"
+            [readonlyInput]="true"
+            [(ngModel)]="today"
+            [hideOnDateTimeSelect]="true"
+          ></p-calendar>
+        </div>
+      </div>
+    </ng-template>
+    <div echarts [options]="options_5" class="chart"></div>
+  </p-panel>
+</div>
+
+
+<div class="mb-2">
+  <p-panel [toggleable]="true" (onBeforeToggle)="smsStatusShow = !smsStatusShow">
+    <ng-template class="w-100" pTemplate="header">
+      <div class="flex w-100 justify-between items-center">
+        <div>Tương quan tổng cuộc gọi và tổng hứng thú</div>
+        <div class="pr-2">
+          <p-calendar
+            *ngIf="smsStatusShow"
+            [view]="'month'"
+            [dateFormat]="'Tháng ' + 'mm/yy'"
+            [showTime]="false"
+            [appendTo]="'body'"
+            [showIcon]="true"
+            [readonlyInput]="true"
+            [(ngModel)]="today"
+            [hideOnDateTimeSelect]="true"
+          ></p-calendar>
+        </div>
+      </div>
+    </ng-template>
+    <div echarts [options]="options_6" class="chart"></div>
+  </p-panel>
+</div>
