@@ -104,7 +104,6 @@ export class CampaignsCreateComponent implements OnInit {
         }
         let body = new CreateCampaignRequestModel();
         body.name = this.campaignsGeneralForm.value.name.trim();
-        body.type = this.campaignsGeneralForm.value.type.value;
         body.workflowId = this.definitionId;
         body.agentIds = agentIds.toString();
         body.description = this.campaignsGeneralForm.value.description?.trim()

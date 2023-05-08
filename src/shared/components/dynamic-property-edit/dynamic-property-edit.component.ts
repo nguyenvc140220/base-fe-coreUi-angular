@@ -5,6 +5,8 @@ import { DynamicFieldService } from '@shared/services/dynamic-field/dynamic-fiel
 import { DynamicPropertyUpdateModel } from '@shared/models/dynamic-field/dynamic-property-update.model';
 import { Subject, takeUntil } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { DynamicPropertyModel } from "@shared/models/dynamic-field/dynamic-property.model";
+import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
 
 @Component({
   selector: 'app-dynamic-property-edit',
@@ -17,6 +19,8 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
   messageService: MessageService;
   private unsubscribe$: Subject<void> = new Subject<void>();
   maxLength: number = 50;
+  properties: DynamicPropertyModel[];
+
   constructor(
     public ref: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig,
@@ -24,39 +28,66 @@ export class DynamicPropertyEditComponent implements OnInit, OnDestroy {
   ) {
     this.formGroup = new FormGroup({});
   }
+
   ngOnInit(): void {
     this.formGroup.addControl('displayName', new FormControl({
-      value: this.dynamicDialogConfig.data.entity?.displayName,
-      disabled: false,
-    },
+        value: this.dynamicDialogConfig.data.entity?.displayName,
+        disabled: false,
+      },
       {
-        validators: [Validators.required, this.trimValidator],
+        validators: [Validators.required, this.trimValidator.bind(this)],
       }
     ));
     this.messageService = this.dynamicDialogConfig.data.messageService;
+    this.dynamicFieldService.getDynamicProperties({
+      page: 1,
+      type: DynamicEntityTypeEnum.CONTACT,
+      size: 1000,
+    })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (res) => {
+          if (res.statusCode == 200 && res.data.content.length > 0)
+            return this.properties = res.data.content
+        }
+      });
   }
+
   get remainingChars() {
     return this.maxLength - this.formGroup.value.displayName.trim().length;
   }
+
   trimValidator(control: FormControl): { [key: string]: boolean } | null {
     console.log("debug " + control.value);
     const trimmedValue = control.value?.trim();
     if (!trimmedValue) {
-      return { "required": true };
+      return {"required": true};
     }
-    // control.setValue(trimmedValue);
+    if (control.value.trim() == this.dynamicDialogConfig.data.entity?.displayName) return null;
+
+    if (this.properties.filter(el => el.displayName.toLowerCase() == trimmedValue.toLowerCase()).length > 0) {
+      return {"validatorDisplayNameExist": true};
+    }
     return null;
   }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
   showSuccess() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Cập nhật thành công' });
+    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Cập nhật thành công'});
   }
+
   showError(err: any) {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: err?.error?.msg ? err?.error?.msg : 'Cập nhật thất bại' });
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: err?.error?.msg ? err?.error?.msg : 'Cập nhật thất bại'
+    });
   }
+
   onDialogEvent(event: any) {
     switch (event) {
       case 'SAVE_BUTTON':
