@@ -22,70 +22,70 @@
         Chạy thử kịch bản
       </label>
     </ng-template>
+    <app-dynamic-form
+      [formGroup]="formTestCampaign"
+      [properties]="testCampaignProperties"
+      [gridLayout]="'col-12'">
+    </app-dynamic-form>
     <p-divider></p-divider>
-    <div class="row flex pb-0">
-      <form [formGroup]="formTestCampaign">
-        <div class="py-2">
-          <div class="d-flex justify-content-between  mb-2">
-            <label class="sm:text-sm font-normal">Số điện thoại
-            </label>
-            <span [ngClass]="{'text-danger': formTestCampaign.get('phoneNumber')?.value?.length >= 50}"
-                  class="sm:text-xs">
-            {{ 50 - formTestCampaign.value?.phoneNumber?.length }} / 50
-          </span>
-          </div>
-          <input
-            class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
-            id="phoneNumber"
-            formControlName="phoneNumber"
-            maxlength="50"
-            type="number"
-          />
+    <form [formGroup]="formTestCampaign">
+      <div class="row">
+        <div class="d-flex mb-2">
+          <label class="font-normal mr-2 justify-center" pTooltip="Thêm các lựa chọn" tooltipPosition="right"
+                 tooltipZIndex="20001">
+            Thông tin thêm
+          </label>
+          <button pButton pRipple type="button" icon="pi pi-plus" pTooltip="Thêm thông tin" tooltipPosition="right"
+                  tooltipZIndex="20001"
+                  class="p-button-rounded p-button-info p-button-text"
+                  (click)="addOptions()"></button>
         </div>
-        <div class="py-2">
-          <div class="d-flex justify-content-between mb-2">
-            <label class="sm:text-sm font-normal">Email
-            </label>
-            <span [ngClass]="{'text-danger': formTestCampaign.get('email')?.value?.length >= 50}"
-                  class="sm:text-xs">
-            {{ 50 - formTestCampaign.value?.email?.length }} / 50
-          </span>
+        <div *ngFor="let optionForm of listOptions?.controls, let i = index" class="mb-2" formArrayName="listOptions">
+          <div class="d-flex" [formGroup]="optionForm">
+            <p-dropdown
+              optionLabel="label"
+              optionValue="value"
+              [options]="InfoOptions"
+              showClear="true"
+              filter="true"
+              [style]="{'minWidth':'50%'}"
+              styleClass="d-flex"
+              appendTo="body"
+              formControlName="key">
+            </p-dropdown>
+            <input
+              type="text"
+              id="option_{{i}}"
+              class="form-control mr-2"
+              pInputText
+              maxLength="200"
+              formControlName="value"
+              [class.ng-invalid]="showError(i)"
+              [class.ng-dirty]="showError(i)"
+              placeholder="Nhập giá trị"/>
+            <button pButton
+                    pRipple
+                    type="button"
+                    icon="pi pi-times"
+                    pTooltip="Xóa thông tin"
+                    tooltipPosition="right"
+                    tooltipZIndex="20001"
+                    class="p-button-rounded p-button-danger p-button-text"
+                    (click)="removeOption(i)"></button>
           </div>
-          <input
-            class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
-            id="email"
-            formControlName="email"
-            maxlength="50"
-            type="text"
-          />
+          <small class="form-text text-danger" *ngIf="showError(i)">{{showError(i)}}</small>
         </div>
-      </form>
-    </div>
-    <p-divider></p-divider>
-    <ng-template pTemplate="footer">
-      <div class="col-12  flex justify-content-end">
-        <button
-          pButton
-          type="button"
-          styleClass="p-button-sm"
-          style="max-height: 70%"
-          (click)="visible = false"
-          class="p-button-outlined mx-2 text-sm">
-        <span class="p-button-label truncate" pTooltip="Huỷ">
-          Huỷ
-        </span>
-        </button>
-        <button
-          pButton
-          style="max-height: 70%"
-          styleClass="p-button-sm text-sm"
-          class="mx-2">
-        <span class="p-button-label truncate"
-              pTooltip="Chạy thử">
-        Chạy thử
-        </span>
-        </button>
       </div>
-    </ng-template>
+    </form>
+    <div class="row mt-4 mb-4">
+      <app-dialog-button
+        [saveIcon]="'pi pi-android'"
+        [saveLabel]="'Chạy thử'"
+        [status]="formTestCampaign.invalid | getButtonStatus"
+        (event)="onDialogEvent($event)"
+        class="w-100"
+      ></app-dialog-button>
+    </div>
   </p-dialog>
 </div>
+<p-toast autoZIndex="true"></p-toast>

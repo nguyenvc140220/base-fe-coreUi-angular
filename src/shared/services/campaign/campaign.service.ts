@@ -4,8 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { ConfigService } from "@shared/utils/config.service";
 import { BaseResponse, PageResponse } from "@shared/models";
 import { CampaignListModel } from "@shared/models/campaign/campaign-list.model";
-import { CreateCampaignModel } from "@shared/models/campaign/create-campaign.model";
 import { CreateCampaignRequestModel } from "@shared/models/campaign/create-campaign-request.model";
+import { TestCampaignRequestModel } from "@shared/models/campaign/test-campaign-request.model";
 
 @Injectable({providedIn: 'root'})
 export class CampaignService extends BaseService {
@@ -51,6 +51,12 @@ export class CampaignService extends BaseService {
   changeStatus(campaignId: string, status: string) {
     return this.defaultPut<{ success: boolean; message?: string }>(
       `${this.configService.campaignPlanningUrl}/campaign/status`, { campaignId, status }
+    );
+  }
+
+  testCampaign(body: TestCampaignRequestModel) {
+    return this.defaultPost<BaseResponse<any>>(
+      `${this.configService.campaignPlanningUrl}/campaign/test`, body
     );
   }
 }
