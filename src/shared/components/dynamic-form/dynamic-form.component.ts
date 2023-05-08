@@ -41,7 +41,7 @@ export class DynamicFormComponent {
       if (control?.errors?.max)
         return `Giá trị tối đa là ${control?.errors?.max?.max}`;
       if (control?.errors?.pattern) return `Không đúng định dạng!`;
-      if (control?.errors?.exist) return `Dữ liệu đã tồn tại!`;
+      if (control?.errors?.exist) return `Thông tin đã tồn tại`;
       // return 'has error!';
     }
     return null;
