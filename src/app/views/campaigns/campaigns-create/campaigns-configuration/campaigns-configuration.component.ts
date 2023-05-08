@@ -47,9 +47,15 @@ export class CampaignsConfigurationComponent implements OnInit {
     {value:"date", label: "Ngày giao dịch"},
     {value:"location", label: "Tên chi nhánh"},
     {value:"location_detail", label: "Địa chỉ chi nhánh"},
+    {value:"transaction_date", label: "Thời gian giao dịch"},
     {value:"amount_money", label: "Số tiền giao dịch"},
     {value:"number_id", label: "Số giấy tờ tùy thân"},
   ];
+
+  additionKeys = {
+    customer_gender : ["gender", "pronoun"],
+    customer_name : ["full_name", "name"]
+  }
   constructor(
     private fb: FormBuilder,
     private sanitizer: DomSanitizer,
@@ -120,12 +126,27 @@ export class CampaignsConfigurationComponent implements OnInit {
   }
 
   getListOptionsValue(){
-    return this.listOptions.controls.map(c => {
+    const options = this.listOptions.controls.map(c => {
       return {
         key: c.get("key").value,
         value: c.get("value").value
       }
     });
+
+    options.forEach(o =>
+    {
+      if(this.additionKeys[o.key])
+        this.additionKeys[o.key].forEach(a =>
+          options.push(
+            {
+              key: a,
+              value: o.value
+            }
+          )
+        );
+    });
+
+    return options;
   }
   addOptions(){
     const option = this.fb.group({
