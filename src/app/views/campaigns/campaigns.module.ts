@@ -70,6 +70,10 @@ import {
   LeadInteractionTableComponent
 } from './campaign-detail/campaign-concrete/lead-interaction-table/lead-interaction-table.component';
 import { DialogModule } from "primeng/dialog";
+import { DialogButtonModule } from "@shared/components/dialog-button/dialog-button.module";
+import { DynamicFormModule } from "@shared/components/dynamic-form/dynamic-form.module";
+import { CoreModule } from "@shared/root.module";
+import { RippleModule } from "primeng/ripple";
 
 const PRIMENG = [
   TableModule,
@@ -137,7 +141,7 @@ const ANGULAR_COMMON = [
       echarts: () => import('echarts'),
     }),
     AccordionModule,
-    FormsModule, ReactiveFormsModule, TextTruncateModule, JsonPipe, DialogModule
+    FormsModule, ReactiveFormsModule, TextTruncateModule, JsonPipe, DialogModule, DialogButtonModule, DynamicFormModule, CoreModule, RippleModule
   ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService, DatePipe],
   exports: [],
