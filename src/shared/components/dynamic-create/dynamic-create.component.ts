@@ -65,6 +65,7 @@ export class DynamicCreateComponent
   ngOnInit(): void {
     this.isLoading = true;
     this.initForm();
+    console.log(this.defaultProperties)
   }
 
   initForm() {
@@ -124,6 +125,7 @@ export class DynamicCreateComponent
             this.dynamicProperties = this.properties.filter(
               (el) => el.visible && el.removable && el.code != "creationSource"
             ).sort((a, b) => a.order - b.order);
+            console.log(this.defaultProperties)
           }
         },
         error: (err) => {

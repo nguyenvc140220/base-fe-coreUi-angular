@@ -1,12 +1,12 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { ButtonEnum } from '@shared/enums/button-status.enum';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicPropertyModel } from '@shared/models/dynamic-field/dynamic-property.model';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum';
 import { DynamicInputTypeEnum } from '@shared/enums/dynamic-input-type.enum';
 import { DYNAMIC_PROPERTY_TYPE, DynamicTypeEnum } from '@shared/enums/dynamic-data-type.const';
 import { DynamicFormBuilder } from '@shared/services/dynamic-field/dynamic-form-builder';
-import { range } from "rxjs";
+import { range, Subject, takeUntil } from "rxjs";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { DynamicFieldService } from "@shared/services/dynamic-field/dynamic-field.service";
 import { DynamicPropertyCreateModel } from "@shared/models/dynamic-field/dynamic-property-create.model";
@@ -33,33 +33,37 @@ export class DynamicPropertyCreateComponent implements OnInit {
   });
   isLoading = false;
   properties: DynamicPropertyModel[] = [];
+  dynamicProperties: DynamicPropertyModel[];
   dynamicType: DynamicEntityTypeEnum;
+  private unsubscribe$: Subject<void> = new Subject<void>();
+
   constructor(
-    private fb:FormBuilder,
+    private fb: FormBuilder,
     private dynamicFormBuilder: DynamicFormBuilder,
     private ref: DynamicDialogRef,
     private dynamicFieldService: DynamicFieldService,
     private config: DynamicDialogConfig,
-    )
-  {
+  ) {
     this.dynamicType = config.data['type'];
   }
 
   get listOptions() {
     return this.formArray.controls['listOptions'] as FormArray;
   }
-  addOptions(){
+
+  addOptions() {
     const option = this.fb.group({
       value: [null, [Validators.required, nullOrEmptyValidator, duplicateValidator]],
     });
 
     this.listOptions.push(option);
   }
-  removeOption(index){
+
+  removeOption(index) {
     this.listOptions.removeAt(index);
   }
 
-  showError(index){
+  showError(index) {
     let control = this.listOptions?.controls[index]?.get('value');
     if (control && control.invalid && control.touched) {
       if (control?.errors?.required || control?.errors?.nullOrEmpty) return 'Không được bỏ trống!';
@@ -67,6 +71,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
     }
     return null;
   }
+
   convertTextToSlugAndCamelCase(str) {
     str = str.toLowerCase();
 
@@ -88,21 +93,20 @@ export class DynamicPropertyCreateComponent implements OnInit {
       .replace(/\s+/g, '');
   }
 
-  createDynamicPropertyCreateRequest() : DynamicPropertyCreateModel
-  {
+  createDynamicPropertyCreateRequest(): DynamicPropertyCreateModel {
     const dynamicCreateRequest = new DynamicPropertyCreateModel();
-    const dataType =  this.dynamicFormBuilder.getFormValue(this.formGroup, 'dataType') as DynamicTypeEnum;
+    const dataType = this.dynamicFormBuilder.getFormValue(this.formGroup, 'dataType') as DynamicTypeEnum;
     dynamicCreateRequest.displayName = this.dynamicFormBuilder.getFormValue(this.formGroup, 'displayName');
     dynamicCreateRequest.code = this.convertTextToSlugAndCamelCase(dynamicCreateRequest.displayName);
     dynamicCreateRequest.tooltip = this.dynamicFormBuilder.getFormValue(this.formGroup, 'tooltip');
     dynamicCreateRequest.hintText = this.dynamicFormBuilder.getFormValue(this.formGroup, 'hintText');
     dynamicCreateRequest.editable = this.dynamicFormBuilder.getFormValue(this.formGroup, 'editable') ?? false;
-    switch (dataType){
+    switch (dataType) {
       case DynamicTypeEnum.TEXT:
         dynamicCreateRequest.dataType = DynamicDataTypeEnum.TEXT;
         dynamicCreateRequest.inputType = DynamicInputTypeEnum.TEXT_BOX;
         const max_length = this.dynamicFormBuilder.getFormValue(this.formGroup, 'maxLength') ?? 250;
-        if(max_length)
+        if (max_length)
           dynamicCreateRequest.validators = `[{"type":"string_length_max","validatorValue":"${max_length}"}]`;
         break;
       case DynamicTypeEnum.EMAIL:
@@ -120,15 +124,15 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dynamicCreateRequest.inputType = DynamicInputTypeEnum.NUMBER_BOX;
         const validators = [];
         const minValue = this.dynamicFormBuilder.getFormValue(this.formGroup, 'minValue') ?? "-999999999999999";
-        if(minValue)
-          validators.push({"type":"double_min","validatorValue":`${minValue}`});
+        if (minValue)
+          validators.push({"type": "double_min", "validatorValue": `${minValue}`});
         const maxValue = this.dynamicFormBuilder.getFormValue(this.formGroup, 'maxValue') ?? "999999999999999";
-        if(maxValue)
-          validators.push({"type":"double_max","validatorValue":`${maxValue}`});
+        if (maxValue)
+          validators.push({"type": "double_max", "validatorValue": `${maxValue}`});
         const floatingPoint = this.dynamicFormBuilder.getFormValue(this.formGroup, 'floatingPoint') ?? '0';
-        if(floatingPoint !== undefined)
-          validators.push({"type":"floating_point","validatorValue":`${floatingPoint}`});
-        if(validators.length)
+        if (floatingPoint !== undefined)
+          validators.push({"type": "floating_point", "validatorValue": `${floatingPoint}`});
+        if (validators.length)
           dynamicCreateRequest.validators = JSON.stringify(validators);
         break;
       case DynamicTypeEnum.DATE:
@@ -154,11 +158,11 @@ export class DynamicPropertyCreateComponent implements OnInit {
             label: a.value
           }
         }) ?? []);
-        if(dataType == DynamicTypeEnum.CHECKLIST){
+        if (dataType == DynamicTypeEnum.CHECKLIST) {
           dynamicCreateRequest.inputType = DynamicInputTypeEnum.CHECK_LIST;
-        } else if(dataType == DynamicTypeEnum.RADIO){
+        } else if (dataType == DynamicTypeEnum.RADIO) {
           dynamicCreateRequest.inputType = DynamicInputTypeEnum.RADIO;
-        }else{
+        } else {
           dynamicCreateRequest.inputType = this.dynamicFormBuilder.getFormValue(this.formGroup, 'selectType');
         }
         break;
@@ -167,17 +171,18 @@ export class DynamicPropertyCreateComponent implements OnInit {
     }
     return dynamicCreateRequest;
   }
+
   onDialogEvent(button: ButtonEnum) {
     switch (button) {
       case ButtonEnum.SAVE_BUTTON:
-        if(this.formArray.valid && this.formGroup.valid){
+        if (this.formArray.valid && this.formGroup.valid) {
           this.isLoading = true;
           const request = this.createDynamicPropertyCreateRequest();
           this.dynamicFieldService.createDynamicProperty(
             removeNullValue(request)
           ).subscribe({
-            next: (res)=>{
-              if(res.statusCode === 200)
+            next: (res) => {
+              if (res.statusCode === 200)
                 this.dynamicFieldService.addPropertyToDynamicType(
                   new DynamicPropertyAddToEntityModel(
                     this.dynamicType,
@@ -195,7 +200,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
               else
                 this.isLoading = false;
             },
-            error: (err)=>{
+            error: (err) => {
               this.isLoading = false;
             }
           });
@@ -207,9 +212,9 @@ export class DynamicPropertyCreateComponent implements OnInit {
     }
   }
 
-  generateNumberValue(){
+  generateNumberValue() {
     const values = [];
-    range(0,10).forEach((num)=> {
+    range(0, 10).forEach((num) => {
       values.push({
         label: `${num}`,
         value: num,
@@ -229,10 +234,10 @@ export class DynamicPropertyCreateComponent implements OnInit {
         hintText: 'Nhập tên trường thông tin ...',
         tooltip: 'Nhập tên trường thông tin ...',
         validators: [
-          { type: 'required', validatorValue: '1' },
-          { type: 'not_null', validatorValue: '1' },
-          { type: 'string_length_max', validatorValue: '50' },
-          { type: 'string_length_min', validatorValue: '2' }]
+          {type: 'required', validatorValue: '1'},
+          {type: 'not_null', validatorValue: '1'},
+          {type: 'string_length_max', validatorValue: '50'},
+          {type: 'string_length_min', validatorValue: '2'}]
       }),
       new DynamicPropertyModel({
         code: 'tooltip',
@@ -241,7 +246,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         hintText: 'Nhập tooltip ...',
         tooltip: 'Nhập tooltip ...',
         validators: [
-          { type: 'string_length_max', validatorValue: '100' }
+          {type: 'string_length_max', validatorValue: '100'}
         ]
       }),
       new DynamicPropertyModel({
@@ -251,7 +256,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         hintText: 'Nhập Placeholder ...',
         tooltip: 'Nhập Placeholder ...',
         validators: [
-          { type: 'string_length_max', validatorValue: '50' }
+          {type: 'string_length_max', validatorValue: '50'}
         ]
       }),
       new DynamicPropertyModel({
@@ -262,7 +267,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         defaultValue: JSON.stringify(DYNAMIC_PROPERTY_TYPE),
         hintText: 'Chọn kiểu dữ liệu',
         tooltip: 'Chọn kiểu dữ liệu',
-        validators: [{ type: 'required', validatorValue: '1' }],
+        validators: [{type: 'required', validatorValue: '1'}],
         onDataChange: (data) => this.eventEmiter.emit(data)
       }),
       new DynamicPropertyModel({
@@ -282,8 +287,8 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dataType: DynamicDataTypeEnum.NUMBER,
         inputType: DynamicInputTypeEnum.NUMBER_BOX,
         validators: [
-          { type: 'double_min', validatorValue: '1' },
-          { type: 'double_max', validatorValue: '250' }
+          {type: 'double_min', validatorValue: '1'},
+          {type: 'double_max', validatorValue: '250'}
         ],
         defaultValue: '250',
         tag: 'TEXT',
@@ -294,8 +299,8 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dataType: DynamicDataTypeEnum.NUMBER,
         inputType: DynamicInputTypeEnum.NUMBER_BOX,
         validators: [
-          { type: 'double_min', validatorValue: '-999999999999999' },
-          { type: 'double_max', validatorValue: '999999999999999' }
+          {type: 'double_min', validatorValue: '-999999999999999'},
+          {type: 'double_max', validatorValue: '999999999999999'}
         ],
         defaultValue: '-999999999999999',
         hintText: 'Nhập giá trị tối thiểu',
@@ -309,8 +314,8 @@ export class DynamicPropertyCreateComponent implements OnInit {
         dataType: DynamicDataTypeEnum.NUMBER,
         inputType: DynamicInputTypeEnum.NUMBER_BOX,
         validators: [
-          { type: 'double_min', validatorValue: '-999999999999999' },
-          { type: 'double_max', validatorValue: '999999999999999' },
+          {type: 'double_min', validatorValue: '-999999999999999'},
+          {type: 'double_max', validatorValue: '999999999999999'},
           // { type: 'greater_than', validatorValue: 'maxValue,minValue' }
         ],
         defaultValue: '999999999999999',
@@ -339,7 +344,7 @@ export class DynamicPropertyCreateComponent implements OnInit {
         tag: 'NUMBER',
         hidden: true,
         validators: [
-          { type: 'string_length_max', validatorValue: '10' }
+          {type: 'string_length_max', validatorValue: '10'}
         ]
       }),
       new DynamicPropertyModel({
@@ -359,60 +364,86 @@ export class DynamicPropertyCreateComponent implements OnInit {
             value: DynamicInputTypeEnum.MULTI_SELECT
           }
         ]),
-        validators: [{ type: 'required', validatorValue: '1' }],
+        validators: [{type: 'required', validatorValue: '1'}],
         tag: 'LIST',
         hidden: true
       }),
     ];
-    this.eventEmiter.subscribe((e)=>this.onDataChange(e));
+    this.eventEmiter.subscribe((e) => this.onDataChange(e));
     this.formGroup = this.dynamicFormBuilder.generateFormGroup(
       this.formGroup,
       this.properties,
       [
         // greaterThanValidator('maxValue','minValue'),
-        lessThanValidator('minValue','maxValue')]
+        lessThanValidator('minValue', 'maxValue')]
     );
+    this.dynamicFieldService.getDynamicProperties({
+      page: 1,
+      type: DynamicEntityTypeEnum.CONTACT,
+      size: 1000,
+    })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (res) => {
+          if (res.statusCode == 200 && res.data.content.length > 0)
+            return this.dynamicProperties = res.data.content
+        }
+      });
+    this.formGroup.controls["displayName"].addValidators([this.validatorExistDisplayName.bind(this)]);
+
   }
 
-  onDataChange(e){
-    switch (e){
+  onDataChange(e) {
+    switch (e) {
       case DynamicTypeEnum.TEXT:
-        this.properties?.filter(p=> p.tag == 'TEXT')?.forEach(p => p.hidden = false);
-        this.properties?.filter(p=> p.tag == 'NUMBER')?.forEach(p => p.hidden = true);
-        this.properties?.filter(p=> p.tag == 'LIST')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'TEXT')?.forEach(p => p.hidden = false);
+        this.properties?.filter(p => p.tag == 'NUMBER')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'LIST')?.forEach(p => p.hidden = true);
         this.formArray = this.fb.group({});
         break;
       case DynamicTypeEnum.NUMBER:
-        this.properties?.filter(p=> p.tag == 'TEXT')?.forEach(p => p.hidden = true);
-        this.properties?.filter(p=> p.tag == 'LIST')?.forEach(p => p.hidden = true);
-        this.properties?.filter(p=> p.tag == 'NUMBER')?.forEach(p => p.hidden = false);
+        this.properties?.filter(p => p.tag == 'TEXT')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'LIST')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'NUMBER')?.forEach(p => p.hidden = false);
         this.formArray = this.fb.group({});
         break;
       case DynamicTypeEnum.CHECKLIST:
       case DynamicTypeEnum.RADIO:
       case DynamicTypeEnum.DROPLIST:
-        this.properties?.filter(p=> p.tag == 'TEXT')?.forEach(p => p.hidden = true);
-        this.properties?.filter(p=> p.tag == 'NUMBER')?.forEach(p => p.hidden = true);
-        this.properties?.filter(p=> p.tag == 'LIST')?.forEach(p => p.hidden = false);
-        this.formArray.addControl('listOptions' , this.fb.array([]));
-        this.formArray.addControl('allowAddData' , this.fb.control(false,[]));
-        if(e == DynamicTypeEnum.CHECKLIST){
+        this.properties?.filter(p => p.tag == 'TEXT')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'NUMBER')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'LIST')?.forEach(p => p.hidden = false);
+        this.formArray.addControl('listOptions', this.fb.array([]));
+        this.formArray.addControl('allowAddData', this.fb.control(false, []));
+        if (e == DynamicTypeEnum.CHECKLIST) {
           this.formGroup?.controls['selectType']?.setValue(DynamicInputTypeEnum.MULTI_SELECT);
           this.formGroup?.controls['selectType']?.disable();
-        } else if(e == DynamicTypeEnum.RADIO){
+        } else if (e == DynamicTypeEnum.RADIO) {
           this.formGroup?.controls['selectType']?.setValue(DynamicInputTypeEnum.SINGLE_SELECT);
           this.formGroup?.controls['selectType']?.disable();
-        }else{
+        } else {
           this.formGroup?.controls['selectType']?.setValue(DynamicInputTypeEnum.SINGLE_SELECT);
           this.formGroup?.controls['selectType']?.enable();
         }
         break;
       default:
-        this.properties?.filter(p=> p.tag == 'TEXT')?.forEach(p => p.hidden = true);
-        this.properties?.filter(p=> p.tag == 'NUMBER')?.forEach(p => p.hidden = true);
-        this.properties?.filter(p=> p.tag == 'LIST')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'TEXT')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'NUMBER')?.forEach(p => p.hidden = true);
+        this.properties?.filter(p => p.tag == 'LIST')?.forEach(p => p.hidden = true);
         this.formArray = this.fb.group({});
     }
   }
 
+  validatorExistDisplayName(control: FormControl): { [key: string]: boolean } | null {
+    console.log("debug " + control.value);
+    const trimmedValue = control.value?.trim();
+    if (!trimmedValue) {
+      return {"required": true};
+    }
+
+    if (this.dynamicProperties.filter(el => el.displayName.toLowerCase() == trimmedValue.toLowerCase()).length > 0) {
+      return {"exist": true};
+    }
+    return null;
+  }
 }
