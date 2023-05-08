@@ -1,3 +1,91 @@
+<div class="col-12 py-1.5 flex justify-content-end">
+  <button
+    pButton
+    style="max-height: 70%"
+    styleClass="p-button-sm text-sm"
+    (click)="showDialog()"
+    class="mx-2">
+        <span class="p-button-label truncate"
+              pTooltip="Chạy thử">
+          Chạy thử
+        </span>
+  </button>
+</div>
 <div class="w-full h-full">
   <div [innerHtml]="data"></div>
+</div>
+<div class="card flex justify-content-center">
+  <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+            [resizable]="false">
+    <ng-template pTemplate="header" class="pb-0">
+      <label class=" font-bold mb-2" style="font-size: 1em;">
+        Chạy thử kịch bản
+      </label>
+    </ng-template>
+    <p-divider></p-divider>
+    <div class="row flex pb-0">
+      <form [formGroup]="formTestCampaign">
+        <div class="py-2">
+          <div class="d-flex justify-content-between  mb-2">
+            <label class="sm:text-sm font-normal">Số điện thoại
+            </label>
+            <span [ngClass]="{'text-danger': formTestCampaign.get('phoneNumber')?.value?.length >= 50}"
+                  class="sm:text-xs">
+            {{ 50 - formTestCampaign.value?.phoneNumber?.length }} / 50
+          </span>
+          </div>
+          <input
+            class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            maxlength="50"
+            type="number"
+          />
+        </div>
+        <div class="py-2">
+          <div class="d-flex justify-content-between mb-2">
+            <label class="sm:text-sm font-normal">Email
+            </label>
+            <span [ngClass]="{'text-danger': formTestCampaign.get('email')?.value?.length >= 50}"
+                  class="sm:text-xs">
+            {{ 50 - formTestCampaign.value?.email?.length }} / 50
+          </span>
+          </div>
+          <input
+            class="block w-full p-2 text-indigo-600 border border-transparent border-gray-300 rounded-md"
+            id="email"
+            formControlName="email"
+            maxlength="50"
+            type="text"
+          />
+        </div>
+      </form>
+    </div>
+    <p-divider></p-divider>
+    <ng-template pTemplate="footer">
+      <div class="col-12  flex justify-content-end">
+        <button
+          pButton
+          type="button"
+          styleClass="p-button-sm"
+          style="max-height: 70%"
+          (click)="visible = false"
+          class="p-button-outlined mx-2 text-sm">
+        <span class="p-button-label truncate" pTooltip="Huỷ">
+          Huỷ
+        </span>
+        </button>
+        <button
+          pButton
+          style="max-height: 70%"
+          styleClass="p-button-sm text-sm"
+          class="mx-2">
+        <span class="p-button-label truncate"
+              pTooltip="Chạy thử">
+        Chạy thử
+        </span>
+        </button>
+      </div>
+    </ng-template>
+  </p-dialog>
 </div>

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormArray,
-  FormBuilder,
-  FormGroup,
+  FormBuilder, FormControl,
+  FormGroup, Validators,
 } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { ConfigService } from "@shared/utils/config.service";
@@ -17,14 +17,12 @@ export class CampaignsConfigurationComponent implements OnInit {
   @Output() activeIndexChange = new EventEmitter<number>();
   @Input() definitionId: string;
   @Output() definitionIdChange = new EventEmitter<string>();
-  createForm: FormGroup;
-  dayInWeeks: any[];
-
-  lstDayTypes: FormArray;
-
+  visible: boolean;
   serverId = "";
   data: SafeHtml;
-  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, configService: ConfigService ) {
+  formTestCampaign: FormGroup;
+
+  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer, configService: ConfigService) {
     this.serverId = configService.workflowManagerUrl;
   }
 
@@ -44,5 +42,16 @@ export class CampaignsConfigurationComponent implements OnInit {
       </elsa-workflow-definition-editor-screen>
     </elsa-studio-root>`);
     this.loadScripts();
+
+
+    this.formTestCampaign = new FormGroup({
+      phoneNumber: new FormControl(null,),
+      email: new FormControl(null),
+    });
   }
+
+  showDialog() {
+    this.visible = true;
+  }
+
 }

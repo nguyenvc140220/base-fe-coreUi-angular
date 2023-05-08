@@ -19,15 +19,15 @@ import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import {
-    DatePipe,
-    JsonPipe,
-    NgClass,
-    NgForOf,
-    NgIf,
-    NgStyle,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault
+  DatePipe,
+  JsonPipe,
+  NgClass,
+  NgForOf,
+  NgIf,
+  NgStyle,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault
 } from "@angular/common";
 import { CampaignsRoutingModule } from "./campaigns-routing.module";
 import { CampaignsTableComponent } from './campaigns-table/campaigns-table.component';
@@ -69,6 +69,7 @@ import {
 import {
   LeadInteractionTableComponent
 } from './campaign-detail/campaign-concrete/lead-interaction-table/lead-interaction-table.component';
+import { DialogModule } from "primeng/dialog";
 
 const PRIMENG = [
   TableModule,
@@ -118,26 +119,26 @@ const ANGULAR_COMMON = [
     LeadInteractionModalComponent,
     LeadInteractionTableComponent
   ],
-    imports: [
-        ...PRIMENG,
-        ...ANGULAR_COMMON,
-        CampaignsRoutingModule,
-        ToastModule,
-        OverlayPanelModule,
-        DatePipe,
-        StyleClassModule,
-        StepsModule,
-        PanelModule,
-        CardModule,
-        FontAwesomeModule,
-        ReportIndexModule,
-        TagModule,
-        NgxEchartsModule.forRoot({
-            echarts: () => import('echarts'),
-        }),
-        AccordionModule,
-        FormsModule, ReactiveFormsModule, TextTruncateModule, JsonPipe
-    ],
+  imports: [
+    ...PRIMENG,
+    ...ANGULAR_COMMON,
+    CampaignsRoutingModule,
+    ToastModule,
+    OverlayPanelModule,
+    DatePipe,
+    StyleClassModule,
+    StepsModule,
+    PanelModule,
+    CardModule,
+    FontAwesomeModule,
+    ReportIndexModule,
+    TagModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
+    AccordionModule,
+    FormsModule, ReactiveFormsModule, TextTruncateModule, JsonPipe, DialogModule
+  ],
   providers: [DialogService, DynamicDialogRef, DestroyService, MessageService, DatePipe],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
