@@ -1,91 +1,15 @@
-<div class="col-12 py-1.5 flex justify-content-end">
-  <button
-    pButton
-    style="max-height: 70%"
-    styleClass="p-button-sm text-sm"
-    (click)="showDialog()"
-    class="mx-2">
-        <span class="p-button-label truncate"
-              pTooltip="Chạy thử">
-          Chạy thử
-        </span>
-  </button>
+<div class="relative">
+  <div class="z-10 absolute top-0 right-0">
+    <button
+      pButton
+      style="max-height: 70%"
+      styleClass="p-button-sm text-sm"
+      (click)="showDialog()"
+      class="m-2"
+      pTooltip="Chạy thử"
+    >
+      Chạy thử
+    </button>
+  </div>
+  <div class="z-0 w-full h-full" [innerHtml]="data"></div>
 </div>
-<div class="w-full h-full">
-  <div [innerHtml]="data"></div>
-</div>
-<div class="card flex justify-content-center">
-  <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
-            [resizable]="false">
-    <ng-template pTemplate="header" class="pb-0">
-      <label class=" font-bold mb-2" style="font-size: 1em;">
-        Chạy thử kịch bản
-      </label>
-    </ng-template>
-    <app-dynamic-form
-      [formGroup]="formTestCampaign"
-      [properties]="testCampaignProperties"
-      [gridLayout]="'col-12'">
-    </app-dynamic-form>
-    <p-divider></p-divider>
-    <form [formGroup]="formTestCampaign">
-      <div class="row">
-        <div class="d-flex mb-2">
-          <label class="font-normal mr-2 justify-center" pTooltip="Thêm các lựa chọn" tooltipPosition="right"
-                 tooltipZIndex="20001">
-            Thông tin thêm
-          </label>
-          <button pButton pRipple type="button" icon="pi pi-plus" pTooltip="Thêm thông tin" tooltipPosition="right"
-                  tooltipZIndex="20001"
-                  class="p-button-rounded p-button-info p-button-text"
-                  (click)="addOptions()"></button>
-        </div>
-        <div *ngFor="let optionForm of listOptions?.controls, let i = index" class="mb-2" formArrayName="listOptions">
-          <div class="d-flex" [formGroup]="optionForm">
-            <p-dropdown
-              optionLabel="label"
-              optionValue="value"
-              [options]="InfoOptions"
-              showClear="true"
-              filter="true"
-              [style]="{'minWidth':'50%'}"
-              styleClass="d-flex"
-              appendTo="body"
-              formControlName="key">
-            </p-dropdown>
-            <input
-              type="text"
-              id="option_{{i}}"
-              class="form-control mr-2"
-              pInputText
-              maxLength="200"
-              formControlName="value"
-              [class.ng-invalid]="showError(i)"
-              [class.ng-dirty]="showError(i)"
-              placeholder="Nhập giá trị"/>
-            <button pButton
-                    pRipple
-                    type="button"
-                    icon="pi pi-times"
-                    pTooltip="Xóa thông tin"
-                    tooltipPosition="right"
-                    tooltipZIndex="20001"
-                    class="p-button-rounded p-button-danger p-button-text"
-                    (click)="removeOption(i)"></button>
-          </div>
-          <small class="form-text text-danger" *ngIf="showError(i)">{{showError(i)}}</small>
-        </div>
-      </div>
-    </form>
-    <div class="row mt-4 mb-4">
-      <app-dialog-button
-        [saveIcon]="'pi pi-android'"
-        [saveLabel]="'Chạy thử'"
-        [status]="formTestCampaign.invalid | getButtonStatus"
-        (event)="onDialogEvent($event)"
-        class="w-100"
-      ></app-dialog-button>
-    </div>
-  </p-dialog>
-</div>
-<p-toast autoZIndex="true"></p-toast>

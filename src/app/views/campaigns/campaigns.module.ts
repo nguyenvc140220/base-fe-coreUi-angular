@@ -74,6 +74,7 @@ import { DialogButtonModule } from "@shared/components/dialog-button/dialog-butt
 import { DynamicFormModule } from "@shared/components/dynamic-form/dynamic-form.module";
 import { CoreModule } from "@shared/root.module";
 import { RippleModule } from "primeng/ripple";
+import { TestCampaignComponent } from './test-campaign/test-campaign.component';
 
 const PRIMENG = [
   TableModule,
@@ -121,7 +122,8 @@ const ANGULAR_COMMON = [
     CampaignsCompletedComponent,
     CustomerSegmentationComponent,
     LeadInteractionModalComponent,
-    LeadInteractionTableComponent
+    LeadInteractionTableComponent,
+    TestCampaignComponent
   ],
   imports: [
     ...PRIMENG,
