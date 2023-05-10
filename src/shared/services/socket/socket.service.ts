@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { ConfigService } from '@shared/utils/config.service';
+import { CampaignInteractionModel } from '@shared/models/campaign/campaign-interaction.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,5 +21,15 @@ export class SocketService {
 
   getMessage() {
     return this.socket.fromEvent('message');
+  }
+
+  getWorkflowInteractionMessage() {
+    return this.socket.fromEvent<CampaignInteractionModel>(
+      'workflowInteraction'
+    );
+  }
+
+  sendWorkflowInteractionMessage(message: CampaignInteractionModel) {
+    this.socket.emit('workflowInteraction', message);
   }
 }

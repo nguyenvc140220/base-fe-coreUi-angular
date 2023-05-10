@@ -1,0 +1,163 @@
+<p-tabView [(activeIndex)]="activeIndex">
+  <p-tabPanel header="Cấu hình chạy thử">
+    <app-dynamic-form
+      [formGroup]="formTestCampaign"
+      [properties]="testCampaignProperties"
+      [gridLayout]="'col-12'"
+    >
+    </app-dynamic-form>
+    <p-divider></p-divider>
+    <form [formGroup]="formTestCampaign">
+      <div class="row">
+        <div class="d-flex mb-2">
+          <label
+            class="font-normal mr-2 justify-center"
+            pTooltip="Thêm các lựa chọn"
+            tooltipPosition="right"
+            tooltipZIndex="20001"
+          >
+            Thông tin thêm
+          </label>
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-plus"
+            pTooltip="Thêm thông tin"
+            tooltipPosition="right"
+            tooltipZIndex="20001"
+            class="p-button-rounded p-button-info p-button-text"
+            (click)="addOptions()"
+          ></button>
+        </div>
+        <div
+          *ngFor="let optionForm of listOptions?.controls; let i = index"
+          class="mb-2"
+          formArrayName="listOptions"
+        >
+          <div class="d-flex" [formGroup]="optionForm">
+            <p-dropdown
+              optionLabel="label"
+              optionValue="value"
+              [options]="InfoOptions"
+              showClear="true"
+              filter="true"
+              [style]="{ minWidth: '50%' }"
+              styleClass="d-flex"
+              appendTo="body"
+              formControlName="key"
+            >
+            </p-dropdown>
+            <input
+              type="text"
+              id="option_{{ i }}"
+              class="form-control mr-2"
+              pInputText
+              maxLength="200"
+              formControlName="value"
+              [class.ng-invalid]="showError(i)"
+              [class.ng-dirty]="showError(i)"
+              placeholder="Nhập giá trị"
+            />
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-times"
+              pTooltip="Xóa thông tin"
+              tooltipPosition="right"
+              tooltipZIndex="20001"
+              class="p-button-rounded p-button-danger p-button-text"
+              (click)="removeOption(i)"
+            ></button>
+          </div>
+          <small class="form-text text-danger" *ngIf="showError(i)">{{
+            showError(i)
+          }}</small>
+        </div>
+      </div>
+    </form>
+  </p-tabPanel>
+  <p-tabPanel header="Kết quả chạy thử">
+    <p-table
+      [value]="interactions"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [scrollable]="true"
+      [paginator]="false"
+      [autoLayout]="true"
+      [lazy]="true"
+      scrollHeight="50vh"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th
+            *ngFor="let col of cols"
+            style="min-width: 100px"
+            class="text-center"
+          >
+            {{ col.title }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template let-interaction pTemplate="body">
+        <tr>
+          <ng-container
+            *ngFor="let col of cols"
+            [ngSwitch]="col.field"
+            class="text-center"
+          >
+            <td *ngSwitchCase="'action'" class="text-center">
+              {{ getActionLabel(interaction[col.field]) }}
+            </td>
+
+            <td *ngSwitchCase="'createdAt'" class="text-center">
+              {{
+                interaction[col.field] &&
+                  (interaction[col.field] | date : "dd/MM/yyyy HH:mm:ss")
+              }}
+            </td>
+
+            <td *ngSwitchCase="'updatedAt'" class="text-center">
+              {{
+                interaction[col.field] &&
+                  (interaction[col.field] | date : "dd/MM/yyyy HH:mm:ss")
+              }}
+            </td>
+
+            <td *ngSwitchCase="'status'" class="text-center">
+              <p-tag
+                [styleClass]="'w-100'"
+                [value]="getStateLabel(interaction[col.field])"
+                [pTooltip]="getStateLabel(interaction[col.field])"
+                [severity]="getColor(interaction[col.field])"
+              />
+            </td>
+
+            <td *ngSwitchCase="'output'">
+              <a
+                *ngIf="interaction[col.field]"
+                [href]="interaction[col.field]"
+                class="text-center hover:underline cursor-pointer"
+                target="_blank"
+              >
+                Xem kết quả
+              </a>
+            </td>
+
+            <td *ngSwitchDefault class="text-center">
+              {{ interaction[col.field] }}
+            </td>
+          </ng-container>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-tabPanel>
+</p-tabView>
+
+<app-dialog-button
+  [saveIcon]="'pi pi-android'"
+  [saveLabel]="'Chạy thử'"
+  [status]="formTestCampaign.invalid | getButtonStatus : isRunning"
+  (event)="onDialogEvent($event)"
+  class="w-100"
+></app-dialog-button>
