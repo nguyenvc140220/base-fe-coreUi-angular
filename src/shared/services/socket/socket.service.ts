@@ -8,11 +8,11 @@ import { CampaignInteractionModel } from '@shared/models/campaign/campaign-inter
 })
 export class SocketService {
   constructor(
-    private readonly socket: Socket,
+    private socket: Socket,
     private readonly configService: ConfigService
   ) {
-    socket = new Socket(configService.socketIOConfig);
-    socket.connect();
+    this.socket = new Socket(configService.socketIOConfig);
+    this.socket.connect();
   }
 
   sendMessage(msg: string) {
@@ -27,9 +27,5 @@ export class SocketService {
     return this.socket.fromEvent<CampaignInteractionModel>(
       'workflowInteraction'
     );
-  }
-
-  sendWorkflowInteractionMessage(message: CampaignInteractionModel) {
-    this.socket.emit('workflowInteraction', message);
   }
 }
