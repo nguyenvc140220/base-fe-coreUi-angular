@@ -61,7 +61,8 @@ export class TestCampaignComponent implements OnDestroy {
 
   interactions: CampaignInteractionModel[] = [];
 
-  private _interactionsSub;
+  private _leadId = '26c217bf-d460-447c-ac59-22b922819b97';
+  private _interactionsSub: Subscription;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -69,8 +70,14 @@ export class TestCampaignComponent implements OnDestroy {
     private readonly ref: DynamicDialogRef,
     private readonly campaignService: CampaignService,
     private readonly messageService: MessageService,
-    private config: DynamicDialogConfig
+    private config: DynamicDialogConfig,
+    private  readonly  socketService: SocketService
   ) {
+    this._interactionsSub = this.socketService.getWorkflowInteractionMessage().subscribe((data)=>{
+      if(data.leadId === this._leadId){
+        this.getTestResults(this._leadId)
+      }
+    });
     if (config.data['definitionId'] !== undefined) {
       this.definitionId = config.data['definitionId'];
     }
@@ -114,7 +121,7 @@ export class TestCampaignComponent implements OnDestroy {
     this.getTestResults('99f341ba-5d18-4f8a-a597-59be30161e58');
   }
   ngOnDestroy(): void {
-    if (this._interactionsSub) clearInterval(this._interactionsSub);
+    if (this._interactionsSub) this._interactionsSub.unsubscribe();
   }
 
   get listOptions() {
@@ -170,7 +177,7 @@ export class TestCampaignComponent implements OnDestroy {
   onDialogEvent(button: ButtonEnum) {
     switch (button) {
       case ButtonEnum.SAVE_BUTTON:
-        this.isRunning = true;
+        // this.isRunning = true;
         this.campaignService
           .testCampaign(
             new TestCampaignRequestModel(
@@ -187,10 +194,7 @@ export class TestCampaignComponent implements OnDestroy {
               summary: 'Thành công',
               detail: `Chạy thử chiến dịch thành công!`,
             });
-            this._interactionsSub = setInterval(
-              () => this.getTestResults(res.id),
-              1000
-            );
+            this._leadId = res.id;
           });
         break;
       default:
