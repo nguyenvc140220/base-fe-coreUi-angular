@@ -23,7 +23,7 @@
       <ng-template pTemplate="body" let-header let-index="rowIndex">
         <tr>
           <td>{{header}}</td>
-          <td>{{sampleData[header] ?? "-"}}</td>
+          <td>{{sampleData[index] ?? "-"}}</td>
           <td>
             <p-dropdown
               [options]="properties"
