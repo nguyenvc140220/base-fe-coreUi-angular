@@ -10,6 +10,7 @@
                 accept=".xlsx"
                 showUploadButton="false"
                 showCancelButton="false"
+                (onSelect)="onUpload($event)"
                 invalidFileSizeMessageSummary="Thất bại."
                 invalidFileSizeMessageDetail="Dung lượng file tải lên không được quá {0}"
                 maxFileSize="52428800">
@@ -26,7 +27,7 @@
     </ng-template>
   </p-fileUpload>
   <div class="col-sm-12 mb-2"
-       *ngFor="let file of fileUpload.files; let i = index"
+       *ngIf="file"
        style="background-clip: content-box; background-color: rgba(0, 140, 255, 0.19);padding-left: 0; padding-right: 0; margin-top: 1rem;">
     <div class="row">
       <div class="col-md-1 d-flex align-items-center justify-content-center">
@@ -45,7 +46,7 @@
       </div>
       <div class="col-md-1 d-flex justify-content-center align-items-center">
         <i class="pi pi-times"
-           (click)="clearFile(i)"
+           (click)="clearFile()"
            style="font-size: 1rem;cursor: pointer;"></i>
       </div>
     </div>

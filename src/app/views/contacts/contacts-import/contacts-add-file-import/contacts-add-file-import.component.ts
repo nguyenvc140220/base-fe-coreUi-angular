@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FileUpload } from "primeng/fileupload";
 import Swal from "sweetalert2";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
@@ -13,7 +13,7 @@ import { ColInfo } from "xlsx";
   templateUrl: './contacts-add-file-import.component.html',
   styleUrls: ['./contacts-add-file-import.component.scss']
 })
-export class ContactsAddFileImportComponent {
+export class ContactsAddFileImportComponent implements OnInit {
   disableBtn = true;
   @ViewChild('fileUpload') fileUpload: FileUpload;
   @Input() activeIndex: number;
@@ -36,6 +36,14 @@ export class ContactsAddFileImportComponent {
     }, {
       label: 'Import liên hệ',
     }];
+  }
+
+  ngOnInit(): void {
+    console.log(this.file)
+  }
+
+  onUpload(e) {
+    this.file = e.currentFiles[0]
   }
 
   backStepEnd() {
@@ -78,23 +86,20 @@ export class ContactsAddFileImportComponent {
     this.disableBtn = false;
   }
 
-  clearFile(i: number) {
-    this.fileUpload.files.splice(i, 1)
+  clearFile() {
+    this.fileUpload.files.splice(1, 1)
     this.disableBtn = true;
+    this.file = undefined;
   }
 
   nextStepMappingData() {
-    if (this.fileUpload.files.length == 0)
+    if (!this.file)
       return Swal.fire({
         icon: 'warning',
         title: 'Cảnh báo',
         text: `Chưa chọn file import!!`,
       }).then();
-    let file = this.fileUpload.files[0]
-    let fileReader = new FileReader()
-    fileReader.readAsArrayBuffer(file)
-    this.fileUpload.clear()
     this.activeIndexChange.emit(1)
-    this.fileChange.emit(file)
+    this.fileChange.emit(this.file)
   }
 }
