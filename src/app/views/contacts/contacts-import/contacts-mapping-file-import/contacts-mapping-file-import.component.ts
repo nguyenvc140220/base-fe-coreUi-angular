@@ -1,10 +1,8 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter, Injector,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges
@@ -15,11 +13,9 @@ import { ContactService } from "@shared/services/contacts/contact.service";
 import { DynamicFieldService } from "@shared/services/dynamic-field/dynamic-field.service";
 import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
 import { takeUntil } from "rxjs";
-import { DynamicPropertyModel } from "@shared/models/dynamic-field/dynamic-property.model";
 import { DestroyService } from "@shared/services";
 import Swal from "sweetalert2";
 import { ComponentBase } from "@shared/utils/component-base.component";
-import { DynamicPropertyRequestModel } from "@shared/models/dynamic-field/dynamic-property-request.model";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 
 @Component({
@@ -28,8 +24,8 @@ import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
   styleUrls: ['./contacts-mapping-file-import.component.scss']
 })
 export class ContactsMappingFileImportComponent extends ComponentBase<any> implements OnInit, OnChanges {
-  headers: any[];
-  sampleData: Object;
+  headers = [];
+  sampleData = [];
   properties = [];
   formGroup = new FormGroup({});
   selectedProperties = {}
@@ -68,10 +64,16 @@ export class ContactsMappingFileImportComponent extends ComponentBase<any> imple
   ngOnInit(): void {
     setTimeout(() => {
       if (this.selectedProperties) {
-        Object.values(this.selectedProperties).forEach(el => {
-          const index = this.properties.findIndex(x => x.code == el['code'])
+        for (const [key, value] of Object.entries(this.selectedProperties)) {
+          const index = this.properties.findIndex(x => x.code == value['code'])
           if (index > -1) this.properties.splice(index, 1);
-        })
+
+          this.dataHeader.headers[`${key}`] = {
+            "code": value['code'],
+            "dataType": value['dataType'],
+            "validators": {}
+          }
+        }
       }
     }, 300);
   }
@@ -89,13 +91,16 @@ export class ContactsMappingFileImportComponent extends ComponentBase<any> imple
               let fileReader = new FileReader()
               fileReader.readAsBinaryString(this.file)
               fileReader.onload = (e) => {
-                var workBook = XLSX.read(fileReader.result, {type: 'binary', sheetRows: 5},)
+                var workBook = XLSX.read(fileReader.result, {type: 'binary', sheetRows: 5})
                 var excelData = XLSX.utils
-                  .sheet_to_json(workBook.Sheets[workBook.SheetNames[0]])
-                  ?.filter(o => !Object.keys(o).every(k => !o[k].toString().trim()))
+                  .sheet_to_json<any>(workBook.Sheets[workBook.SheetNames[0]], {
+                    header: 1,
+                    blankrows: true
+                  })
+
                 if (excelData.length > 0) {
-                  this.headers = Object.keys(excelData[0])
-                  this.sampleData = excelData[0]
+                  this.headers = excelData[0]
+                  this.sampleData = excelData[1]
                   this.primengTableHelper.isLoading = false;
                   let dataFormGroup = JSON.parse(
                     sessionStorage.getItem('contactDynamicMappingValue')
