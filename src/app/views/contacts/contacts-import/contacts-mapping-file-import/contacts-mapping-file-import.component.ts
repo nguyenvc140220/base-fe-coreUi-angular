@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter, Injector,
   Input,
@@ -19,16 +20,19 @@ import { DestroyService } from "@shared/services";
 import Swal from "sweetalert2";
 import { ComponentBase } from "@shared/utils/component-base.component";
 import { DynamicPropertyRequestModel } from "@shared/models/dynamic-field/dynamic-property-request.model";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-contacts-mapping-file-import',
   templateUrl: './contacts-mapping-file-import.component.html',
   styleUrls: ['./contacts-mapping-file-import.component.scss']
 })
-export class ContactsMappingFileImportComponent extends ComponentBase<any> implements OnInit, OnDestroy, OnChanges {
+export class ContactsMappingFileImportComponent extends ComponentBase<any> implements OnInit, OnChanges {
   headers: any[];
   sampleData: Object;
-  properties: DynamicPropertyModel[];
+  properties = [];
+  formGroup = new FormGroup({});
+  selectedProperties = {}
   dataHeader = {
     tenant: "",
     fileName: "",
@@ -38,8 +42,7 @@ export class ContactsMappingFileImportComponent extends ComponentBase<any> imple
   }
   page = 1;
   pageSize = 1000;
-  checkHeaderDuplicate = false;
-
+  visible: boolean;
   @Input() numOfRecords: number
   @Input() activeIndex: number
   @Input() file: File
@@ -48,6 +51,7 @@ export class ContactsMappingFileImportComponent extends ComponentBase<any> imple
   constructor(
     injector: Injector,
     private breadcrumbStore: BreadcrumbStore,
+    private fb: FormBuilder,
     private contactService: ContactService,
     private dynamicFieldService: DynamicFieldService,
     private destroy: DestroyService,
@@ -61,93 +65,98 @@ export class ContactsMappingFileImportComponent extends ComponentBase<any> imple
     }];
   }
 
+  ngOnInit(): void {
+    setTimeout(() => {
+      if (this.selectedProperties) {
+        Object.values(this.selectedProperties).forEach(el => {
+          const index = this.properties.findIndex(x => x.code == el['code'])
+          if (index > -1) this.properties.splice(index, 1);
+        })
+      }
+    }, 300);
+  }
+
+
   ngOnChanges(changes: SimpleChanges): void {
     this.primengTableHelper.isLoading = true;
     if (this.file) {
-      let fileReader = new FileReader()
-      fileReader.readAsBinaryString(this.file)
-      fileReader.onload = (e) => {
-        var workBook = XLSX.read(fileReader.result, {type: 'binary', sheetRows: 5},)
-        var excelData = XLSX.utils
-          .sheet_to_json(workBook.Sheets[workBook.SheetNames[0]])
-          ?.filter(o => !Object.keys(o).every(k => !o[k].toString().trim()))
-        console.log(excelData)
-        if (excelData.length > 0) {
-          this.headers = Object.keys(excelData[0])
-          this.sampleData = excelData[0]
-          this.primengTableHelper.isLoading = false;
-        }
-        if (!excelData.length) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Thất bại',
-            text: `File tải lên không có dữ liệu!!`,
-          }).then();
-          this.activeIndexChange.emit(0)
-          return;
-        }
-      }
-    }
-  }
-
-  ngOnDestroy(): void {
-  }
-
-  ngOnInit(): void {
-    this.initProperties(null)
-  }
-
-  onFilterEvent(event) {
-    this.initProperties(event.filter)
-  }
-
-  /**
-   * Hardcode lấy 1000 bản ghi để phục vụ việc xử lí check chọn trùng Header.
-   */
-  initProperties(searchKey: string) {
-    let query = new DynamicPropertyRequestModel()
-    query.page = this.page;
-    query.size = 1000;
-    if (searchKey) query.keyword = searchKey
-    this.contactService
-      .getContactProperties(query).pipe(takeUntil(this.destroy))
-      .subscribe({
-        next: (res) => {
-          if (res.statusCode == 200) {
-            this.properties = res.data.content
+      this.contactService
+        .getContactProperties({page: 1, size: 1000}).pipe(takeUntil(this.destroy))
+        .subscribe({
+          next: (res) => {
+            if (res.statusCode == 200) {
+              this.properties = res.data.content
+              let fileReader = new FileReader()
+              fileReader.readAsBinaryString(this.file)
+              fileReader.onload = (e) => {
+                var workBook = XLSX.read(fileReader.result, {type: 'binary', sheetRows: 5},)
+                var excelData = XLSX.utils
+                  .sheet_to_json(workBook.Sheets[workBook.SheetNames[0]])
+                  ?.filter(o => !Object.keys(o).every(k => !o[k].toString().trim()))
+                if (excelData.length > 0) {
+                  this.headers = Object.keys(excelData[0])
+                  this.sampleData = excelData[0]
+                  this.primengTableHelper.isLoading = false;
+                  let dataFormGroup = JSON.parse(
+                    sessionStorage.getItem('contactDynamicMappingValue')
+                  );
+                  this.headers.forEach(el => {
+                    if (dataFormGroup && dataFormGroup[el]) {
+                      this.selectedProperties[el] = dataFormGroup[el]
+                      this.formGroup.addControl(el, new FormControl(dataFormGroup[el]));
+                    } else this.formGroup.addControl(el, new FormControl(null));
+                  })
+                }
+                if (!excelData.length) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: `File tải lên không có dữ liệu!!`,
+                  }).then();
+                  this.activeIndexChange.emit(0)
+                  return;
+                }
+              }
+            }
           }
-        }
-      });
+        });
+    }
   }
 
-  onChangeProperties(event, headerExcel) {
-    console.log(this.properties)
-    this.properties.indexOf(event.value)
-    const index = this.properties.indexOf(event.value)
-    if (index > -1) {
-      this.properties.splice(index, 1);
+  onChangeProperties(event, headerExcel, i) {
+    console.log(this.formGroup.value)
+    if (this.selectedProperties.hasOwnProperty(`${headerExcel}`)
+      && this.selectedProperties[`${headerExcel}`]) {
+      this.properties.push(this.selectedProperties[`${headerExcel}`]);
     }
-    if (event.value && headerExcel) {
+    if (event.value) {
+      const index = this.properties.indexOf(event.value)
+      if (index > -1) this.properties.splice(index, 1);
+      this.selectedProperties[`${headerExcel}`] = event.value
+    } else delete this.selectedProperties[`${headerExcel}`]
+    if (event.value) {
       this.dataHeader.headers[`${headerExcel}`] = {
         "code": event.value.code,
         "dataType": event.value.dataType,
         "validators": {}
       }
-    }
-
+    } else delete this.dataHeader.headers[`${headerExcel}`];
   }
 
-  nextStepEnd(event) {
+  nextStepEnd() {
     let formData = new FormData();
     formData.append("file", this.file, this.file.name);
+    this.visible = false;
     if (Object.keys(this.dataHeader.headers).length === 0)
       return Swal.fire({
         icon: 'error',
         title: 'Thất bại',
         text: `Chưa chọn dữ liệu mapping!!`,
       });
-
-
+    sessionStorage.setItem(
+      'contactDynamicMappingValue',
+      JSON.stringify(this.formGroup.value)
+    );
     this.contactService.upLoadFile(formData)
       .pipe(takeUntil(this.destroy))
       .subscribe({
