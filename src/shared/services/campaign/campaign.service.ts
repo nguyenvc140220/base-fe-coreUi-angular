@@ -54,7 +54,7 @@ export class CampaignService extends BaseService {
   }
 
   updateCampaign(body: CreateCampaignRequestModel) {
-    return this.defaultPost<BaseResponse<any>>(
+    return this.defaultPut<BaseResponse<any>>(
       `${this.configService.campaignPlanningUrl}/campaign/update/${body.id}`,
       body
     );
