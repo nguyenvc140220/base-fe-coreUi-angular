@@ -9,7 +9,7 @@ import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 })
 export class ContactsImportComponent implements OnInit, OnDestroy, OnChanges {
   steps: MenuItem[];
-  activeIndex = 2
+  activeIndex = 0
   file: File
   numOfRecords: number
 
