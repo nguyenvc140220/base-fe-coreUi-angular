@@ -29,6 +29,13 @@ const routes: Routes = [
       title: $localize`Thêm mới chiến dịch`,
     },
   },
+  {
+    path: 'edit',
+    component: CampaignsCreateComponent,
+    data: {
+      title: $localize`Chỉnh sửa chiến dịch`,
+    },
+  },
 ];
 
 @NgModule({

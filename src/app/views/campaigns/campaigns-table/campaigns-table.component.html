@@ -70,6 +70,8 @@
                 (click)="handleStateChange(campaign, 'CLOSED')"
                 pTooltip="Kết thúc"
                 class="hover:cursor-pointer pi pi-check pr-5"></i>
+              <i class="pi pi-file-edit pr-5 hover:cursor-pointer" (click)="editCampaign(campaign)"
+                 pTooltip="Sửa"></i>
             </td>
             <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
               <td *ngSwitchCase="'id'" [style]="col.styles" class="text-blue-500 hover:underline cursor-pointer">

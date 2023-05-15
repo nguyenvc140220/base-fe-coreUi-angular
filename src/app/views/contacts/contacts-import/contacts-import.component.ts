@@ -9,7 +9,7 @@ import { BreadcrumbStore } from '@shared/services/breadcrumb.store';
 })
 export class ContactsImportComponent implements OnInit, OnDestroy, OnChanges {
   steps: MenuItem[];
-  activeIndex = 0
+  activeIndex = 2
   file: File
   numOfRecords: number
 
@@ -41,13 +41,13 @@ export class ContactsImportComponent implements OnInit, OnDestroy, OnChanges {
   private initSteps(): void {
     this.steps = [
       {
-        label: 'Bước 1: Thêm file import',
+        label: 'Thêm file import',
       },
       {
-        label: 'Bước 2: Mapping trường thông tin',
+        label: 'Mapping trường thông tin',
       },
       {
-        label: 'Bước 3: Hoàn tất',
+        label: 'Hoàn tất import',
       },
     ];
   }
