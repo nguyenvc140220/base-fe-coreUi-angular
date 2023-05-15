@@ -39,6 +39,7 @@ export class ContactsResultFileImportComponent implements OnInit, OnDestroy {
           severity: 'success',
           detail: `Hoàn tất tải lên ${data['successRows'] || 0} bản ghi liên hệ`
         })
+
       }
     });
   }
@@ -46,10 +47,6 @@ export class ContactsResultFileImportComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.showLog();
     if (this._interactionsSub) this._interactionsSub.unsubscribe();
-    if (!this.importSuccess) return this.messageService.add({
-      severity: 'warn',
-      detail: 'Hệ thống sẽ tiếp tục thực hiện tác vụ và gửi thông báo khi hoàn tất'
-    })
   }
 
   ngOnInit(): void {
