@@ -209,7 +209,10 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   editCampaign(campaign) {
     this.router.navigate(
       [
-        'campaigns/edit'
+        'campaigns/edit',
+        {
+          mode: 'EDIT',
+        },
       ],
       {state: {campaign: campaign}}
     );

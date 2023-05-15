@@ -9,7 +9,7 @@ import { TestCampaignRequestModel } from '@shared/models/campaign/test-campaign-
 import { CampaignInteractionModel } from '@shared/models/campaign/campaign-interaction.model';
 import { LeadModel } from '@shared/models/campaign/lead.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class CampaignService extends BaseService {
   constructor(
     protected http: HttpClient,
@@ -22,7 +22,7 @@ export class CampaignService extends BaseService {
     searchKey: string,
     page: number,
     pageSize: number | null,
-    orderBy = { field: 'updatedAt,createdAt', direction: -1 }
+    orderBy = {field: 'updatedAt,createdAt', direction: -1}
   ) {
     const params = {
       skip: (page - 1) * pageSize,
@@ -53,10 +53,17 @@ export class CampaignService extends BaseService {
     );
   }
 
+  updateCampaign(body: CreateCampaignRequestModel) {
+    return this.defaultPost<BaseResponse<any>>(
+      `${this.configService.campaignPlanningUrl}/campaign/update/${body.id}`,
+      body
+    );
+  }
+
   changeStatus(campaignId: string, status: string) {
     return this.defaultPut<{ success: boolean; message?: string }>(
       `${this.configService.campaignPlanningUrl}/campaign/status`,
-      { campaignId, status }
+      {campaignId, status}
     );
   }
 

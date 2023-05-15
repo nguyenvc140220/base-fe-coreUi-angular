@@ -1,4 +1,5 @@
 export class CreateCampaignRequestModel {
+  id: string;
   name: string;
   type: string;
   status: string;

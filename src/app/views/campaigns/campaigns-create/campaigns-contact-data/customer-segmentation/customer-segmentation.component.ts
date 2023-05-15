@@ -15,7 +15,6 @@ import { SEGMENTATION_QUERY } from "@shared/constant/campaign.const";
 export class CustomerSegmentationComponent implements OnInit {
   segmentationQuery = SEGMENTATION_QUERY;
   segmentations: any[];
-  segmentationList: SegmentationListModel[]
   searchKey: string;
   @Input() segmentationForm: FormGroup;
   @Output() segmentationFormChange = new EventEmitter<FormGroup>;
