@@ -9,6 +9,8 @@ import { Paginator } from "primeng/paginator";
 import { CampaignListModel } from "@shared/models/campaign/campaign-list.model";
 import { MessageService } from "primeng/api";
 import * as uuid from 'uuid';
+import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
+import { DynamicModeEnum } from "@shared/enums/dynamic-mode.enum";
 
 @Component({
   selector: 'app-campaigns-table',
@@ -30,7 +32,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   }[];
 
   searchKey: string = '';
-  orderBy?: { field: string; direction: (1|-1) };
+  orderBy?: { field: string; direction: (1 | -1) };
 
   @ViewChild('paginator') paginator: Paginator;
   definitionId = uuid.v4();
@@ -152,7 +154,7 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
   }
 
   handleSort($event: any) {
-    this.orderBy = { field: $event.field, direction: $event.order };
+    this.orderBy = {field: $event.field, direction: $event.order};
 
     this.loadData();
   }
@@ -202,5 +204,14 @@ export class CampaignsTableComponent extends ComponentBase<any> implements OnIni
 
   getStatus(campaign: CampaignListModel) {
     return campaign.campaignStatus;
+  }
+
+  editCampaign(campaign) {
+    this.router.navigate(
+      [
+        'campaigns/edit'
+      ],
+      {state: {campaign: campaign}}
+    );
   }
 }
