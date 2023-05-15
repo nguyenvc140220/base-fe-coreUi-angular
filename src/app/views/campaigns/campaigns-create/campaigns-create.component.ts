@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from "primeng/api";
 import { BreadcrumbStore } from "@shared/services/breadcrumb.store";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SEGMENTATION_QUERY } from "@shared/constant/campaign.const";
 import { CampaignService } from "@shared/services/campaign/campaign.service";
@@ -11,6 +11,11 @@ import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.mo
 import { DynamicFilterTypeEnum } from "@shared/enums/dynamic-filter-type.enum";
 import { ContactService } from "@shared/services/contacts/contact.service";
 import { DatePipe } from '@angular/common';
+import { DynamicModeEnum } from "@shared/enums/dynamic-mode.enum";
+import { UsersService } from "@shared/services/users/users.service";
+import { PageResponse } from "@shared/models";
+import { SegmentationListModel } from "@shared/models/segmentation/segmentation-list.model";
+import { SegmentationService } from "@shared/services/segmentation/segmentation.service";
 
 @Component({
   selector: 'app-campaigns-create',
@@ -21,6 +26,7 @@ export class CampaignsCreateComponent implements OnInit {
   items: MenuItem[];
   activeIndex = 0
   definitionId: string;
+  campaignMode: string;
   campaignsGeneralForm: FormGroup;
   segmentationForm: FormGroup;
   segmentationQuery = SEGMENTATION_QUERY;
@@ -28,6 +34,9 @@ export class CampaignsCreateComponent implements OnInit {
     payload: {},
   };
   totalContactsCount = 0
+  campaignDetail: any;
+  assignedUser = [];
+  segmentations = []
   private unsubscribe = new Subject();
 
   constructor(
@@ -36,15 +45,30 @@ export class CampaignsCreateComponent implements OnInit {
     private readonly campaignService: CampaignService,
     private readonly contactService: ContactService,
     private datePipe: DatePipe,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private usersService: UsersService,
+    private segmentationService: SegmentationService
   ) {
     breadcrumbStore.items = [{
       label: 'Chiến dịch',
       routerLink: '/campaigns',
-    }, {
-      label: 'Thêm mới chiến dịch',
     }];
-    this.definitionId = this.router.getCurrentNavigation().extras.state['definitionId'];
+    this.campaignMode = this.activatedRoute.snapshot.paramMap['params']['mode'];
+    if (this.campaignMode == DynamicModeEnum.EDIT) {
+      this.campaignDetail = this.router.getCurrentNavigation().extras.state['campaign'];
+      this.definitionId = this.campaignDetail['workflowId']
+      this.breadcrumbStore.items.push(
+        {
+          label: `${this.campaignDetail['name']}`,
+          routerLink: ['campaigns/details/' + this.campaignDetail['id']]
+        },
+        {label: 'Sửa chiến dịch'}
+      );
+    } else {
+      this.definitionId = this.router.getCurrentNavigation().extras.state['definitionId'];
+      this.breadcrumbStore.items.push({label: 'Thêm mới chiến dịch'});
+    }
   }
 
 
@@ -55,10 +79,6 @@ export class CampaignsCreateComponent implements OnInit {
         icon: '',
         command: () => {
           this.activeIndex = 0;
-          // const steps_number = document.getElementsByClassName('p-steps-number');
-          // const steps_title = document.getElementsByClassName('p-steps-title ');
-          // steps_number[0].setAttribute('style', 'color: #2196F3;');
-          // steps_title[0].setAttribute('style', 'color: #2196F3;');
         },
       },
       {
@@ -84,7 +104,30 @@ export class CampaignsCreateComponent implements OnInit {
         },
       }
     ];
-    this.initForm();
+    this.usersService
+      .getUsers({currentPage: 1, pageSize: 1000})
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        next: (res) => {
+          if (res.statusCode == 200) {
+            this.assignedUser = res.data.content;
+          }
+        }
+      });
+    this.segmentationService
+      .getSegmentations(
+        '',
+        1,
+        1000
+      )
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        next: (res: PageResponse<SegmentationListModel>) => {
+          this.segmentations = res.data.content;
+          this.initForm();
+        }
+      })
+
   }
 
   btnSaveOrNext() {
@@ -113,7 +156,19 @@ export class CampaignsCreateComponent implements OnInit {
         body.timeTo = this.datePipe.transform(this.campaignsGeneralForm.value.timeTo, 'HH:mm');
         body.customerType = this.segmentationForm.value.dataContactType
         body.segmentQuery = JSON.stringify(this.query);
-        this.campaignService.createCampaign(body).pipe(takeUntil(this.unsubscribe)).subscribe({
+        if (this.campaignMode == 'EDIT') {
+          body.id = this.campaignDetail['id'];
+          this.campaignService.updateCampaign(body).pipe(takeUntil(this.unsubscribe)).subscribe({
+            next: () => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Thành công',
+                detail: `Cập nhật thành công!`,
+              });
+              return this.router.navigate(['campaigns']);
+            }
+          });
+        } else this.campaignService.createCampaign(body).pipe(takeUntil(this.unsubscribe)).subscribe({
           next: () => {
             this.messageService.add({
               severity: 'success',
@@ -150,18 +205,51 @@ export class CampaignsCreateComponent implements OnInit {
       timeTo: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
     });
-
     this.segmentationForm = new FormGroup({
       checkDupPhone: new FormControl(null),
       dataContactType: new FormControl(null, [Validators.required]),
       segmentations: new FormArray([
         new FormGroup({
-          options: new FormArray([]),
           segmentationSelected: new FormControl(null, [Validators.required]),
           query: new FormControl(this.segmentationQuery[1].value)
         })
       ]),
     });
+    if (this.campaignMode == 'EDIT') {
+      if (this.campaignDetail['agentIds']) {
+        let agentIds = this.campaignDetail['agentIds'].split(',');
+        let agents = []
+        agentIds.length > 0 ?? agentIds.forEach(id => {
+          agents.push(this.assignedUser.find(x => x.id == id))
+        })
+        this.campaignsGeneralForm.controls['assignedUser'].patchValue(agents);
+      }
+      this.campaignsGeneralForm.controls['name'].patchValue(this.campaignDetail['name']);
+      this.campaignsGeneralForm.controls['startCallTime'].patchValue(new Date(this.campaignDetail['intendStartTime']));
+      this.campaignsGeneralForm.controls['endCallTime'].patchValue(new Date(this.campaignDetail['intendEndTime']));
+      this.campaignsGeneralForm.controls['timeFrom'].patchValue(new Date(this.campaignDetail['timeFrom']));
+      this.campaignsGeneralForm.controls['timeTo'].patchValue(new Date(this.campaignDetail['timeTo']));
+      this.campaignsGeneralForm.controls['description'].patchValue(this.campaignDetail['description']);
+      this.segmentationForm.controls['dataContactType'].patchValue(this.campaignDetail['segmentations']);
+
+      const obj = JSON.parse(this.campaignDetail['segmentQuery']);
+      if (obj['payload'] && obj['payload']['payload'] && obj['payload']['payload'].length > 0) {
+        let getForm = this.segmentationForm.get('segmentations') as FormArray;
+        getForm.removeAt(0);
+        obj['payload']['payload'].forEach(el => {
+          let formGroupSegmentation = new FormGroup({
+            segmentationSelected: new FormControl(null, [Validators.required]),
+            query: new FormControl(el['type'])
+          })
+          let segmentationSelected = []
+          el['payload'].forEach(payload => {
+            segmentationSelected.push(this.segmentations.find(segmentations => segmentations.name == payload.value));
+          })
+          formGroupSegmentation.controls['segmentationSelected'].patchValue(segmentationSelected);
+          getForm.push(formGroupSegmentation)
+        })
+      }
+    }
   }
 
   checkValidStepSuccess(i) {
