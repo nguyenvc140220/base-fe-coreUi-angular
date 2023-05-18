@@ -1,5 +1,5 @@
 export enum DynamicEntityTypeEnum {
-  CONTACT = 'contact1',
+  CONTACT = 'contact',
   USER = 'user',
   LEAD = 'lead'
 }
