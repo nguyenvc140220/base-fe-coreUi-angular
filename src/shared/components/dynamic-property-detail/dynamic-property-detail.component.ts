@@ -5,6 +5,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DynamicDataTypeEnum } from '@shared/enums/dynamic-data-type.enum'
 import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
 import { DynamicInputTypeEnum } from '@shared/enums/dynamic-input-type.enum';
+import { DYNAMIC_PROPERTY_TYPE, DynamicTypeEnum } from '@shared/enums/dynamic-data-type.const';
 
 @Component({
   selector: 'app-dynam<p-dropdownic-property-detail',
@@ -17,6 +18,21 @@ export class DynamicPropertyDetailComponent {
   formGroup: FormGroup;
   entity: DynamicPropertyModel;
   DynamicDataTypeEnum = DynamicDataTypeEnum;
+  intputTypeMap = new Map<DynamicInputTypeEnum, DynamicTypeEnum>([
+    [DynamicInputTypeEnum.TEXT_BOX, DynamicTypeEnum.TEXT],
+    [DynamicInputTypeEnum.EMAIL, DynamicTypeEnum.EMAIL],
+    [DynamicInputTypeEnum.PHONE_NUMBER, DynamicTypeEnum.PHONE_NUMBER],
+    [DynamicInputTypeEnum.NUMBER_BOX, DynamicTypeEnum.NUMBER],
+    [DynamicInputTypeEnum.DATE_PICKER, DynamicTypeEnum.DATE],
+    [DynamicInputTypeEnum.DATETIME_PICKER, DynamicTypeEnum.DATETIME],
+    [DynamicInputTypeEnum.TIME_PICKER, DynamicTypeEnum.TIME],
+    [DynamicInputTypeEnum.CHECK_LIST, DynamicTypeEnum.CHECKLIST],
+    [DynamicInputTypeEnum.RADIO, DynamicTypeEnum.RADIO],
+    [DynamicInputTypeEnum.SINGLE_SELECT, DynamicTypeEnum.RADIO],
+    [DynamicInputTypeEnum.MULTI_SELECT, DynamicTypeEnum.DROPLIST],
+  ]);
+  defaultValues: any;
+
   constructor(
     public ref: DynamicDialogRef,
     private dynamicDialogConfig: DynamicDialogConfig
@@ -49,11 +65,11 @@ export class DynamicPropertyDetailComponent {
     }
     ));
     // add dataType formcontrol, value is entity.dataType and disabled is true
-    // this.formGroup.addControl('dataInputType', new FormControl({
-    //   value: DYNAMIC_PROPERTY_TYPE.find(x => x.value.inputType === this.entity.inputType).label,
-    //   disabled: true,
-    // }
-    // ));
+    this.formGroup.addControl('dataInputType', new FormControl({
+      value: DYNAMIC_PROPERTY_TYPE.find(x => x.value === this.intputTypeMap.get(this.entity.inputType)).label,
+      disabled: true,
+    }
+    ));
     // add isFixed formcontrol, value is entity.isFixed and disabled is true
     this.formGroup.addControl('editable', new FormControl({
       value: this.entity.editable,
@@ -106,11 +122,17 @@ export class DynamicPropertyDetailComponent {
           }
           ));
         }
-        this.formGroup.addControl('listDefaultValues', new FormControl({
-          value: this.entity.defaultValue,
-          disabled: true,
-        }
-        ));
+        // parse Json string this.entity.defaultValue to object
+
+        this.defaultValues = JSON.parse(this.entity.defaultValue);
+        this.defaultValues.forEach((item, index) => {
+          const controlName = `option_${index}`;
+          this.formGroup.addControl(controlName, new FormControl({
+            value: item.value,
+            disabled: true,
+          }
+          ));
+        });
         break;
       default:
         console.log('#### default ####');
