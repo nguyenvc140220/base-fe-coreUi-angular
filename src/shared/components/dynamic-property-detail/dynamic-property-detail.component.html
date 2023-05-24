@@ -2,22 +2,22 @@
     <div class="mt4">
         <label for="display-name" class="text-sm font-medium">Tên trường thông tin</label>
         <input id="display-name" formControlName="displayName" type="text"
-            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+            class="form-control" />
     </div>
     <div class="mt4">
         <label for="tooltip" class="text-sm font-medium">Tooltip</label>
         <input id="tooltip" formControlName="tooltip" type="text"
-            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+            class="form-control" />
     </div>
     <div class="mt4">
         <label for="hint-text" class="text-sm font-medium">Place holder</label>
         <input id="hint-text" formControlName="hintText" type="text"
-            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+            class="form-control" />
     </div>
     <div class="mt4">
         <label for="data-type" class="text-sm font-medium">Kiểu dữ liệu</label>
         <input id="data-type" formControlName="dataInputType" type="text"
-            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+            class="form-control" />
     </div>
     <div class="mt4">
         <label for="editable" class="text-sm font-medium">Dạng dữ liệu</label>
@@ -28,28 +28,24 @@
     </div>
     <div class="flex-auto" *ngIf="entity.dataType === DynamicDataTypeEnum.TEXT">
         <label for="max-length" class="mb-2 block text-sm font-medium">Độ dài tối đa</label>
-        <p-inputNumber inputId="max-length" formControlName="maxLength" 
-            showButtons="true" 
-            buttonLayout="stacked"
-            stypeClass="w-full"
-            mode="decimal"
-             />
+        <p-inputNumber inputId="max-length" formControlName="maxLength" showButtons="true" buttonLayout="stacked"
+            stypeClass="w-full" mode="decimal" />
     </div>
     <div *ngIf="entity.dataType === DynamicDataTypeEnum.NUMBER">
-        <div class="mt-4">
-            <label for="max-value" class="text-sm font-medium">Giá trị tối đa</label>
-            <input id="max-value" formControlName="maxValue" type="number"
-                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        <div class="flex-auto">
+            <label for="max-value" class="mb-2 block text-sm font-medium">Giá trị tối đa</label>
+            <p-inputNumber inputId="max-value" formControlName="maxValue" showButtons="true" buttonLayout="stacked"
+                stypeClass="w-full" mode="decimal" />
         </div>
-        <div class="mt-4">
-            <label for="min-value" class="text-sm font-medium">Giá trị tối thiểu</label>
-            <input id="min-value" formControlName="minValue" type="number"
-                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+        <div class="flex-auto">
+            <label for="min-value" class="mb-2 block text-sm font-medium">Giá trị tối thiểu</label>
+            <p-inputNumber inputId="min-value" formControlName="minValue" showButtons="true" buttonLayout="stacked"
+                stypeClass="w-full" mode="decimal" />
         </div>
         <div class="mt-4">
             <label for="double-point" class="text-sm font-medium">Làm tròn đến số thập phân</label>
             <input id="double-point" formControlName="doublePoint" type="number"
-                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+                class="form-control" />
         </div>
     </div>
     <div *ngIf="entity.dataType === DynamicDataTypeEnum.LIST">
@@ -64,12 +60,14 @@
                 </p-radioButton>
             </div>
         </div>
-        <div class="mt-4">
+        <div class="mt-2">
             <label for="list-default-values" class="text-sm font-medium">Các lựa chọn</label>
-            <input id="list-default-values" formControlName="listDefaultValues" type="text"
-                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+            <div *ngFor="let item of defaultValues; let i = index">
+                <input id="list-default-values" [formControlName]="'option_' + i" type="text"
+                    class="form-control mt-1" />
+            </div>
         </div>
-        <div class="mt4">
+        <div class="mt-4">
             <div class="flex items-center">
                 <input formControlName="editable" type="checkbox" />
                 <span class="ml-2">Cho phép thêm dữ liệu</span>
@@ -79,5 +77,5 @@
     <div class="d-flex justify-content-end my-4 mx-0">
         <p-button label="Đóng" (click)="close()">
         </p-button>
-      </div>
+    </div>
 </form>
