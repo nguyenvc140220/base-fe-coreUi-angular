@@ -125,9 +125,7 @@ export class ContactsTableComponent
                 inputType: p.inputType,
                 creationTime: p.creationTime,
                 isDisplay:
-                  customTable && customTable[p.code] != null
-                    ? customTable[p.code].isDisplay
-                    : true,
+                  p.visible != null ? p.visible : true,
                 order:
                   customTable && customTable[p.code] != null
                     ? customTable[p.code].order
