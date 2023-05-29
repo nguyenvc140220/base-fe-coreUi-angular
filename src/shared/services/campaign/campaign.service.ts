@@ -8,6 +8,7 @@ import { CreateCampaignRequestModel } from '@shared/models/campaign/create-campa
 import { TestCampaignRequestModel } from '@shared/models/campaign/test-campaign-request.model';
 import { CampaignInteractionModel } from '@shared/models/campaign/campaign-interaction.model';
 import { LeadModel } from '@shared/models/campaign/lead.model';
+import { BackendBaseResponse } from "@shared/models/backend-base-response.model";
 
 @Injectable({providedIn: 'root'})
 export class CampaignService extends BaseService {
@@ -75,9 +76,20 @@ export class CampaignService extends BaseService {
   }
 
   getTestResults(leadId: string) {
-    return this.defaultGet<CampaignInteractionModel[]>(
-      `${this.configService.campaignPlanningUrl}/campaign/test-result/${leadId}`,
+    return this.defaultGet<BackendBaseResponse<CampaignInteractionModel[]>>(
+      `${this.configService.campaignPlanningUrl}/campaign/result/${leadId}`,
       null
+    );
+  }
+
+  getCampaignLeads(campaignId: string, skip: number, take: number) {
+    return this.defaultGet<BackendBaseResponse<LeadModel[]>>(
+      `${this.configService.campaignPlanningUrl}/campaign/leads`,
+      {
+        campaignId: campaignId,
+        skip: skip,
+        take: take
+      }
     );
   }
 }

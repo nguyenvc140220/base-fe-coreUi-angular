@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { LeadModel } from "@shared/models/campaign/lead.model";
+import { DynamicDialogConfig } from "primeng/dynamicdialog";
 
 @Component({
   selector: 'app-lead-interaction-modal',
@@ -6,7 +8,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./lead-interaction-modal.component.scss']
 })
 export class LeadInteractionModalComponent {
-  phoneNumber = '0987654321';
-  fullName = 'Trần Thanh Thảo';
-
+  lead:LeadModel;
+  constructor(private config: DynamicDialogConfig,) {
+    if(config['data']){
+      this.lead = config['data']['lead'];
+    }
+  }
 }

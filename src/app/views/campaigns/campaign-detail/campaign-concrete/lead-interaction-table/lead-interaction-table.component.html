@@ -12,7 +12,7 @@
         *ngFor="let col of cols"
         class="text-center"
         pSortableColumn="{{ col.sortable ? col.field : ''}}"
-        [ngStyle]="col.styles || { minWidth: '200px' }">
+        [ngStyle]="col.styles || { minWidth: '100px' }">
         {{col.header}}&nbsp;<p-sortIcon *ngIf="col.sortable" field="{{col.field}}"></p-sortIcon>
       </th>
     </tr>
@@ -20,23 +20,46 @@
   <ng-template let-interaction pTemplate="body">
     <tr>
       <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field">
-        <td *ngSwitchCase="'recording'" [style]="interaction[col.field]?.styles || {}" class="flex justify-center">
-          <audio controls>
-            <source src="https://file-examples.com/storage/feee5c69f0643c59da6bf13/2017/11/file_example_MP3_700KB.mp3"/>
-          </audio>
+        <td *ngSwitchCase="'action'" class="text-center">
+          {{ getActionLabel(interaction[col.field]) }}
         </td>
-        <td *ngSwitchCase="'interactTime'" class="text-center">
-          <p>{{ interaction[col.field][0] | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
-          <p>{{ interaction[col.field][1] | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+
+        <td *ngSwitchCase="'createdAt'" class="text-center">
+          {{
+          interaction[col.field] &&
+          (interaction[col.field] | date : "dd/MM/yyyy HH:mm:ss")
+          }}
         </td>
-        <td *ngSwitchCase="'duration'" class="text-center">
-          <p>12:00</p>
+
+        <td *ngSwitchCase="'updatedAt'" class="text-center">
+          {{
+          interaction[col.field] &&
+          (interaction[col.field] | date : "dd/MM/yyyy HH:mm:ss")
+          }}
         </td>
-        <td *ngSwitchDefault
-            class="text-center"
-            [pTooltip]="interaction[col.field]"
-            [style]="interaction[col.field]?.styles || {}">
-          {{interaction[col.field]}}
+
+        <td *ngSwitchCase="'status'" class="text-center">
+          <p-tag
+            [styleClass]="'w-100'"
+            [value]="getStateLabel(interaction[col.field])"
+            [pTooltip]="getStateLabel(interaction[col.field])"
+            [severity]="getColor(interaction[col.field])"
+          />
+        </td>
+
+        <td *ngSwitchCase="'output'" class="text-center">
+          <a
+            *ngIf="interaction[col.field]"
+            [href]="interaction[col.field]"
+            class="hover:underline cursor-pointer"
+            target="_blank"
+          >
+            Xem kết quả
+          </a>
+        </td>
+
+        <td *ngSwitchDefault class="text-center">
+          {{ interaction[col.field] }}
         </td>
       </ng-container>
     </tr>

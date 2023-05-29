@@ -1,11 +1,13 @@
-import { Component, Injector, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, Injector, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ComponentBase } from "@shared/utils/component-base.component";
 import { DynamicFilterComponent } from "@shared/components/dynamic-filter/dynamic-filter.component";
 import { DynamicEntityTypeEnum } from "@shared/enums/dynamic-entity-type.enum";
 import { DialogService } from "primeng/dynamicdialog";
 import { DynamicQueryModel } from "@shared/models/dynamic-field/dynamic-query.model";
 import { LeadInteractionModalComponent } from "./lead-interaction-modal/lead-interaction-modal.component";
+import { CampaignService } from "@shared/services/campaign/campaign.service";
+import { Paginator } from "primeng/paginator";
 
 @Component({
   selector: 'app-campaign-concrete',
@@ -20,11 +22,23 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
 
   lastRefreshTime: Date;
 
+  campaignId = '';
+
+  @ViewChild('paginator') paginator: Paginator;
   constructor(
     injector: Injector,
     private readonly router: Router,
-    private readonly dialogService: DialogService) {
+    private readonly dialogService: DialogService,
+
+    private  readonly  campainService: CampaignService,
+    private readonly activatedRoute: ActivatedRoute
+  ) {
     super(injector);
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.campaignId = params['id'];
+      if(this.campaignId)
+        this.initDataTable();
+    });
   }
 
   cols: {
@@ -39,90 +53,48 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
     sortable?: boolean
   }[];
 
-  mockData = [
-    {
-      id: 'id1',
-      phoneNumber: '0987654321',
-      fullName: 'Khách hàng ',
-      address: 'PENDING',
-      gender: 'Nam',
-      numOfCalls: 5,
-      lastCallStatus: 'Nghe máy'
-    },
-    {
-      id: 'id2',
-      phoneNumber: '0987654322',
-      fullName: 'Khách hàng ',
-      address: 'PENDING',
-      gender: 'Nam',
-      numOfCalls: 2,
-      lastCallStatus: 'Nhỡ'
-    },
-    {
-      id: 'id3',
-      phoneNumber: '0987654323',
-      fullName: 'Khách hàng ',
-      address: 'PENDING',
-      gender: 'Nữ',
-      numOfCalls: 5,
-      lastCallStatus: 'Máy bận'
-    },
-    {
-      id: 'id4',
-      phoneNumber: '0987654324',
-      fullName: 'Khách hàng ',
-      address: 'PENDING',
-      gender: 'Nữ',
-      numOfCalls: 1,
-      lastCallStatus: 'Không nghe máy'
-    },
-    {
-      id: 'id5',
-      phoneNumber: '0987654325',
-      fullName: 'Khách hàng ',
-      address: 'PENDING',
-      gender: 'Nữ',
-      numOfCalls: 3,
-      lastCallStatus: 'Không nghe máy'
-    }
-  ];
-
-  paginate($event: any) {
-
+  paginate(event: any) {
+    this.loadData(event);
   }
 
   ngOnInit(): void {
-    this.initDataTable();
+    // this.initDataTable();
   }
 
   private initDataTable() {
     {
       this.cols = [
-        {field: 'phoneNumber', header: 'Số điện thoại', styles: {minWidth: '120px'}},
-        {field: 'fullName', header: 'Họ tên', styles: {minWidth: '180px'}},
-        {field: 'address', header: 'Địa chỉ', styles: {minWidth: '200px'}},
-        {field: 'gender', header: 'Giới tính', styles: {minWidth: '80px'}},
-        {field: 'lastCallStatus', header: 'Trạng thái gọi gần nhất', styles: {minWidth: '160px'}},
-        {field: 'numOfCalls', header: 'Số lần gọi', styles: {minWidth: '80px'}},
+        {field: 'id', header: 'ID', styles: {minWidth: '180px'}},
+        {field: 'contactId', header: 'Mã liên hệ', styles: {minWidth: '180px'}},
+        {field: 'createdAt', header: 'Ngày tạo', styles: {minWidth: '100px'}},
+        {field: 'updatedAt', header: 'Ngày cập nhật', styles: {minWidth: '100px'}},
+        {field: 'attemps', header: 'Số lần thử', styles: {minWidth: '80px'}},
       ];
     }
-    this.primengTableHelper.records = this.mockData;
-    this.primengTableHelper.totalRecordsCount = this.mockData.length;
 
-    this.loadData();
+    this.loadData(null);
   }
 
-  loadData() {
-    setTimeout(() => {
-      this.lastRefreshTime = new Date();
+  loadData(event) {
+    this.lastRefreshTime = new Date();
+    this.primengTableHelper.isLoading = true;
+    this.campainService.getCampaignLeads(
+      this.campaignId,
+      this.primengTableHelper.getSkipCount(this.paginator, event),
+      this.primengTableHelper.getMaxResultCount(this.paginator,event))
+      .subscribe((res) => {
       this.primengTableHelper.isLoading = false;
-    }, 300);
+      if (res.success == true) {
+        this.primengTableHelper.records = res.data;
+        this.primengTableHelper.totalRecordsCount = res.total;
+      }
+    });
   }
 
   handleRefresh() {
     this.primengTableHelper.isLoading = true;
 
-    this.loadData();
+    this.loadData(null);
   }
 
   showDynamicFilter() {
@@ -135,17 +107,21 @@ export class CampaignConcreteComponent extends ComponentBase<any> implements OnI
     dialog.onClose.subscribe((res) => {
       if (res) {
         this.query.payload = res;
-        this.loadData();
+        this.loadData(null);
       }
     });
   }
 
-  showInteractionModal() {
+  showInteractionModal(lead) {
     const dialog = this.dialogService.open(LeadInteractionModalComponent, {
-      header: 'Lịch sử cuộc gọi',
+      header: 'Lịch sử tương tác',
       width: '60%',
       contentStyle: { 'max-height': '80vh', overflow: 'auto' },
-      data: { leadId: '' }
+      data: { lead: lead }
     });
+  }
+
+  showContact(lead){
+    this.router.navigate(['contacts/detail', lead['contactId']]);
   }
 }

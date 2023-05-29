@@ -1,13 +1,16 @@
-<div class="row w-100">
-  <div class="col-md-6">
-    <p class="text-sm font-bold mb-3">
-      SĐT:&nbsp;{{ phoneNumber }}
-    </p>
-    <p class="text-sm font-bold mb-3">
-      Họ tên:&nbsp;{{ fullName }}
-    </p>
-  </div>
-</div>
+<!--<div class="row w-100">-->
+<!--  <div class="col-md-6">-->
+<!--    <p class="text-sm font-bold mb-3">-->
+<!--      leadId:&nbsp;{{ lead?.id }}-->
+<!--    </p>-->
+<!--    <p class="text-sm font-bold mb-3">-->
+<!--      contactId:&nbsp;{{ lead?.contactId }}-->
+<!--    </p>-->
+<!--  </div>-->
+<!--</div>-->
 <div class="row mt-3 w-100">
-  <app-lead-interaction-table></app-lead-interaction-table>
+  <app-lead-interaction-table
+    [leadId]="lead?.id">
+
+  </app-lead-interaction-table>
 </div>

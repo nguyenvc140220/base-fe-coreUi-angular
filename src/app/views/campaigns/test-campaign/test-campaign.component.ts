@@ -170,7 +170,7 @@ export class TestCampaignComponent implements OnDestroy {
 
   getTestResults(leadId: string) {
     this.campaignService.getTestResults(leadId).subscribe((res) => {
-      if (res) this.interactions = res;
+      if (res.success == true) this.interactions = res.data;
     });
   }
 

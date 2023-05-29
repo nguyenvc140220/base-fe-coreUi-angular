@@ -20,7 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
     if (!environment.production)
       request = request.clone({
         setHeaders: {
-          'Domain-Name': 'mkt4.metechvn.com',
+          'Domain-Name': 'mkt8.metechvn.com',
         },
       });
     const currentUser = this._authenticationService.currentUserValue;

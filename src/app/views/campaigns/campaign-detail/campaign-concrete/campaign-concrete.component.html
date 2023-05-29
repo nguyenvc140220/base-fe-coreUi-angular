@@ -66,10 +66,32 @@
         <ng-template let-contact pTemplate="body">
           <tr>
             <ng-container *ngFor="let col of cols;" [ngSwitch]="col.field" class="text-center">
-              <td *ngSwitchCase="'phoneNumber'" [style]="contact[col.field]?.styles || {}">
+              <td *ngSwitchCase="'id'" [style]="contact[col.field]?.styles || {}">
                 <p
                   class="text-blue-500 hover:underline cursor-pointer"
-                  (click)="showInteractionModal()">{{ contact[col.field] }}</p>
+                  pTooltip="Xem chi tiết tương tác"
+                  (click)="showInteractionModal(contact)">{{ contact[col.field] }}</p>
+              </td>
+
+              <td *ngSwitchCase="'contactId'" [style]="contact[col.field]?.styles || {}">
+                <p
+                  class="text-blue-500 hover:underline cursor-pointer"
+                  pTooltip="Xem chi tiết liên hệ"
+                  (click)="showContact(contact)">{{ contact[col.field] }}</p>
+              </td>
+
+              <td *ngSwitchCase="'createdAt'">
+                {{
+                contact[col.field] &&
+                (contact[col.field] | date : "dd/MM/yyyy HH:mm:ss")
+                }}
+              </td>
+
+              <td *ngSwitchCase="'updatedAt'">
+                {{
+                contact[col.field] &&
+                (contact[col.field] | date : "dd/MM/yyyy HH:mm:ss")
+                }}
               </td>
 
               <td *ngSwitchDefault
