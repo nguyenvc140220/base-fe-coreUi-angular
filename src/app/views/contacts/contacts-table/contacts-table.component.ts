@@ -117,7 +117,9 @@ export class ContactsTableComponent
 
           ];
           this.cols.push(
-            ...res.data.content.map((p, index) => {
+            ...res.data.content
+            .filter((p) => p.visible != null ? p.visible : true)
+            .map((p, index) => {
               return {
                 code: p.code,
                 displayName: p.displayName,
@@ -125,7 +127,9 @@ export class ContactsTableComponent
                 inputType: p.inputType,
                 creationTime: p.creationTime,
                 isDisplay:
-                  p.visible != null ? p.visible : true,
+                  customTable && customTable[p.code] != null
+                    ? customTable[p.code].isDisplay
+                    : true,
                 order:
                   customTable && customTable[p.code] != null
                     ? customTable[p.code].order

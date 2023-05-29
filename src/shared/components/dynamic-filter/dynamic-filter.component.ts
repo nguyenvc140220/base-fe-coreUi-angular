@@ -56,6 +56,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           if (res.statusCode == 200) {
             this.entities = res.data.content
+            .filter((c) => c.visible != null ? c.visible : true)
               .map((c, index) => {
 
                 if (c.dataType == 'DATETIME' && filter && filter[c.code]) {
