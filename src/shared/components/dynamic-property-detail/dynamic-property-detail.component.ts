@@ -104,6 +104,11 @@ export class DynamicPropertyDetailComponent {
           disabled: true,
         }
         ));
+        this.formGroup.addControl('unitText', new FormControl({
+          value: "", //TODO: add unitText
+          disabled: true,
+        }
+        ));
         break;
       case DynamicDataTypeEnum.TEXT:
         // add maxLength formcontrol, value is entity.maxLength and disabled is true
