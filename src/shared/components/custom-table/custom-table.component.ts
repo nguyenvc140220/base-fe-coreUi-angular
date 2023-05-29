@@ -53,7 +53,9 @@ export class CustomTableComponent implements OnInit, OnDestroy {
           next: (res) => {
             this.isLoading = false;
             if (res.statusCode == 200) {
-              this.columnTable = res.data.content.map((c, index) => {
+              this.columnTable = res.data.content
+              .filter((c) => c.visible != null ? c.visible : true)
+              .map((c, index) => {
                 return new DynamicPropertyModel({
                   code: c.code,
                   displayName: c.displayName,
