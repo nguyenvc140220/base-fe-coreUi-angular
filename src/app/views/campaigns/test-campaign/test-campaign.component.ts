@@ -61,7 +61,7 @@ export class TestCampaignComponent implements OnDestroy {
 
   interactions: CampaignInteractionModel[] = [];
 
-  private _leadId = '26c217bf-d460-447c-ac59-22b922819b97';
+  private _leadId = '';
   private _interactionsSub: Subscription;
 
   constructor(
@@ -118,7 +118,7 @@ export class TestCampaignComponent implements OnDestroy {
     );
     this.formTestCampaign.addControl('listOptions', this.fb.array([]));
 
-    this.getTestResults('99f341ba-5d18-4f8a-a597-59be30161e58');
+    // this.getTestResults('99f341ba-5d18-4f8a-a597-59be30161e58');
   }
   ngOnDestroy(): void {
     if (this._interactionsSub) this._interactionsSub.unsubscribe();

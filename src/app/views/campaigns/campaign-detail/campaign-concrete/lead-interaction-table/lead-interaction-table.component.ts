@@ -1,13 +1,15 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { ComponentBase } from "@shared/utils/component-base.component";
 import { CampaignService } from "@shared/services/campaign/campaign.service";
+import { SocketService } from "@shared/services/socket/socket.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-lead-interaction-table',
   templateUrl: './lead-interaction-table.component.html',
   styleUrls: ['./lead-interaction-table.component.scss']
 })
-export class LeadInteractionTableComponent extends ComponentBase<any> implements OnInit {
+export class LeadInteractionTableComponent extends ComponentBase<any> implements OnInit, OnDestroy {
 
   @Input() leadId: string;
   cols: {
@@ -21,9 +23,18 @@ export class LeadInteractionTableComponent extends ComponentBase<any> implements
     },
     sortable?: boolean
   }[];
-
-  constructor(injector: Injector, private readonly campaignService: CampaignService) {
+  private _interactionsSub: Subscription;
+  constructor(injector: Injector, private readonly campaignService: CampaignService, private  readonly  socketService: SocketService) {
     super(injector);
+    this._interactionsSub = this.socketService.getWorkflowInteractionMessage().subscribe((data)=>{
+      if(data.leadId === this.leadId){
+        this.loadData();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this._interactionsSub) this._interactionsSub.unsubscribe();
   }
 
   private initDataTable() {
