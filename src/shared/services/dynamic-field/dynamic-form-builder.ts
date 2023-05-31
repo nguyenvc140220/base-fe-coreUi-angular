@@ -5,9 +5,10 @@ import { ValidatorTypeEnum } from '@shared/enums/validator-type.enum';
 import { DynamicDataTypeEnum } from "@shared/enums/dynamic-data-type.enum";
 import { greaterThanValidator, nullOrEmptyValidator } from "@shared/validators/check-pecial-characters-validators";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class DynamicFormBuilder {
   constructor() {}
+
   generateFormGroup(
     formGroup: FormGroup,
     properties: DynamicPropertyModel[],
@@ -33,13 +34,13 @@ export class DynamicFormBuilder {
   getFormValue(
     formGroup: FormGroup,
     name: string
-  ){
+  ) {
     return formGroup?.value[name];
   }
 
-  getDefaultValue(p: DynamicPropertyModel){
-    if(p.defaultValue){
-      switch (p.dataType){
+  getDefaultValue(p: DynamicPropertyModel) {
+    if (p.defaultValue) {
+      switch (p.dataType) {
         case DynamicDataTypeEnum.TEXT:
           return p.defaultValue;
         case DynamicDataTypeEnum.BOOLEAN:
@@ -50,7 +51,9 @@ export class DynamicFormBuilder {
           return new Date(p.defaultValue);
         case DynamicDataTypeEnum.LIST:
           const values = JSON.parse(p.defaultValue);
-          return values && values.length > 0 ? values[0].value : null;
+          //return values && values.length > 0 ? values[0].value : null;
+          //render form không lấy giá trị mặc định nữa
+          return null;
         default:
           return p.defaultValue;
       }
