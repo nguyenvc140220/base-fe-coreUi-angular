@@ -211,6 +211,8 @@ export class TestCampaignComponent implements OnDestroy {
         return 'Gửi mail tự động';
       case 'AUTO_CHAT':
         return 'Chat tự động';
+      case 'AUTO_SMS':
+        return 'Tin nhắn tự động';
       default:
         return 'Gọi tự động';
     }
