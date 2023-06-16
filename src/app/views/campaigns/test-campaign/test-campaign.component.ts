@@ -243,4 +243,8 @@ export class TestCampaignComponent implements OnDestroy {
         return 'warning';
     }
   }
+
+  isLink(value: string){
+    return value?.includes('http')
+  }
 }
