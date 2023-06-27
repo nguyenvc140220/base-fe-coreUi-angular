@@ -71,6 +71,8 @@ export class LeadInteractionTableComponent extends ComponentBase<any> implements
         return 'Gửi mail tự động';
       case 'AUTO_CHAT':
         return 'Chat tự động';
+      case 'AUTO_SMS':
+        return 'Tin nhắn tự động';
       default:
         return 'Gọi tự động';
     }
@@ -101,5 +103,7 @@ export class LeadInteractionTableComponent extends ComponentBase<any> implements
         return 'warning';
     }
   }
-
+  isLink(value: string){
+    return value?.includes('http')
+  }
 }

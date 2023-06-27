@@ -7,7 +7,7 @@
   "elasticQuery": "http://172.16.86.243:8080",
   "socketEndpoint": "http://172.16.86.231/ws",
   "socketIOConfig": {
-    "url": "http://localhost:3001",
+    "url": "http://172.16.86.231",
     "options": {
       "path": "/ws",
       "autoConnect": false,

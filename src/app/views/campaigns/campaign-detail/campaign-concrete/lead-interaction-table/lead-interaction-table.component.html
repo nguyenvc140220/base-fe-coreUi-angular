@@ -47,15 +47,21 @@
           />
         </td>
 
-        <td *ngSwitchCase="'output'" class="text-center">
+        <td *ngSwitchCase="'output'">
           <a
-            *ngIf="interaction[col.field]"
+            *ngIf='isLink(interaction[col.field])'
             [href]="interaction[col.field]"
-            class="hover:underline cursor-pointer"
+            class="text-center hover:underline cursor-pointer"
             target="_blank"
           >
             Xem kết quả
           </a>
+
+          <p
+            *ngIf='!isLink(interaction[col.field])'
+            class="text-center">
+            {{ interaction[col.field] }}
+          </p>
         </td>
 
         <td *ngSwitchDefault class="text-center">
